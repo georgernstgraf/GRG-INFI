@@ -1,0 +1,41 @@
+-- database: /home/georg/gits/5ahwii/unt/GRG-DBI/w3schools DB/w3schools.sqlite
+
+-- Use the ▷ button in the top right corner to run the entire file.
+
+SELECT * FROM CUSTOMERS;
+SELECT CustomerName, City FROM Customers order by city;
+select DISTINCT city , CustomerName from customers ORDER BY city;
+
+SELECT *, count() from customers group by city;
+select DISTINCT city, (select count(*) from customers where city = c.city)
+as count from customers c ORDER BY city;
+
+SELECT COUNT(DISTINCT City) FROM Customers;-- database: ./w3schools.sqlite
+
+SELECT * FROM customers where ContactName = "Hanna Moos" AND
+CustomerName = "Blauer See Delikatessen";
+
+
+CREATE INDEX idx_contactname ON customers(ContactName);
+
+select * from customers ORDER BY CustomerName limit 5 OFFSET 4;
+
+SELECT *, min(price) FROM products;
+SELECT count(*) FROM products;
+select count() from categories;
+
+select DISTINCT country,
+(select count() from customers where country = urxn.country)
+as bubu from customers as urxn where bubu == 3 ;
+
+SELECT ProductID, ProductName, CategoryName
+FROM Products, Categories order by ProductName;
+
+SELECT DISTINCT products.ProductName, categories.CategoryName, customers.CustomerName, customers.ContactName, order_details.Quantity, order_details.OrderID
+FROM products INNER JOIN order_details on order_details.ProductID = products.ProductID
+              INNER JOIN categories on categories.CategoryID = products.CategoryID
+              INNER JOIN orders on orders.OrderID = order_details.OrderID
+              INNER JOIN customers on orders.CustomerID = customers.CustomerID
+WHERE customers.CustomerID BETWEEN 1 AND 10
+ORDER BY orders.OrderID;
+
