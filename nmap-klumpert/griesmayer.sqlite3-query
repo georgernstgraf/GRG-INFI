@@ -1,0 +1,46 @@
+-- database: ../../../gits/2ahwii/unt/sj24-25-2ahwii-infiswp1y/2024-11-26_sqlite/filename.db
+SELECT ip,
+       count(*)
+FROM   (
+          SELECT ip,
+                 mac
+          FROM   hosts
+          group by ip,mac
+        )
+GROUP BY ip
+HAVING count(*) > 1;
+
+
+SELECT ip,
+       count(*)
+FROM hosts
+GROUP BY ip
+ORDER BY count(*) ASC;
+
+
+SELECT ale.ip,
+       ale.datum
+from   (
+          SELECT ipt.ip,
+                 dat.datum
+          FROM
+                 (
+                    SELECT ip
+                    FROM   hosts
+                    GROUP BY ip
+                 ) as ipt,
+                 (
+                    SELECT datum
+                    FROM hosts
+                    GROUP BY datum
+                 ) as dat
+       ) as ale
+       LEFT OUTER JOIN
+       (
+          SELECT ip,
+                 datum
+          FROM hosts
+       ) as tat
+       on ale.ip = tat.ip AND
+          ale.datum = tat.datum
+where  tat.ip is null;
