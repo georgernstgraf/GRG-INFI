@@ -1,0 +1,23 @@
+-- database: ./persons.db
+-- Use the ▷ button in the top right corner to run the entire file.
+SELECT
+    birthdate,
+    timediff (DATETIME(), birthdate)
+FROM
+    persons;
+
+SELECT DISTINCT
+    firstname
+FROM
+    persons
+WHERE
+    sex = "male"
+ORDER BY
+    firstname ASC;
+
+SELECT
+    *
+FROM
+    persons
+WHERE
+    firstname LIKE 'benno';
