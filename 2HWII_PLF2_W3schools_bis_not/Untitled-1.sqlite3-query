@@ -1,0 +1,15 @@
+-- database: /home/georg/gits/2ahwii/unt/GRG-DBI/2HWII_PLF2_W3schools_bis_not/ang/persons.db
+-- Use the ▷ button in the top right corner to run the entire file.
+SELECT DISTINCT
+    zodiacsign
+FROM
+    persons
+ORDER BY
+    zodiacsign;
+
+SELECT
+    *
+FROM
+    persons
+WHERE
+    firstname = 'Julika';

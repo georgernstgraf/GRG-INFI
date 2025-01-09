@@ -5,4 +5,4 @@ from
 where
     firstname = 'Maja'
 order by
-    id desc;
+    id;
