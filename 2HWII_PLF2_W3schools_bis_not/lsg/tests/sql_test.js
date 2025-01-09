@@ -108,6 +108,10 @@ Deno.test("f.sql", (tc) => {
 });
 Deno.test("g.sql", (tc) => {
     const answer = [
+        { id: 66, },
+        { id: 60, },
+        { id: 41, },
+        { id: 3, },
     ];
     const sql = Deno.readTextFileSync(tc.name);
     if (!sqlite.isComplete(sql)) {
@@ -117,17 +121,3 @@ Deno.test("g.sql", (tc) => {
     const result = stmt.all();
     assertEquals(result, answer);
 });
-[
-  {
-    id: 3,
-  },
-  {
-    id: 41,
-  },
-  {
-    id: 60,
-  },
-  {
-    id: 66,
-  },
-]
