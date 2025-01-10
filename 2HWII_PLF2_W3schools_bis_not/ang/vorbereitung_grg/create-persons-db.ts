@@ -5,7 +5,7 @@ const fak = faker.faker;
 function main() {
     try {
         Deno.removeSync("persons.db");
-    } catch (e) {
+    } catch (_) {
         console.error("No file to remove");
     }
     const db = new sqlite.Database("persons.db");
