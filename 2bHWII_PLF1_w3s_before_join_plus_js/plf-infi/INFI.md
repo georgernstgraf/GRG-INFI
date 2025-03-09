@@ -69,7 +69,7 @@ SSIA
 
 ### **Punkteschlüssel**
 
-Bei jeder Aufgabe sind 9 Punkte möglich, dh. `0-36 / 37-45 / 46-54 / 55-63 / 64-72`
+Bei jeder Aufgabe sind 8 Punkte möglich, dh. `0-36 / 37-45 / 46-54 / 55-63 / 64-72`
 
 ```text
   ____       _                ____      _ _                           _
