@@ -1,7 +1,13 @@
--- database: ../w3schools.sqlite
--- wie viele contactnames enthalten den String "tt"
--- gib mir alle contactnames die ein tt enthalten
--- jüngester Mitarbeiter
--- wie viele orders im Jahr 1997
+-- database: ../quotations.sqlite
+SELECT
+    *
+FROM
+    aussagen;
+
 --
---
+SELECT DISTINCT
+    ranking
+FROM
+    aussagen
+WHERE
+    author = 'Jean-Paul Sartre';

@@ -19,6 +19,8 @@ const zitate = [
     ],
 ];
 function main() {
+    console.log("it is in quotations.sql");
+    Deno.exit();
     try {
         Deno.removeSync(dbName);
     } catch (_) {
