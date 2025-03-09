@@ -1,6 +1,12 @@
 SELECT
-    COUNT(*) AS anzahl
+    firstname,
+    lastname
 FROM
-    customers
+    employees
 WHERE
-    ContactName LIKE '%tt%';
+    BirthDate IS (
+        SELECT
+            MAX(BirthDate)
+        FROM
+            employees
+    );

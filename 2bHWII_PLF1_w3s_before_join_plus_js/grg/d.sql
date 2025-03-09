@@ -1,8 +1,6 @@
 SELECT
-    contactname
+    COUNT() AS ordersfrom1997
 FROM
-    customers
+    orders
 WHERE
-    contactname LIKE '%tt%'
-ORDER BY
-    contactname DESC;
+    orderdate >= '1997-01-01';

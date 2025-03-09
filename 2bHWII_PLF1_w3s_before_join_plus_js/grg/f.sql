@@ -1,6 +1,15 @@
 SELECT
-    COUNT() AS ordersfrom1997
+    *
 FROM
-    orders
-WHERE
-    orderdate >= '1997-01-01';
+    (
+        SELECT
+            DISTINCT city
+        FROM
+            customers
+        ORDER BY
+            city DESC
+        LIMIT
+            5
+    )
+ORDER BY
+    city ASC;

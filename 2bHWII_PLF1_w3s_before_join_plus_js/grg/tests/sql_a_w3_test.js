@@ -20,18 +20,10 @@ function getResult(tc) {
 }
 
 Deno.test("a.sql", (tc) => {
-    const answer = [{ id: 38 }, { id: 54 }];
-    assertEquals(getResult(tc), answer);
-});
-Deno.test("b.sql", (tc) => {
-    const answer = [];
-    assertEquals(getResult(tc), answer);
-});
-Deno.test("c.sql", (tc) => {
     const answer = [{ anzahl: 8 }];
     assertEquals(getResult(tc), answer);
 });
-Deno.test("d.sql", (tc) => {
+Deno.test("b.sql", (tc) => {
     const answer = [
         {
             ContactName: "Sven Ottlieb",
@@ -60,7 +52,7 @@ Deno.test("d.sql", (tc) => {
     ];
     assertEquals(getResult(tc), answer);
 });
-Deno.test("e.sql", (tc) => {
+Deno.test("c.sql", (tc) => {
     const answer = [
         {
             FirstName: "Anne",
@@ -69,13 +61,13 @@ Deno.test("e.sql", (tc) => {
     ];
     assertEquals(getResult(tc), answer);
 });
-Deno.test("f.sql", (tc) => {
+Deno.test("d.sql", (tc) => {
     const answer = [{
         "ordersfrom1997": 44,
     }];
     assertEquals(getResult(tc), answer);
 });
-Deno.test("g.sql", (tc) => {
+Deno.test("e.sql", (tc) => {
     const answer = [
         {
             Price: 263.5,
@@ -88,7 +80,7 @@ Deno.test("g.sql", (tc) => {
     ];
     assertEquals(getResult(tc), answer);
 });
-Deno.test("h.sql", (tc) => {
+Deno.test("f.sql", (tc) => {
     const answer = [
         {
             city: "Vancouver",
@@ -108,7 +100,7 @@ Deno.test("h.sql", (tc) => {
     ];
     assertEquals(getResult(tc), answer);
 });
-Deno.test("i.sql", (tc) => {
+Deno.test("g.sql", (tc) => {
     const answer = [{
         "Country": "USA",
     }, {

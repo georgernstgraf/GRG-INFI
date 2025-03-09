@@ -1,12 +1,20 @@
 SELECT
-    firstname,
-    lastname
+    productname,
+    price
 FROM
-    employees
+    products
 WHERE
-    BirthDate IS (
+    price = (
         SELECT
-            MAX(BirthDate)
+            MIN(price)
         FROM
-            employees
-    );
+            products
+    )
+    OR price = (
+        SELECT
+            MAX(price)
+        FROM
+            products
+    )
+ORDER BY
+    productname ASC;

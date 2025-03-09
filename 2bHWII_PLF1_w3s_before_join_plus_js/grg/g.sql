@@ -1,20 +1,10 @@
 SELECT
-    productname,
-    price
+    country
 FROM
-    products
-WHERE
-    price = (
-        SELECT
-            MIN(price)
-        FROM
-            products
-    )
-    OR price = (
-        SELECT
-            MAX(price)
-        FROM
-            products
-    )
+    customers
+GROUP BY
+    country
 ORDER BY
-    productname ASC;
+    COUNT() DESC
+LIMIT
+    3;
