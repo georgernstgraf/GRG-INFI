@@ -1,0 +1,13 @@
+{
+    "tasks": {
+        "seed": "deno run -A createdb.ts"
+    },
+    "imports": {
+        "@faker-js/faker": "npm:@faker-js/faker",
+        "@std/assert": "jsr:@std/assert",
+        "@db/sqlite": "jsr:@db/sqlite"
+    },
+    "fmt": {
+        "indentWidth": 4
+    }
+}
