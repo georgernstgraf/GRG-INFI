@@ -7,7 +7,7 @@
 ## SQL Abfragen
 
 **Vorbemerkung**: Die Aufgaben a-g werden mit der Datenbank "w3schools.sqlite"
-durchgeführt. In die jeweiligen (am Anfang leeren) Dateien "a.sql", "b.sql" usw.
+durchgeführt. h-j mit der quotations DB. In die jeweiligen (am Anfang leeren) Dateien "a.sql", "b.sql" usw.
 sind die entsprechenden Lösungen einzutragen.
 
 **Selbstkontrolle**: Im Terminal - wechsle in das richtige Verzeichnis - das
@@ -69,7 +69,7 @@ SSIA
 
 ### **Punkteschlüssel**
 
-Bei jeder Aufgabe sind 8 Punkte möglich, dh. `0-36 / 37-45 / 46-54 / 55-63 / 64-72`
+Bei jeder Aufgabe sind 5 Punkte möglich, dh. `0-20 / 21-25 / 26-30 / 31-35 / 36-40`
 
 ```text
   ____       _                ____      _ _                           _
