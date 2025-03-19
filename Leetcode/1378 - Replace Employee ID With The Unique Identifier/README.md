@@ -1,3 +1,10 @@
+# Left join oida
+
+left join garantiert, dass von der linken alles drin ist!!!
+its the same as left outer join oida
+
+---
+
 Table: Employees
 
 +---------------+---------+

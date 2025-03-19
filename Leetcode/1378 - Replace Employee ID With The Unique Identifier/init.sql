@@ -1,12 +1,13 @@
-Employees TABLE: + ----+----------+
-| id | name | + ----+----------+
-| 1 | Alice | | 7 | Bob | | 11 | Meir | | 90 | Winston | | 3 | Jonathan | + ----+----------+
-EmployeeUNI TABLE: + ----+-----------+
-| id | unique_id | + ----+-----------+
-| 3 | 1 | | 11 | 2 | | 90 | 3 | + ----+-----------+
-/ / Employees TABLE: + ----+----------+
-| id | name | + ----+----------+
-| 1 | Alice | | 7 | Bob | | 11 | Meir | | 90 | Winston | | 3 | Jonathan | + ----+----------+
-EmployeeUNI TABLE: + ----+-----------+
-| id | unique_id | + ----+-----------+
-| 3 | 1 | | 11 | 2 | | 90 | 3 | + ----+-----------+
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE employees (id int, name text);
+INSERT INTO employees VALUES(1,'Alice');
+INSERT INTO employees VALUES(7,'Bob');
+INSERT INTO employees VALUES(11,'Meir');
+INSERT INTO employees VALUES(90,'Winston');
+INSERT INTO employees VALUES(3,'Jonathan');
+CREATE TABLE employeeuni (id int, unique_id int);
+INSERT INTO employeeuni VALUES(3,1);
+INSERT INTO employeeuni VALUES(11,2);
+INSERT INTO employeeuni VALUES(90,3);
+COMMIT;
