@@ -1,20 +1,20 @@
-CREATE TABLE Students (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE if not exists Students (
+    id integer PRIMARY KEY autoincrement,
     name VARCHAR(100) NOT NULL,
     age INT CHECK (age > 0)
 );
 
 INSERT INTO
-    Students (id, name, age)
+    Students (name, age)
 VALUES
-    (1, 'Robert', 12);
+    ('Robert', 12);
 
 INSERT INTO
-    students
+    students (name, age)
 VALUES
-    (2, 'Georg', 54);
+    ('Georg', 54);
 
 INSERT INTO
-    students
+    students (name, age)
 VALUES
-    (2, 'Andi', 45);
+    ('Andi', 45);

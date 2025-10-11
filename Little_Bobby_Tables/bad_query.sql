@@ -1,11 +1,8 @@
-UPDATE
+-- Robert'); DROP TABLE Students;--
+insert into
     Students
-SET
-    age = 13
-WHERE
-    name = 'Robert'
-);
+(age, name) values (13, 'MAX');
 
-DROP TABLE Students;
-
---";
+insert into
+    Students
+(age, name) values (13, 'Robert'); DROP TABLE Students;--');
