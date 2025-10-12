@@ -1,5 +1,0 @@
--- database: ./pers.db
-
--- Use the ▷ button in the top right corner to run the entire file.
-
-SELECT * FROM persons order by m;
