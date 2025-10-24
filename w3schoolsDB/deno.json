@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "@prisma/client": "npm:@prisma/client@^6.18.0",
+    "prisma": "npm:prisma@^6.18.0",
+    "prisma-erd-generator": "npm:prisma-erd-generator@^2.1.0"
+  }
+}

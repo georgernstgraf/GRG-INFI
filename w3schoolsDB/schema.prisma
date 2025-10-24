@@ -1,0 +1,107 @@
+generator client {
+    provider = "prisma-client"
+    runtime  = "deno"
+    output   = "client"
+}
+
+generator erd {
+    provider = "prisma-erd-generator"
+    runtime  = "deno"
+    output   = "./w3schools_erd.md"
+    format   = "mermaid"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = "file:w3schools.sqlite"
+}
+
+model OrderDetails {
+    OrderDetailID Int       @id @default(autoincrement())
+    OrderID       Int?
+    ProductID     Int?
+    Quantity      Int?
+    products      products? @relation(fields: [ProductID], references: [ProductID], onDelete: NoAction, onUpdate: NoAction)
+    orders        orders?   @relation(fields: [OrderID], references: [OrderID], onDelete: NoAction, onUpdate: NoAction)
+
+    @@index([ProductID], map: "idx_OrderDetails_ProductID")
+    @@index([OrderID], map: "idx_OrderDetails_OrderID")
+}
+
+model categories {
+    CategoryID   Int        @id @default(autoincrement())
+    CategoryName String?
+    Description  String?
+    products     products[]
+}
+
+model customers {
+    CustomerID   Int      @id @default(autoincrement())
+    CustomerName String?
+    ContactName  String?
+    Address      String?
+    City         String?
+    PostalCode   String?
+    Country      String?
+    orders       orders[]
+}
+
+model employees {
+    EmployeeID Int       @id @default(autoincrement())
+    LastName   String?
+    FirstName  String?
+    BirthDate  DateTime?
+    Photo      String?
+    Notes      String?
+    orders     orders[]
+}
+
+model orders {
+    OrderID      Int            @id @default(autoincrement())
+    CustomerID   Int?
+    EmployeeID   Int?
+    OrderDate    DateTime?
+    ShipperID    Int?
+    OrderDetails OrderDetails[]
+    shippers     shippers?      @relation(fields: [ShipperID], references: [ShipperID], onDelete: NoAction, onUpdate: NoAction)
+    employees    employees?     @relation(fields: [EmployeeID], references: [EmployeeID], onDelete: NoAction, onUpdate: NoAction)
+    customers    customers?     @relation(fields: [CustomerID], references: [CustomerID], onDelete: NoAction, onUpdate: NoAction)
+
+    @@index([ShipperID], map: "idx_orders_ShipperID")
+    @@index([EmployeeID], map: "idx_orders_EmployeeID")
+    @@index([CustomerID], map: "idx_orders_CustomerID")
+}
+
+model products {
+    ProductID    Int            @id @default(autoincrement())
+    ProductName  String?
+    SupplierID   Int?
+    CategoryID   Int?
+    Unit         String?
+    Price        Float?
+    OrderDetails OrderDetails[]
+    suppliers    suppliers?     @relation(fields: [SupplierID], references: [SupplierID], onDelete: NoAction, onUpdate: NoAction)
+    categories   categories?    @relation(fields: [CategoryID], references: [CategoryID], onDelete: NoAction, onUpdate: NoAction)
+
+    @@index([SupplierID], map: "idx_products_SupplierID")
+    @@index([CategoryID], map: "idx_products_CategoryID")
+}
+
+model shippers {
+    ShipperID   Int      @id @default(autoincrement())
+    ShipperName String?
+    Phone       String?
+    orders      orders[]
+}
+
+model suppliers {
+    SupplierID   Int        @id @default(autoincrement())
+    SupplierName String?
+    ContactName  String?
+    Address      String?
+    City         String?
+    PostalCode   String?
+    Country      String?
+    Phone        String?
+    products     products[]
+}
