@@ -1,0 +1,43 @@
+generator airline_erd {
+    provider = "prisma-erd-generator"
+    runtime  = "deno"
+    output   = "./airline_erd.md"
+    format   = "mermaid"
+}
+
+datasource airline_db {
+    provider = "sqlite"
+    url      = "file:airline.sqlite"
+}
+
+model Airplane {
+    id      String   @id @default(cuid())
+    name    String
+    flights Flight[]
+}
+
+model Flight {
+    id            String      @id @default(cuid())
+    when          DateTime
+    passengers    Passenger[]
+    fromAirport   Airport     @relation(name: "fromairport", fields: [fromAirportID], references: [id])
+    toAirport     Airport     @relation(name: "toairport", fields: [toAirportID], references: [id])
+    Airplane      Airplane    @relation(fields: [airplaneId], references: [id])
+    airplaneId    String
+    fromAirportID String
+    toAirportID   String
+}
+
+model Airport {
+    id             String   @id @default(cuid())
+    name           String
+    flightIncoming Flight[] @relation(name: "toairport")
+    flightOutgoing Flight[] @relation(name: "fromairport")
+}
+
+model Passenger {
+    id       String   @id @default(cuid())
+    email    String
+    fullname String
+    flights  Flight[]
+}
