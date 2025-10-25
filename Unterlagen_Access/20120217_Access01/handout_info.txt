@@ -1,9 +1,0 @@
-
-In jeder dieser Lektionen stehen Dinge, die NUR für den Lehrer bestimmt sind 
-in einem eigenen Verzeichnis, das klar benannt ist.
-
-An die Schüler auszugeben ist alles was im Root Verzeichnis steht,
-  ausgenommen den Powerpoint-File selbst  (stattdessen den pdf Druck mit den Notizen)
-  Im konkreten Fall also die beiden Datenbanken schuldb1.accdb und schulvw1.mdb
-      Das ist die Arbeitsdatenbank, wo sich die Schüler selbst finden (Gebdatum, Adresse ist anonymisiert)
-  und 201 - DBIS2_acc01.pdf.

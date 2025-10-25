@@ -1,6 +1,0 @@
-enthält die in den Folien beschriebenen Aktivitäten
-
-Formular vorbereiten
-     (schueler, Klassen,  Abt_Leiter in Abteilungen)
-     
-sowie die vorgezeigten Formulare     
