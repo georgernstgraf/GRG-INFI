@@ -1,8 +1,16 @@
 # sj25-26-2ahwii-infi
 
+## upcoming
+
+- prepared statements (verwenden einige, wurde nicht erklärt)
+- für die plf am 18.12. klären ob labor resp. papier
+
 ## 2025-10-23
 
-Assignment: <https://classroom.github.com/a/ZJO0mt7S>
+HÜ:
+
+- Assignment: <https://classroom.github.com/a/ZJO0mt7S>
+- alternativ sqlplfprobe aus diesem repo ins eigene kopieren und dort die aufgaben lösen
 
 ## 2025-10-09
 

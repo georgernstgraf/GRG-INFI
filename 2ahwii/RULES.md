@@ -2,7 +2,7 @@
 
 ## Beurteilung (Semester)
 
-- 1 Test
+- 1 Test (18. Dezember 2025)
 - Hausübungen
 - Schulübungen / Stundenwiederholung
 
@@ -14,8 +14,13 @@ somit 30% erreichbar.
 
 Jeder Bereich zählt zu 1/3, alle Bereiche müssen positiv sein.
 
+## ad Hausübungen
+
+- `.sqlite` oder `.db` NICHT committen (binäre Dateien, können nicht gedifft werden, ändern sich)
+- SQL Aufgaben in `.sql` Dateien speichern
+
 ## Toilettengang
 
-Ohne Worte, Blickkontakt
+wortlos aufstehen und zur Tür gehen, Blickkontakt mit der Lehrperson suchen.
 
 ## Hausübungen im Readme oben
