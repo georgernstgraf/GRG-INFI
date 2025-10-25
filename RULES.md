@@ -1,4 +1,6 @@
-# Beurteilung (Semester)
+# Allgemeine Regeln
+
+## Beurteilung (Semester)
 
 - 1 Test
 - Hausübungen
@@ -7,8 +9,8 @@
 
 Jeder Bereich zählt zu 1/4, 3 Bereiche müssen positiv sein.
 
-# Toilettengang
+## Toilettengang
 
 Ohne Worte, Blickkontakt
 
-# Hausübungen im Readme oben
+## Hausübungen im Readme oben
