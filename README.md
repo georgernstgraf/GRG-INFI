@@ -1,1 +1,1 @@
-# GRG-DBI
+# GRG-INFI

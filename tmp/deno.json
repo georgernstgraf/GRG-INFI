@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "prisma": "npm:prisma@^6.18.0"
+  }
+}
