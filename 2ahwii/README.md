@@ -1,5 +1,15 @@
 # sj25-26-2ahwii-infi
 
+## 2025-11-06
+
+HÜ: Selbständig 2 Schritte der w3school studieren:
+
+- sum, avg
+- like
+
+opentrivia datenbank verwenden!
+5 verschieden sinnhafte Statements erfinden!!
+
 ## upcoming
 
 - prepared statements (verwenden einige, wurde nicht erklärt)
