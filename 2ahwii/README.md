@@ -1,5 +1,9 @@
 # sj25-26-2ahwii-infi
 
+## 2025-11-13
+
+w3schools selbststudium ab count bis incl. aliases!!
+
 ## 2025-11-06
 
 HÜ: Selbständig 2 Schritte der w3school studieren:
