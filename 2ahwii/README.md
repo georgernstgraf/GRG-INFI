@@ -1,5 +1,9 @@
 # sj25-26-2ahwii-infi
 
+## 2025-11-20
+
+sql joins
+
 ## 2025-11-13
 
 w3schools selbststudium ab count bis incl. aliases!!
