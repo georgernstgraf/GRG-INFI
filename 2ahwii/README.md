@@ -1,5 +1,9 @@
 # sj25-26-2ahwii-infi
 
+## 2026-02-19
+
+HÜ: 2 sql leetcodes aussuchen und lösen
+
 ## 2025-11-20
 
 sql joins
@@ -70,5 +74,5 @@ was wir machten:
 
 - herumdoktorn mit git und sqlite3 und workspaces
 - git config --global user.name "Albert Einstein"
-- git config --global user.email "albert@ein.stein"
+- git config --global user.email "<albert@ein.stein>"
 - sqlite3 mit w3schools.sqlite öffnen (herzeigen)
