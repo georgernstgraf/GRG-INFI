@@ -1,5 +1,11 @@
 # sj25-26-2ahwii-infi
 
+## 2026-02-26
+
+wir haben die 2 leetcodes mit dupl. emails gemacht.
+
+HÜ 2 weitere sql EASY leetcodes.
+
 ## 2026-02-19
 
 HÜ: 2 sql leetcodes aussuchen und lösen
