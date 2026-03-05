@@ -1,4 +1,4 @@
  *.db
 *.~lock.*#
-**/*_solutions.md
+**/knowledge_solutions.md
 **/knowledge_*.md
