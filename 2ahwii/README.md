@@ -2,6 +2,19 @@
 
 ## PLF 7.Mai
 
+## 2026-03-19_ddl
+
+HÜ: - siehe Hausübungen.md
+
+
+- sqlite vacuum (into)
+- DML "data modification languange"
+- DDL "data definition language"
+- constraints:
+- - primary key (index + unique)
+- - not null
+- sqlite: "pragma foreign_keys=on"
+- auch zu setzen in "~/.sqliterc" (`%HOME%\.sqliterc`)
 ## 2026-02-26
 
 wir haben die 2 leetcodes mit dupl. emails gemacht.

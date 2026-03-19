@@ -2,6 +2,22 @@
 
 Neueste Einträge zuerst.
 
+## Hausübung vom 19. März
+
+"E-Commerce Inventar" (1:n & Not Null)
+
+Hier übst du den Umgang mit Integritätsregeln.
+
+- Aufgabe: Erstelle ein einfaches Inventarsystem.
+
+- Anforderungen:
+	- categories: id, name (Not Null).
+	- products: id, name, price (Default: 0.0), category_id (FK).
+
+	- Constraint: Ein Produkt darf nicht ohne Kategorie existieren (category_id NOT NULL).
+
+	- Zusatz: Setze einen CHECK Constraint auf price, damit dieser niemals negativ sein kann.
+
 ---
 
 ## Hausübung vom 26. Februar 2026
