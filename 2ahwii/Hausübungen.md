@@ -16,7 +16,7 @@ Hier übst du den Umgang mit Integritätsregeln.
 
 	- Constraint: Ein Produkt darf nicht ohne Kategorie existieren (category_id NOT NULL).
 
-	- Zusatz: Setze einen CHECK Constraint auf price, damit dieser niemals negativ sein kann.
+	- Zusatz: Setze einen CHECK Constraint auf price, damit dieser niemals negativ sein kann. (selber recherchieren!)
 
 ---
 
