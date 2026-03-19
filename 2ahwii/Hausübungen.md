@@ -2,21 +2,28 @@
 
 Neueste Einträge zuerst.
 
-## Hausübung vom 19. März
+## Hausübung vom 19. März – DDL & Constraints
 
-"E-Commerce Inventar" (1:n & Not Null)
+**Thema:** Integritätsregeln (Constraints) in SQLite
 
-Hier übst du den Umgang mit Integritätsregeln.
+Hier übst du den Umgang mit PRIMARY KEY, NOT NULL, FOREIGN KEY und CHECK Constraints.
 
-- Aufgabe: Erstelle ein einfaches Inventarsystem.
+### Aufgabe 1: E-Commerce Inventar
+Erstelle ein einfaches Inventarsystem mit zwei Tabellen:
 
-- Anforderungen:
-	- categories: id, name (Not Null).
-	- products: id, name, price (Default: 0.0), category_id (FK).
+- `categories`: id (PK), name (NOT NULL)
+- `products`: id (PK), name (NOT NULL), price (DEFAULT 0.0), category_id (FK, NOT NULL)
 
-	- Constraint: Ein Produkt darf nicht ohne Kategorie existieren (category_id NOT NULL).
+**Constraint:** Ein Produkt darf nicht ohne Kategorie existieren (`category_id NOT NULL`).
 
-	- Zusatz: Setze einen CHECK Constraint auf price, damit dieser niemals negativ sein kann. (selber recherchieren!)
+### Aufgabe 2: CHECK Constraint
+Füge einen CHECK Constraint auf `price` hinzu, damit dieser niemals negativ sein kann.
+*Tipp:* Recherchiere selbst, wie CHECK Constraints in SQLite funktionieren!
+
+### Aufgabe 3: Foreign Keys testen
+- Aktiviere Foreign Keys mit `PRAGMA foreign_keys = ON;`
+- Versuche ein Produkt mit ungültiger `category_id` (z.B. 999) einzufügen
+- Dokumentiere die Fehlermeldung
 
 ---
 
