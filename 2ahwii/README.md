@@ -6,7 +6,6 @@
 
 HÜ: - siehe Hausübungen.md
 
-
 - sqlite vacuum (into)
 - DML "data modification languange"
 - DDL "data definition language"
@@ -15,6 +14,7 @@ HÜ: - siehe Hausübungen.md
 - - not null
 - sqlite: "pragma foreign_keys=on"
 - auch zu setzen in "~/.sqliterc" (`%HOME%\.sqliterc`)
+
 ## 2026-02-26
 
 wir haben die 2 leetcodes mit dupl. emails gemacht.
