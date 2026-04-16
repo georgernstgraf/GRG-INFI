@@ -46,4 +46,4 @@ WHERE new_salary > 5000; -- Fehler: new_salary unbekannt
 -- müsste man die Berechnung im WHERE wiederholen oder eine Subquery/CTE nutzen.
 ```
 
-In deinen bevorzugten ORMs wie **Drizzle** oder **Prisma** wird diese Reihenfolge durch die Methoden-Verkettung (Fluent API) meistens intuitiv korrekt abgebildet, da die Library den SQL-String am Ende für dich baut.
+In ORMs wie **Drizzle** oder **Prisma** wird diese Reihenfolge durch die Methoden-Verkettung (Fluent API) meistens intuitiv korrekt abgebildet, da die Library den SQL-String am Ende für uns baut.
