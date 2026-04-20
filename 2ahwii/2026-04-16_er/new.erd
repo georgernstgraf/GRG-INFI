@@ -1,0 +1,19 @@
+erdiagram Model
+
+notation=crowsfoot
+
+entity A {
+   id key
+   myattribute optional
+}
+
+entity B {
+   id key
+   myattribute
+   boolean
+}
+
+relationship Rel {
+   A[N] -> B[N]
+   myattribute optional
+}
