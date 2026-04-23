@@ -16,4 +16,5 @@ entity B {
 relationship Rel {
    A[N] -> B[N]
    myattribute optional
+entlehndatum
 }

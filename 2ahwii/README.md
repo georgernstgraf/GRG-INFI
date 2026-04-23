@@ -2,6 +2,17 @@
 
 ## PLF 7.Mai
 
+## 2026-04-23
+
+Klärung der ER Relations
+Sweety Find Joe With Great Help Or Luck
+
+HÜ: 
+
+- Leetcode 180 machen, und
+- 586. Customer Placing the Largest Number of Orders
+- 596. Classes With at Least 5 Students
+
 ## 2026-04-09_n_m
 
 HÜ siehe Tagesordner ..
