@@ -13,6 +13,8 @@ HÜ:
 - 586. Customer Placing the Largest Number of Orders
 - 596. Classes With at Least 5 Students
 
+Mock-PLF als Vorbereitung für den 7. Mai
+
 ## 2026-04-09_n_m
 
 HÜ siehe Tagesordner ..

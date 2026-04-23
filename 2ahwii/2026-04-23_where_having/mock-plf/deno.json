@@ -1,0 +1,12 @@
+{
+    "tasks": {
+        "test": "deno test -A --hide-stacktraces"
+    },
+    "imports": {
+        "@db/sqlite": "jsr:@db/sqlite@latest",
+        "@std/assert": "jsr:@std/assert@latest"
+    },
+    "fmt": {
+        "indentWidth": 4
+    }
+}
