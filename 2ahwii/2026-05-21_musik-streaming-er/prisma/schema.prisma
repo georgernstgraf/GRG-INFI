@@ -1,0 +1,53 @@
+datasource db {
+    provider = "sqlite"
+    url      = "file:../music.db"
+}
+
+generator client {
+    provider = "prisma-client"
+    output   = "client"
+    runtime  = "deno"
+}
+
+model Kuenstler {
+    id    Int     @id
+    name  String
+    land  String?
+    alben Album[]
+}
+
+model Album {
+    id               Int         @id
+    titel            String
+    erscheinungsjahr Int
+    Kuenstler        Kuenstler[]
+    songs            Song[]
+}
+
+model Song {
+    id           Int        @id
+    titel        String
+    dauer_sek    Int
+    track_nummer Int
+    alben        Album[]
+    playlists    Playlist[]
+    hoerverlauf  Nutzer[]
+}
+
+model Nutzer {
+    id           Int        @id
+    benutzername String
+    email        String
+    premium      Boolean
+    playlists    Playlist[]
+    songs        Song[] /// Hörverlauf
+}
+
+model Playlist {
+    id               Int      @id
+    name             String
+    erstellungsdatum DateTime
+    songs            Song[]
+    nutzer           Nutzer?  @relation(fields: [nutzerId], references: [id])
+    nutzerId         Int?
+}

@@ -1,0 +1,57 @@
+erdiagram MusikStreaming
+
+notation=crowsfoot
+
+entity kuenstler {
+   id key
+   name
+   land optional
+}
+
+entity album {
+   id key
+   titel
+   erscheinungsjahr
+}
+
+entity song {
+   id key
+   titel
+   dauer_sek
+   track_nummer
+}
+
+entity Nutzer {
+   id key
+   benutzername
+   email
+   premium
+}
+
+entity playlist {
+   id key
+   name
+   erstellungsdatum
+}
+
+relationship Mitwirkung {
+   kuenstler[N] -> album[N]
+}
+
+relationship AlbumEnthaelt {
+   album[N] -> song[N]
+}
+
+relationship Enthaelt {
+   playlist[N] -> song[N]
+   position
+}
+
+relationship Erstellt {
+   Nutzer[1] -> playlist[N]
+}
+
+relationship Hoerverlauf {
+   Nutzer[N] -> song[N]
+   hoerdatum
+}
