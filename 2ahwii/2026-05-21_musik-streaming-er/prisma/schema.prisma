@@ -17,7 +17,7 @@ model Kuenstler {
 }
 
 model Album {
-    id               Int         @id
+    id               Int         @id @default(autoincrement())
     titel            String
     erscheinungsjahr Int
     Kuenstler        Kuenstler[]
@@ -25,7 +25,7 @@ model Album {
 }
 
 model Song {
-    id           Int        @id
+    id           Int        @id @default(autoincrement())
     titel        String
     dauer_sek    Int
     track_nummer Int
@@ -35,16 +35,17 @@ model Song {
 }
 
 model Nutzer {
-    id           Int        @id
+    id           Int        @id @default(autoincrement())
     benutzername String
     email        String
     premium      Boolean
     playlists    Playlist[]
     songs        Song[] /// Hörverlauf
+    comment      String? /// Optionales Feld für Kommentare
 }
 
 model Playlist {
-    id               Int      @id
+    id               Int      @id @default(autoincrement())
     name             String
     erstellungsdatum DateTime
     songs            Song[]
