@@ -19,7 +19,7 @@ Key technologies:
 - `2ahwii/`: Class-specific projects, typically Deno + SQLite.
 - `Leetcodes/`: Algorithmic and SQL problems. Each problem has its own folder.
 - `sqlite-datenbanken/`: Common database files (`.db`, `.sqlite`) and seed scripts (`.sql`).
-- `Little_Bobby_Tables/`: SQL security examples.
+- `_Experimente/`: Experimental projects and prototyping.
 
 ---
 

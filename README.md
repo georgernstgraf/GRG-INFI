@@ -31,7 +31,7 @@ Eine detaillierte Aufschlüsselung findet sich im [Semesterplan](2ahwii/SEMESTER
 |-------------|--------|
 | `2ahwii/` | Wöchentliche Unterrichtsordner mit Aufgaben, Lösungen und Hausübungen |
 | `Leetcodes/` | SQL-LeetCode-Lösungen (EASY, z. B. Combine Two Tables, Duplicate Emails) |
-| `Unterlagen/` | Lehrmaterial: Datenbank-Buch, ERD-PDFs, SQL-Injection-Demo (Little Bobby Tables), MS Access |
+| `Unterlagen/` | Lehrmaterial: Datenbank-Buch, ERD-PDFs, SQL-Injection-Demo, MS-Access-Archiv, SQL-Referenz |
 | `sqlite-datenbanken/` | Gemeinsame SQLite-Datenbanken (w3schools, opentrivia) und Makefile zum Neuanlegen |
 | `_Experimente/` | Experimentelle Projekte: Jupyter/Pandas, Mermaid-ERD, Prisma, nmap |
 
@@ -63,9 +63,9 @@ SQL-LeetCode-Probleme mit `init.sql` (Tabellen-Setup) und `sol.sql` (Lösung). E
 
 - **Buch_Datenbanken_2HWII/** – 12-teiliges Datenbank-Skriptum (Grundlagen, Relationale DBMS, Normalisierung, SQL, Java, .NET)
 - **ERD/** – PDFs zu ER-Modellierung (Stefan Brass, Redgate)
-- **Little_Bobby_Tables/** – SQL-Injection-Demo mit Beispielcode
-- **MS_Access/** – Historische Access-Übungen
-- **sweety_find_joe.md** – SQL-Rätsel ("Sweety Find Joe")
+- **sql_injection/** – SQL-Injection-Demo (Little Bobby Tables) mit Beispielcode
+- **ms_access_archiv/** – Historische Access-Übungen (Archiv)
+- **sql_referenz/** – SQL-Referenzmaterial (Spickzettel, CTE-Guide, …)
 
 ### sqlite-datenbanken/
 
