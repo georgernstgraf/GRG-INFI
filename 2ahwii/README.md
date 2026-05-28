@@ -3,7 +3,7 @@
 ## 2026-05-28_prisma
 
 - Folie bis excl. Migrations besprochen
-- Aufgabe Datenmodel im Ordner!!
+- Aufgabe bis nächstes Mal: Datenmodel -- im heutigen Ordner!!
 
 ```sh
 # neuer Ordner

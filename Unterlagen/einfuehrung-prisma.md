@@ -54,6 +54,8 @@ Das bewährte Setup aus dem Unterricht verwendet `npm:`-Spezifizierer, um Prisma
 }
 ```
 
+> **Hinweis:** Dank des `"prisma"`-Eintrags in `imports` kann Prisma direkt als `deno -A prisma <befehl>` aufgerufen werden — der `npm:`-Prefix entfällt.
+
 **Wichtige Punkte:**
 - `@prisma/client` und `prisma` werden via `npm:`-Prefix importiert
 - Der Alias `"model"` zeigt auf den generierten Prisma Client (`client.ts`)
@@ -85,29 +87,40 @@ prisma/client/
 - `prisma/client/` – wird von `prisma generate` erzeugt
 - `.env` – enthält (optional) die Datenbank-URL
 - `*.db` / `*.sqlite` – binäre Datenbankdateien (nicht diffbar)
+```
 
-### 2.5 CLI-Grundbefehle
+### 2.5 .env (Datenbank-URL)
 
-Prisma wird in Deno via `deno run -A npm:prisma <befehl>` ausgeführt:
+Die Verbindungs-URL zur Datenbank wird in `.env` definiert:
+
+```bash
+DATABASE_URL="file:dev.db"
+```
+
+Diese Umgebungsvariable wird im `datasource`-Block der `schema.prisma` via `env("DATABASE_URL")` referenziert. Die `.env`-Datei ist (wie oben im `.gitignore` festgelegt) von der Versionierung ausgeschlossen – so kann jeder Entwickler seine eigene DB verwenden.
+
+### 2.6 CLI-Grundbefehle
+
+Dank des `"prisma"`-Imports in `deno.json` genügt die kurze Form:
 
 ```bash
 # Client generieren (nach Schema-Änderung)
-deno run -A npm:prisma generate
+deno -A prisma generate
 
 # Neue Migration erstellen
-deno run -A npm:prisma migrate dev --name beschreibung
+deno -A prisma migrate dev --name beschreibung
 
 # Prisma Studio öffnen
-deno run -A npm:prisma studio
+deno -A prisma studio
 
 # Schema formatieren
-deno run -A npm:prisma format
+deno -A prisma format
 
 # Schema validieren
-deno run -A npm:prisma validate
+deno -A prisma validate
 ```
 
-> **Tipp:** `-A` erlaubt alle Permissions. Alternativ kann man gezielt `--allow-read --allow-write --allow-env --allow-net` setzen, aber für Prisma CLI ist `-A` praktischer.
+> **Tipp:** `-A` erlaubt alle Permissions. Bei Prisma CLI ist das praktisch, da Lese-, Schreib- und Umgebungsvariablen-Zugriff benötigt werden.
 
 ---
 
@@ -125,7 +138,7 @@ Eine `schema.prisma`-Datei besteht aus maximal drei Blöcken:
 // 1. Datenquelle
 datasource db {
     provider = "sqlite"
-    url      = "file:music.db"
+    url      = env("DATABASE_URL")
 }
 
 // 2. Generator
@@ -148,8 +161,8 @@ Die `datasource` definiert, mit welcher Datenbank gearbeitet wird:
 
 ```prisma
 datasource db {
-    provider = "sqlite"        // Datenbank-Typ
-    url      = "file:music.db" // Verbindungs-URL
+    provider = "sqlite"               // Datenbank-Typ
+    url      = env("DATABASE_URL")    // Verbindungs-URL (aus .env)
 }
 ```
 
@@ -204,7 +217,7 @@ generator erd {
 
 datasource db {
     provider = "sqlite"
-    url      = "file:w3schools.sqlite"
+    url      = env("DATABASE_URL")
 }
 ```
 
@@ -219,7 +232,7 @@ datasource db {
 
 ```bash
 # installiert prisma-erd-generator via npm:
-deno run -A npm:prisma generate
+deno -A prisma generate
 ```
 
 Dazu muss `prisma-erd-generator` in der `deno.json` importiert werden:
@@ -406,7 +419,7 @@ Schema ändern → Migration erstellen → Migration anwenden → Client generie
 **Befehl:**
 
 ```bash
-deno run -A npm:prisma migrate dev --name beschreibung
+deno -A prisma migrate dev --name beschreibung
 ```
 
 - `migrate dev` – erzeugt eine neue Migration und wendet sie an
@@ -600,10 +613,10 @@ console.log("Seed abgeschlossen.");
 
 ### Prisma CLI
 
-Alle Befehle werden in Deno so ausgeführt:
+Dank des `"prisma"`-Imports in `deno.json` werden Prisma-Befehle so ausgeführt:
 
 ```bash
-deno run -A npm:prisma <befehl>
+deno -A prisma <befehl>
 ```
 
 | Befehl | Beschreibung | Wann verwenden? |
@@ -623,10 +636,10 @@ deno run -A npm:prisma <befehl>
 # 1. Schema ändern (in prisma/schema.prisma)
 
 # 2. Migration erstellen + anwenden
-deno run -A npm:prisma migrate dev --name mein_feature
+deno -A prisma migrate dev --name mein_feature
 
 # 3. Client generieren
-deno run -A npm:prisma generate
+deno -A prisma generate
 
 # 4. Seed (optional)
 deno run -A seed.ts
