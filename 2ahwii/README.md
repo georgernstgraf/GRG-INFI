@@ -1,6 +1,17 @@
 # sj25-26-2ahwii-infi
 
-## PLF 7.Mai
+## 2026-05-28_prisma
+
+- Folie bis excl. Migrations besprochen
+- Aufgabe Datenmodel im Ordner!!
+
+```sh
+# neuer Ordner
+deno init
+deno add npm:prisma@6
+deno add npm:@prisma/client@6
+# vscode prisma plugin
+```
 
 ## 2026-04-23
 
