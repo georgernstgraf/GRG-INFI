@@ -1,5 +1,22 @@
 # sj25-26-2ahwii-infi
 
+## 2026-06-18_prisma-queries
+
+- Seed-Skripte besprechen (nested create vs. connect)
+- Queries: findMany, findUnique, include, select, where, orderBy, take/skip
+- Update + Delete, Löschverhalten bei Relationen
+- Mini-Übung: Abfragen auf eigener DB
+
+HÜ: 5 Prisma-Queries in `queries.ts` (include, where, count/groupBy)
+
+## 2026-06-11_prisma-migrations
+
+- HÜ-Besprechung Datenmodell (LLM-Übersetzungsplattform)
+- Migrations: `prisma migrate dev`, generiertes SQL, zweite Migration
+- Generate + erster Client-Code: create + findMany
+
+HÜ: Seed-Skript (`seed.ts`) mit mind. 5 Datensätzen über mehrere Tabellen
+
 ## 2026-05-28_prisma
 
 - Folie bis excl. Migrations besprochen

@@ -2,6 +2,105 @@
 
 Neueste Einträge zuerst.
 
+## Übersicht Sommersemester 2026
+
+| # | Datum | Thema | Fällig ca. |
+|---|-------|-------|------------|
+| 11 | 18.06. | 5 Prisma-Queries `queries.ts` (include, where, count/groupBy) | 25.06. |
+| 10 | 11.06. | Seed-Skript `seed.ts` (≥5 Datensätze, Relationen) | 18.06. |
+| 9 | 28.05. | Prisma Datenmodell LLM-Übersetzungsplattform (Entitäten, Schema, Indizes, ERD) | 11.06. |
+| — | 07.05. | **Keine HÜ** (PLF) | — |
+| 8 | 30.04. | WHERE/HAVING/COUNT/Self-JOIN Übungen + Mock-PLF selbst korrigieren | 07.05. |
+| 7 | 23.04. | LC 180, LC 586, LC 596 + Mock-PLF | 30.04. |
+| 6 | 16.04. | ER-Diagramm im bigER Plugin (Bibliothek + Mitarbeiter) | 23.04. |
+| 5 | 09.04. | N:M Bibliothek — Bridge Table, Composite PK, Indexes, Queries (50+5 Pkt) | 16.04. |
+| 4 | 19.03. | DDL Constraints — E-Commerce Inventar (PK, FK, NOT NULL, CHECK) | 09.04. |
+| 3 | 26.02. | 2 LeetCode SQL EASY (Self-JOIN Fokus) | 05.03. |
+| 2 | 19.02. | 2 LeetCode SQL (freie Wahl) | 26.02. |
+
+---
+
+## Hausübung vom 18. Juni – Prisma Queries
+
+**Thema:** Prisma Client — Abfragen vertiefen
+
+**Aufgabe:**
+5 sinnvolle Prisma-Queries schreiben (`queries.ts`):
+- Mindestens 2 mit `include` (Relationen laden)
+- Mindestens 1 mit `where`-Filter auf Relationen
+- Mindestens 1 mit `count` oder `groupBy`
+- Ergebnisse per `console.log` ausgeben
+
+---
+
+## Hausübung vom 11. Juni – Prisma Seed
+
+**Thema:** Seed-Skript für die Prisma-Datenbank
+
+**Aufgabe:**
+Seed-Skript schreiben (`seed.ts`):
+- Mindestens 5 sinnvolle Datensätze über mehrere Tabellen
+- Relationen verwenden: nested `create` oder `connect`
+- Ausführbar mit `deno run -A seed.ts`
+
+---
+
+## Hausübung vom 28. Mai – Prisma Datenmodell
+
+**Thema:** Datenmodellierung einer LLM-Übersetzungsplattform mit Prisma
+
+Siehe `2026-05-28_llm-translation-dm/uebung-datenmodell-llm-uebersetzungen.md` für die vollständige Angabe.
+
+**Aufgaben:**
+- (a) Entitäten, Attribute und Beziehungen identifizieren, ER-Diagramm skizzieren
+- (b) `schema.prisma` schreiben (SQLite, Relationen, Constraints, onDelete)
+- (c) `@@index`-Einträge für häufige Suchmuster hinzufügen
+- (d) Zweiten Generator für ERD (Mermaid) ergänzen
+
+---
+
+## Hausübung vom 23. April – LeetCode + Mock-PLF
+
+**Thema:** Vorbereitung auf die PLF am 7. Mai
+
+**Aufgabe:**
+- LeetCode 180 (Consecutive Numbers) lösen
+- LeetCode 586 (Customer Placing the Largest Number of Orders) lösen
+- LeetCode 596 (Classes With at Least 5 Students) lösen
+- Mock-PLF fertigstellen und selbst korrigieren (siehe `2026-04-23_where_having/mock-plf/`)
+
+---
+
+## Hausübung vom 16. April – ER-Diagramm bigER
+
+**Thema:** Bibliotheksverwaltung im bigER Plugin modellieren
+
+**Aufgabe:**
+- Bibliotheks-HÜ vom 9. April fertigstellen
+- ER-Diagramm im bigER Plugin erstellen (`buecher.erd`)
+  - Entities: `mitarbeiter`, `leser`, `buch`, `exemplar`, `ausleihe`
+  - Mitarbeiter der Bibliothek: leiht aus, nimmt zurück
+  - Bonus: Buch → Exemplar (1:N) mit physischem Exemplar, Standort, Status
+
+---
+
+## Hausübung vom 9. April – N:M Bibliothek
+
+**Thema:** N:M-Beziehungen mit Zwischentabellen — Bibliotheksverwaltung
+
+Siehe `2026-04-09_n_m/hausaufgabe-n-zu-m-bibliothek.sql` für die vollständige Angabe (50+5 Punkte).
+
+**Aufgaben:**
+1. Tabelle `leser` (id PK, name, email UNIQUE, mitglied_seit)
+2. Tabelle `buch` (id PK, titel, autor, isbn UNIQUE, erscheinungsjahr)
+3. Tabelle `ausleihe` als Zwischentabelle (Composite PK, FK mit ON DELETE RESTRICT, CHECK)
+4. Indexes erstellen (Leser-Name, Buch-Titel, offene Ausleihen)
+5. Beispieldaten einfügen (3 Leser, 4 Bücher, 5 Ausleihen)
+6. Abfragen schreiben (alle Ausleihen, aktuell ausgeliehen, Häufigkeit, Top-Leser)
+7. Bonus: VIEW `aktuelle_ausleihen`
+
+---
+
 ## Hausübung vom 19. März – DDL & Constraints
 
 **Thema:** Integritätsregeln (Constraints) in SQLite
