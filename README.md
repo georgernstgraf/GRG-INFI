@@ -2,6 +2,34 @@
 
 Unterlagen, Übungen und Lösungen für den Informatik-Unterricht der **Klasse 2AHWII** an der **HTL Spengergasse** (Schuljahr 2025/26).
 
+---
+
+## Beurteilung
+
+Die Note setzt sich aus drei gleich gewerteten Bereichen zusammen:
+
+| Bereich | Gewicht |
+|---|---|
+| PLF (Praxis-Leistungs-Feststellung) | 1/3 |
+| Hausübungen | 1/3 |
+| Mitarbeit | 1/3 |
+
+Mitarbeit umfasst auch Schulübungen und Stundenwiederholungen; deren Qualität und
+Intensität werden von der Lehrperson beurteilt.
+
+## Hausübungen
+
+- **Abgabe:** spätestens am nächsten Unterrichtstag **00:00 Uhr** (in der Regel eine Woche später).
+- **Nachreichung:** jederzeit möglich – die erreichte Punktezahl zählt **75 %**.
+- **Cutoff:** Genau **eine Woche vor dem Notenschluss, 00:00 Uhr**, ist Endtermin.
+  Danach werden die Repos automatisiert ausgewertet.
+
+## Organisatorisches
+
+- **Toilettengang:** wortlos aufstehen, Blickkontakt mit der Lehrperson.
+
+---
+
 ## Fach & Klasse
 
 - **Gegenstand:** Informatik – Datenbanken & SQL
@@ -48,7 +76,6 @@ Jeder Ordner folgt dem Schema `YYYY-MM-DD_thema/` und enthält:
 Begleitend gibt es:
 - [`SEMESTERPLAN.md`](2ahwii/SEMESTERPLAN.md) – vollständiger Semesterverlauf
 - [`Hausübungen.md`](2ahwii/Hausübungen.md) – archivierte Hausübungen
-- [`RULES.md`](2ahwii/RULES.md) – Bewertung & Abgaberegeln
 
 ### Leetcodes/ – SQL-Algorithmen
 
@@ -109,7 +136,3 @@ deno test
 # W3Schools-DB neu anlegen
 cd sqlite-datenbanken && make
 ```
-
-## Bewertung (Semester)
-
-Siehe [`RULES.md`](RULES.md) und [`2ahwii/RULES.md`](2ahwii/RULES.md).
