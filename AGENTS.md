@@ -16,7 +16,8 @@ Key technologies:
 
 ### Directory Structure
 
-- `2ahwii/`: Class-specific projects, typically Deno + SQLite.
+- `ARCHIV/`: Abgeschlossene Schuljahre, z. B. `2025-26-2ahwii/` (Deno + SQLite). Jährlich wird ein neuer Ordner angelegt.
+- `docs/`: Rahmenlehrplan und Einheitenplanung (`docs/lehrplan/`).
 - `Leetcodes/`: Algorithmic and SQL problems. Each problem has its own folder.
 - `sqlite-datenbanken/`: Common database files (`.db`, `.sqlite`) and seed scripts (`.sql`).
 - `_Experimente/`: Experimental projects and prototyping.
@@ -25,7 +26,7 @@ Key technologies:
 
 ## 2. Build, Test, and Lint Commands
 
-### Deno Projects (e.g., in `2ahwii/`)
+### Deno Projects (e.g., in `ARCHIV/2025-26-2ahwii/`)
 
 Always check for a `deno.json` configuration file first.
 

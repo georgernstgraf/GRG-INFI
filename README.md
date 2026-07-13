@@ -1,6 +1,9 @@
 # GRG-INFI
 
-Unterlagen, Übungen und Lösungen für den Informatik-Unterricht der **Klasse 2AHWII** an der **HTL Spengergasse** (Schuljahr 2025/26).
+Unterlagen, Übungen und Lösungen für den Informatik-Unterricht (Wirtschaftsingenieure – Betriebsinformatik) an der **HTL Spengergasse**.
+
+> Schuljahr 2025/26 (Klasse 2AHWII) ist archiviert unter [`ARCHIV/2025-26-2ahwii/`](ARCHIV/2025-26-2ahwii/).
+> Der offizielle Rahmenlehrplan und die Einheitenplanung liegen unter [`docs/lehrplan/`](docs/lehrplan/).
 
 ---
 
@@ -51,19 +54,20 @@ Intensität werden von der Lehrperson beurteilt.
 | Mai 2026 | PLF, ER-zu-SQL-Übersetzung, Musik-Streaming-ER (Prisma) |
 | Juni 2026 (geplant) | Normalisierung (1NF–3NF), CASE/COALESCE, Views & CTEs, Transaktionen, Mini-Projekt |
 
-Eine detaillierte Aufschlüsselung findet sich im [Semesterplan](2ahwii/SEMESTERPLAN.md).
+Eine detaillierte Aufschlüsselung findet sich im [Semesterplan](ARCHIV/2025-26-2ahwii/SEMESTERPLAN.md).
 
 ## Repository-Struktur
 
 | Verzeichnis | Inhalt |
 |-------------|--------|
-| `2ahwii/` | Wöchentliche Unterrichtsordner mit Aufgaben, Lösungen und Hausübungen |
+| `ARCHIV/2025-26-2ahwii/` | Unterricht SJ 2025/26 (wöchentliche Ordner, Aufgaben, Lösungen, Hausübungen) – archiviert |
+| `docs/lehrplan/` | Offizieller Rahmenlehrplan (Betriebsinformatik) + Einheitenplanung pro Jahrgang |
 | `Leetcodes/` | SQL-LeetCode-Lösungen (EASY, z. B. Combine Two Tables, Duplicate Emails) |
 | `Unterlagen/` | Lehrmaterial: Datenbank-Buch, ERD-PDFs, SQL-Injection-Demo, MS-Access-Archiv, SQL-Referenz |
 | `sqlite-datenbanken/` | Gemeinsame SQLite-Datenbanken (w3schools, opentrivia) und Makefile zum Neuanlegen |
 | `_Experimente/` | Experimentelle Projekte: Jupyter/Pandas, Mermaid-ERD, Prisma, nmap |
 
-### 2ahwii/ – Unterrichtsordner
+### ARCHIV/2025-26-2ahwii/ – Unterrichtsordner (Archiv SJ 2025/26)
 
 Jeder Ordner folgt dem Schema `YYYY-MM-DD_thema/` und enthält:
 
@@ -74,8 +78,8 @@ Jeder Ordner folgt dem Schema `YYYY-MM-DD_thema/` und enthält:
 - ggf. Wissensüberprüfungen und Mock-PLF
 
 Begleitend gibt es:
-- [`SEMESTERPLAN.md`](2ahwii/SEMESTERPLAN.md) – vollständiger Semesterverlauf
-- [`Hausübungen.md`](2ahwii/Hausübungen.md) – archivierte Hausübungen
+- [`SEMESTERPLAN.md`](ARCHIV/2025-26-2ahwii/SEMESTERPLAN.md) – vollständiger Semesterverlauf
+- [`Hausübungen.md`](ARCHIV/2025-26-2ahwii/Hausübungen.md) – archivierte Hausübungen
 
 ### Leetcodes/ – SQL-Algorithmen
 
@@ -128,7 +132,7 @@ Spielwiese für Technologie-Experimente:
 sqlite3 sqlite-datenbanken/w3schools.sqlite
 
 # Deno-Skript ausführen
-deno run --allow-read --allow-write 2ahwii/2025-09-25_sqlite_mit_deno/main.ts
+deno run --allow-read --allow-write ARCHIV/2025-26-2ahwii/2025-09-25_sqlite_mit_deno/main.ts
 
 # Tests ausführen (wo vorhanden)
 deno test
