@@ -17,10 +17,29 @@ Key technologies:
 ### Directory Structure
 
 - `ARCHIV/`: Abgeschlossene Schuljahre, z. B. `2025-26-2ahwii/` (Deno + SQLite). Jährlich wird ein neuer Ordner angelegt.
-- `docs/`: Rahmenlehrplan und Einheitenplanung (`docs/lehrplan/`).
+- `3HWII/`: Klassen-Drehscheibe + Semesterpläne des aktuellen Jahrgangs (SJ 2026/27, KM5/KM6) im PMM-Stil (13 UE + 2 PLF), inkl. SWP-Verbund-Doku. Klassenordner groß geschrieben (mögliche Parallelklassen).
+- `kompetenzmodule/`: Didaktische Steckbriefe pro Kompetenzmodul (`README.md` = Matrix, `kmN.md` pro KM).
+- `docs/`: Rahmenlehrplan und Einheitenplanung (`docs/lehrplan/` mit `LEHRPLAN.md` = offizieller ①-Extrakt, `RIS.md` = Rechtsstand/Schichten-Vergleich, `METADATA.md`), Session-Doku (`docs/ai/`).
 - `Leetcodes/`: Algorithmic and SQL problems. Each problem has its own folder.
 - `sqlite-datenbanken/`: Common database files (`.db`, `.sqlite`) and seed scripts (`.sql`).
 - `_Experimente/`: Experimental projects and prototyping.
+
+---
+
+## Knowledge Bootstrap
+
+Before starting any task, read the following files in order:
+
+1. `docs/ai/HANDOFF.md` ← **read first, act on it**
+2. `docs/ai/CONVENTIONS.md`
+3. `docs/ai/DECISIONS.md`
+4. `docs/ai/ARCHITECTURE.md`
+5. `docs/ai/PITFALLS.md`
+6. `docs/ai/STATE.md`
+7. `docs/ai/DOMAIN.md` (if task involves business logic)
+8. `docs/ai/HISTORY.md` (reference only — read last, as needed)
+
+If `HANDOFF.md` contains open tasks, complete them before starting any new work unless the user explicitly says otherwise.
 
 ---
 

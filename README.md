@@ -3,7 +3,8 @@
 Unterlagen, Übungen und Lösungen für den Informatik-Unterricht (Wirtschaftsingenieure – Betriebsinformatik) an der **HTL Spengergasse**.
 
 > Schuljahr 2025/26 (Klasse 2AHWII) ist archiviert unter [`ARCHIV/2025-26-2ahwii/`](ARCHIV/2025-26-2ahwii/).
-> Der offizielle Rahmenlehrplan und die Einheitenplanung liegen unter [`docs/lehrplan/`](docs/lehrplan/).
+> Schuljahr 2026/27 (Klasse 3AHWII): Klassen-Drehscheibe + Semesterpläne unter [`3HWII/`](3HWII/), KM-Steckbriefe unter [`kompetenzmodule/`](kompetenzmodule/).
+> Der offizielle Rahmenlehrplan und die Jahrgangs-Dokumente liegen unter [`docs/lehrplan/`](docs/lehrplan/).
 
 ---
 
@@ -35,11 +36,12 @@ Intensität werden von der Lehrperson beurteilt.
 
 ## Fach & Klasse
 
-- **Gegenstand:** Informatik – Datenbanken & SQL
-- **Klasse:** 2AHWII (2. Jahrgang, Abteilung Wirtschaftsingenieurwese – Informatik)
-- **Lehrperson:** Georg Graf
+- **Gegenstand:** Informatik und Informationssysteme – Datenbanken & SQL
+- **Klasse:** 3AHWII (3. Jahrgang, Abteilung Wirtschaftsingenieurwesen – Betriebsinformatik), SJ 2026/27
+- **Lehrperson:** Georg Graf (2 h/Woche) + Kollege (1 h/Woche) — Details: [`3HWII/README.md`](3HWII/README.md)
+- **Aktuelle Planung:** [`kompetenzmodule/km5.md`](kompetenzmodule/km5.md) · [`kompetenzmodule/km6.md`](kompetenzmodule/km6.md) · [`3HWII/semesterplan-ws.md`](3HWII/semesterplan-ws.md) · [`3HWII/semesterplan-ss.md`](3HWII/semesterplan-ss.md)
 
-## Themen (bisher)
+## Themen SJ 2025/26 (2AHWII, Archiv)
 
 | Zeitraum | Themen |
 |----------|--------|
@@ -60,9 +62,12 @@ Eine detaillierte Aufschlüsselung findet sich im [Semesterplan](ARCHIV/2025-26-
 
 | Verzeichnis | Inhalt |
 |-------------|--------|
+| `3HWII/` | **SJ 2026/27:** Klassen-Drehscheibe 3AHWII inkl. SWP-Verbund-Doku + Semesterpläne (KM5/KM6, 13 UE + 2 PLF) |
+| `kompetenzmodule/` | Didaktische KM-Steckbriefe (km5/km6 voll; km3/km4 rückgepflegt; km7–km9 Gerüste) |
 | `ARCHIV/2025-26-2ahwii/` | Unterricht SJ 2025/26 (wöchentliche Ordner, Aufgaben, Lösungen, Hausübungen) – archiviert |
-| `docs/lehrplan/` | Offizieller Rahmenlehrplan (Betriebsinformatik) + Einheitenplanung pro Jahrgang |
-| `Leetcodes/` | SQL-LeetCode-Lösungen (EASY, z. B. Combine Two Tables, Duplicate Emails) |
+| `docs/lehrplan/` | Offizieller Rahmenlehrplan (Betriebsinformatik): LEHRPLAN (①-Extrakt), RIS-Recherche, METADATA, Jahrgangs-Dokumente |
+| `docs/ai/` | Session-Dokumentation (HANDOFF, STATE) |
+| `Leetcodes/` | SQL-LeetCode-Lösungen (EASY, z. B. Combine Two Tables, Duplicate Emails) |
 | `Unterlagen/` | Lehrmaterial: Datenbank-Buch, ERD-PDFs, SQL-Injection-Demo, MS-Access-Archiv, SQL-Referenz |
 | `sqlite-datenbanken/` | Gemeinsame SQLite-Datenbanken (w3schools, opentrivia) und Makefile zum Neuanlegen |
 | `_Experimente/` | Experimentelle Projekte: Jupyter/Pandas, Mermaid-ERD, Prisma, nmap |
