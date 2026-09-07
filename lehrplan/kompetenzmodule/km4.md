@@ -3,7 +3,7 @@
 **Klasse/Semester:** 2HWII → 2AHWII, 4. Semester (SS, rückgepflegt SJ 2025/26)
 **Wochenstunden:** 2 (schulautonom; offiziell 3(3) — Georg allein)
 **Bereich:** Datenbanken
-**Konkrete Einheiten:** `docs/lehrplan/jg2-einheiten.md` · Archiv: `ARCHIV/2025-26-2ahwii/`
+**Konkrete Einheiten:** `../2HWII/jg2-einheiten.md` · Archiv: `ARCHIV/2025-26-2ahwii/`
 
 ## Worum geht es?
 

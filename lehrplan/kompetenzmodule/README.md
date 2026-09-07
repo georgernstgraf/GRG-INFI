@@ -5,8 +5,8 @@ Didaktische Steckbriefe zu den Kompetenzmodulen des Faches
 je ein Markdown-File pro KM.
 
 Rechtsgrundlage: BGBl. II Nr. 262/2015 idF BGBl. II Nr. 235/2019, Anlage 1.24
-(Recherche & Schichten-Vergleich: `docs/lehrplan/RIS.md` ·
-Lehrstoff-Extrakt: `docs/lehrplan/LEHRPLAN.md`).
+(Recherche & Schichten-Vergleich: `../RIS.md` ·
+Lehrstoff-Extrakt: `../infi-lehrplan-text.md`).
 
 ## Semester ↔ Klasse ↔ KM
 
@@ -22,9 +22,9 @@ Lehrstoff-Extrakt: `docs/lehrplan/LEHRPLAN.md`).
 | 9–10 | 5. Klasse | KM9 | **Informationssysteme** (DWH, Datamining, KI, Prozessmodellierung) + **Datenbanken** (Web-/GUI-Applikationen) + **ERP** (Vertrieb, Kostenrechnung) | voraussichtlich ja (ab SJ 2028/29) |
 
 ¹ **2+1-Split ab Jg III:** Von den 3 Wochenstunden (schulautonom; offiziell 2(2), siehe
-`docs/lehrplan/RIS.md` §4) unterrichtet **Georg 2 h** (1 DS/Woche: SQL/Datenbank-Kern) und ein
+`../RIS.md` §4) unterrichtet **Georg 2 h** (1 DS/Woche: SQL/Datenbank-Kern) und ein
 **Kollege 1 h** (Nicht-SQL-Anteile — Extraktionsvorschlag in `km5.md`/`km6.md` bzw.
-`3HWII/README.md`; finale Absprache **TBD**).
+`../3HWII/README.md`; finale Absprache **TBD**).
 
 ## Zeitmodell (ab Jg III, Georgs Anteil)
 
@@ -51,9 +51,9 @@ betreffende Semester konkret plant.
 
 ## Verknüpfte Dokumente
 
-- `docs/lehrplan/LEHRPLAN.md` — offizieller Lehrstoff (①-Extrakt, verifiziert 2026-07-26)
-- `docs/lehrplan/RIS.md` — Rechtsstand, Stundentafel, Schichten-Vergleich
-- `docs/lehrplan/METADATA.md` — Stundentafel, Planungskonvention
-- `3HWII/README.md`, `3HWII/semesterplan-ws.md`, `3HWII/semesterplan-ss.md` — konkrete
+- `../infi-lehrplan-text.md` — offizieller Lehrstoff (①-Extrakt, verifiziert 2026-07-26)
+- `../RIS.md` — Rechtsstand, Stundentafel, Schichten-Vergleich
+- `../METADATA.md` — Stundentafel, Planungskonvention
+- `../3HWII/README.md`, `../3HWII/semesterplan-ws.md`, `../3HWII/semesterplan-ss.md` — konkrete
   Semesterpläne (KM5/KM6) inkl. SWP-Verbund
-- `docs/lehrplan/jg2-einheiten.md` — rückgepflegter Unterricht KM3/KM4 (SJ 2025/26)
+- `../2HWII/jg2-einheiten.md` — rückgepflegter Unterricht KM3/KM4 (SJ 2025/26)

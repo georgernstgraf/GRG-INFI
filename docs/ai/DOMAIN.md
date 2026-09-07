@@ -23,7 +23,7 @@ Business rules and domain relationships not obvious from code.
   implementiert mit Prisma (TPH + Mapper).
 - **Abstimmung:** Georg unterrichtet beide Fach-Seiten (SWP 2 h + INFI 2 h) → interne Sync;
   PM-Rahmung = SWP-Kollege (PRE); INFI-Kollege (1 h) = Nicht-SQL-Anteile (Vorschlag, TBD).
-- **Domänenwahl** (Schüler co-decided, SS ~UE 9): 5 Kandidaten in `3HWII/README.md`.
+- **Domänenwahl** (Schüler co-decided, SS ~UE 9): 5 Kandidaten in `lehrplan/3HWII/README.md`.
 
 ## Laufende Beispiele / Vorwissen
 

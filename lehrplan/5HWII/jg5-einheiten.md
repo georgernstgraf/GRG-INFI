@@ -1,6 +1,6 @@
 # 5. Klasse – Einheitenplan (KM9) — Stub
 
-> **Status:** Stub / Gerüst. Wird in einer späteren Session aus [`LEHRPLAN.md`](LEHRPLAN.md) befüllt.
+> **Status:** Stub / Gerüst. Wird in einer späteren Session aus [`infi-lehrplan-text.md`](../infi-lehrplan-text.md) befüllt.
 > **Domäne:** Jg V (KM9, 9.+10. Semester) behandelt **Informationssysteme** (Datawarehouse, Datamining, KI, Geschäftsprozessmodellierung) *und* übergreifend **ERP** (Vertrieb, Kostenrechnung/Controlling) sowie elektronischen Zahlungsverkehr.
 > **Wochenstunden:** 4 (höchste Stundung im Fach, schulautonom) → ~4×15 Wo = viele Einheiten, aber netto wegen Matura/Diplomarbeit ~**12 Einheiten/Semester** ansetzen.
 
@@ -8,14 +8,14 @@
 
 ## 9. Semester – KM9 (Teil 1)
 
-**Bildungs- und Lehraufgabe (Soll, aus `LEHRPLAN.md`):**
+**Bildungs- und Lehraufgabe (Soll, aus `infi-lehrplan-text.md`):**
 - Informationssysteme zur Entscheidungsunterstützung beschreiben und über ihre Einsatzbereiche Bescheid wissen;
 - Betriebsdaten erfassen und auswerten;
 - Datenmodelle und Workflows für firmeninterne Abläufe, für Kunden- und Lieferantenbeziehungen erstellen;
 - elektronische Zahlungssysteme anwenden und über rechtliche und sicherheitstechnische Aspekte Bescheid wissen;
 - (Bereich ERP) Stammdaten anlegen und Beschaffungs-/Produktions-/Vertriebsprozesse abbilden.
 
-**Lehrstoff (Soll, aus `LEHRPLAN.md`):**
+**Lehrstoff (Soll, aus `infi-lehrplan-text.md`):**
 Informationssysteme zur Entscheidungsunterstützung (Datawarehouse, Datamining, KI-Systeme, Einsatzbereiche); Betriebsdatenerfassung (Geräte, Funktion, Anwendungsgebiete); Datenmodelle und Workflows für firmeninterne und externe Abläufe; elektronischer Zahlungsverkehr (Zahlungsmethoden, Anforderungen, Produkte); ERP Vertrieb (Vertriebsprozess, Kundenstammdaten, Preise/Konditionen, Kundenanfrage, Angebotsbearbeitung, Kundenauftrag, Kommissionierung/Auslieferung, Faktura, Zahlungseingang).
 
 ### Einheiten (zu befüllen)
@@ -39,11 +39,11 @@ Informationssysteme zur Entscheidungsunterstützung (Datawarehouse, Datamining, 
 
 ## 10. Semester – KM9 (Teil 2)
 
-**Bildungs- und Lehraufgabe (Soll, aus `LEHRPLAN.md`):**
+**Bildungs- und Lehraufgabe (Soll, aus `infi-lehrplan-text.md`):**
 - aus einer Prozessbeschreibung Geschäftsprozessmodelle erstellen und simulieren;
 - (Bereich ERP) auf Basis einer Auftragssimulation Maßnahmen zur Reduzierung der Durchlaufzeit bzw. der Produktkosten treffen.
 
-**Lehrstoff (Soll, aus `LEHRPLAN.md`):**
+**Lehrstoff (Soll, aus `infi-lehrplan-text.md`):**
 Informationssysteme – Modellierungswerkzeuge zur Beschreibung und Modellbildung von Geschäftsprozessen (Aufbau, Simulation und Analyse eines Modells); ERP – Kostenrechnung und Controlling (Kostenarten, Kostenstellen, innerbetriebliche Leistungsverrechnung, Personal-/Maschinenstundensätze, Produktkostenkalkulation, Auswertungen und Analysen).
 
 ### Einheiten (zu befüllen)
@@ -67,7 +67,7 @@ Informationssysteme – Modellierungswerkzeuge zur Beschreibung und Modellbildun
 
 ## Notiz für die befüllende Session
 
-Anleitung zum Ausfüllen: siehe [`LEHRPLAN.md`](LEHRPLAN.md) Abschnitt „Anleitung: So wird ein Jahrgangs-Plan generiert".
+Anleitung zum Ausfüllen: siehe [`infi-lehrplan-text.md`](../infi-lehrplan-text.md) Abschnitt „Anleitung: So wird ein Jahrgangs-Plan generiert".
 Vorab zu klären:
 1. **Wie viel ERP vs. Informationssysteme** im 9. Semester (Überschneidung mit Jg IV ERP-Kompetenzen)?
 2. **Matura-/Diplomarbeitsverschränkung** im 10. Semester: Anteil belegtes Fach vs. Projektbetreuung.

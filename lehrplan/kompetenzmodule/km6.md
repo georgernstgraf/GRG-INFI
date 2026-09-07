@@ -5,7 +5,7 @@
 **Zeitmodell:** 13 echte UE + 2 PLF-DS
 **Bereich:** Datenbanken (**Georg**: DB-Programme/Schnittstellen · **Kollege**: Nicht-SQL-Anteile,
 Vorschlag unten)
-**Konkreter Semesterplan:** `3HWII/semesterplan-ss.md` · **Verbund mit SWP:** `3HWII/README.md`
+**Konkreter Semesterplan:** `../3HWII/semesterplan-ss.md` · **Verbund mit SWP:** `../3HWII/README.md`
 
 ## Worum geht es?
 
@@ -21,7 +21,7 @@ Frage: *„Wie wird aus einem Schema ein benutzbares Programm?"*
 3. **Das Verbundprojekt mit SWP:** INFI liefert die Prisma-Implementierung des von SWP
    definierten Repository-Interfaces — *eine App, zwei Noten*. Hier wird der
    O/R-Impedance-Mismatch (Prisma kennt keine Vererbung → TPH + Mapper) greifbar;
-   Details und Code: `3HWII/README.md`.
+   Details und Code: `../3HWII/README.md`.
 
 Das Semester mündet in das gemeinsame Abschlussprojekt (letzte ~3 UE + Präsentation);
 der individuelle Verbund-Beitrag dient als **PLF-Äquivalent** (PLF 2).
@@ -60,7 +60,7 @@ der individuelle Verbund-Beitrag dient als **PLF-Äquivalent** (PLF 2).
 - Warum parametrisierte Queries Injection strukturell verhindern (Daten ≠ Code)
 - Warum eine REST-Ressource nicht 1:1 eine Tabelle sein muss (Schnittstelle ≠ Schema)
 - Warum Prisma keine Vererbung kennt und das Repository die Polymorphie „hineinpfriemelt"
-  (TPH — Verletzung der 3NF aus KM5, bewusst und begründbar: `3HWII/README.md`)
+  (TPH — Verletzung der 3NF aus KM5, bewusst und begründbar: `../3HWII/README.md`)
 - Warum „brauchbar" am Use Case gemessen wird, nicht an der Normalform
 
 ### Können (mit Deno/Prisma umsetzen)
@@ -75,7 +75,7 @@ der individuelle Verbund-Beitrag dient als **PLF-Äquivalent** (PLF 2).
 ## Kollegen-Soll (Vorschlag — Absprache TBD)
 
 Lehrstoffpunkte von KM6 **ohne SQL/DB-Kern**, Kandidaten für die Kollegen-Stunde
-(Extraktionsvorschlag, siehe `3HWII/README.md` → Offene Punkte):
+(Extraktionsvorschlag, siehe `../3HWII/README.md` → Offene Punkte):
 
 - **Anwendungsfälle/Applikationsentwurf (Methodik):** Use Cases identifizieren,
   Eingabemasken und Ausgabeformate festlegen (konzeptionell, nicht Schema)
@@ -92,7 +92,7 @@ Lehrstoffpunkte von KM6 **ohne SQL/DB-Kern**, Kandidaten für die Kollegen-Stund
 | Raw SQL | `node:sqlite` (`db.prepare`) — Kontrast und Sicherheitslehre |
 | REST | `Deno.serve` (framework-frei; Hono bereits aus Jg II bekannt, optional) |
 | Sicherheit | `Unterlagen/sql_injection/` (Bobby-Tables-Demo) |
-| Verbund | `3HWII/README.md` — Repository-Brücke, TPH/O-R-Mapping, Domänenwahl |
+| Verbund | `../3HWII/README.md` — Repository-Brücke, TPH/O-R-Mapping, Domänenwahl |
 | Schwester-Repo | [`GRG-SWP/3HWII/`](https://github.com/georgernstgraf/GRG-SWP/blob/main/3HWII/README.md) — SWP-Seite des Verbunds |
 
 **Mitgenommen aus KM5:** CTEs/Views, Transaktionen/ACID, EXPLAIN/Indizes, Normalformen.

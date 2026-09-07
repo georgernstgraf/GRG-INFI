@@ -8,13 +8,13 @@
 
 | Punkt | Wert |
 |---|---|
-| **Wochenstunden INFI (Jg III)** | 3 (schulautonom; offiziell 2(2) — `docs/lehrplan/RIS.md` §4) = **2 h Georg** (SQL/DB-Kern) + **1 h Kollege** (Nicht-SQL-Anteile, Vorschlag unten) |
+| **Wochenstunden INFI (Jg III)** | 3 (schulautonom; offiziell 2(2) — `../RIS.md` §4) = **2 h Georg** (SQL/DB-Kern) + **1 h Kollege** (Nicht-SQL-Anteile, Vorschlag unten) |
 | **Zeitmodell (Georg)** | 1 DS/Woche → **13 echte UE + 2 PLF-DS** pro Semester |
 | **Beurteilung** | PLF / Hausübungen / Mitarbeit je 1/3 (Details: Root-`README.md`) |
 | **Stack** | SQLite (`sqlite3`, `node:sqlite`) · Deno/TypeScript · Prisma · `Deno.serve` (REST) · PostgreSQL via Docker (DCL-Demo) |
 | **KM-Steckbriefe** | [`kompetenzmodule/km5.md`](../kompetenzmodule/km5.md) · [`kompetenzmodule/km6.md`](../kompetenzmodule/km6.md) |
 | **Semesterpläne** | [`semesterplan-ws.md`](semesterplan-ws.md) (KM5) · [`semesterplan-ss.md`](semesterplan-ss.md) (KM6) |
-| **Vorwissen** | [`docs/lehrplan/jg2-einheiten.md`](../docs/lehrplan/jg2-einheiten.md) — CRUD, JOIN/Self-JOIN, GROUP BY/HAVING, DDL/Constraints, N:M/Zwischentabelle, ER (bigER), Prisma-Grundlagen. **Lücke:** Normalformen nur gestreift → UE 2 (WS). |
+| **Vorwissen** | [`2HWII/jg2-einheiten.md`](../2HWII/jg2-einheiten.md) — CRUD, JOIN/Self-JOIN, GROUP BY/HAVING, DDL/Constraints, N:M/Zwischentabelle, ER (bigER), Prisma-Grundlagen. **Lücke:** Normalformen nur gestreift → UE 2 (WS). |
 
 ---
 
@@ -127,7 +127,7 @@ Die Schüler wählen mit (Abstimmung zu Verbundprojekt-Start im SS); die gewähl
 ## Kollegen-Soll (1 h/Woche) — Extraktionsvorschlag, Absprache TBD
 
 Auftrag: Der INFI-Kollege übernimmt, was **nicht SQL/Datenbank-Kern** ist. Extraktion aus dem
-Lehrstoff KM5/KM6 (①, `docs/lehrplan/LEHRPLAN.md`):
+Lehrstoff KM5/KM6 (①, `../infi-lehrplan-text.md`):
 
 | Lehrstoffpunkt | KM | Inhalt (Vorschlag Kollege) |
 |---|---|---|

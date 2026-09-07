@@ -4,7 +4,7 @@
 **Wochenstunden (schulautonom):** 3 — davon **Georg 2 h** (1 DS/Woche) + **Kollege 1 h**
 **Zeitmodell:** 13 echte UE + 2 PLF-DS
 **Bereich:** Datenbanken (**Georg**: SQL-Kern · **Kollege**: Nicht-SQL-Anteile, Vorschlag unten)
-**Konkreter Semesterplan:** `3HWII/semesterplan-ws.md` · **Verbund mit SWP:** `3HWII/README.md`
+**Konkreter Semesterplan:** `../3HWII/semesterplan-ws.md` · **Verbund mit SWP:** `../3HWII/README.md`
 
 ## Worum geht es?
 
@@ -31,7 +31,7 @@ die Einbettung in eine Applikation kommt in KM6.
   Unterabfragen/CTEs liest wie Prosa, kommt ohne Export-nach-Excel aus.
 - **Normalformen sind das Qualitätsmerkmal eines Schemas:** Anomalien erkennen und begründen,
   wann (De-)Normalisierung richtig ist — Kernkompetenz für jedes DB-Design (und direkt
-  relevant für den SWP-Verbund: TPH verletzt bewusst 3NF — siehe `3HWII/README.md`).
+  relevant für den SWP-Verbund: TPH verletzt bewusst 3NF — siehe `../3HWII/README.md`).
 - **Optimierung schlägt Intuition:** Index oder nicht? `EXPLAIN QUERY PLAN` entscheidet —
   dieselbe Messhaltung wie `Deno.bench` in SWP.
 - **Transaktionen sind überall:** Geldüberweisung, Bestellung, Storno — Atomarität ist kein
@@ -77,7 +77,7 @@ die Einbettung in eine Applikation kommt in KM6.
 ## Kollegen-Soll (Vorschlag — Absprache TBD)
 
 Lehrstoffpunkte von KM5 **ohne SQL/DB-Kern**, Kandidaten für die Kollegen-Stunde
-(Extraktionsvorschlag, siehe `3HWII/README.md` → Offene Punkte):
+(Extraktionsvorschlag, siehe `../3HWII/README.md` → Offene Punkte):
 
 - **Datenimport/-export, Archivierung** (Betriebs-/Administrationssicht, CSV/JSON-Formate)
 - **Benutzerverwaltung/DCL** (Konzeptlehre, PostgreSQL-Demo — falls nicht bei Georg)
@@ -90,12 +90,12 @@ Lehrstoffpunkte von KM5 **ohne SQL/DB-Kern**, Kandidaten für die Kollegen-Stund
 | Demo (DCL) | **PostgreSQL via Docker** (1 UE, Kontrast zu SQLite) |
 | Skripting | **Deno** mit `node:sqlite` für Import/Transaktions-Skripte |
 | Übungsdatenbanken | `sqlite-datenbanken/w3schools.sqlite`, **Musik-Streaming-DB** (Dauerbeispiel aus Jg II, E11) |
-| Verbund | ab ~Dez: gemeinsame Beispieldomäne mit SWP andeuten (`3HWII/README.md`) |
+| Verbund | ab ~Dez: gemeinsame Beispieldomäne mit SWP andeuten (`../3HWII/README.md`) |
 | Referenz | `Unterlagen/sql_referenz/` (CTE-Guide, Spickzettel), `Unterlagen/Buch_Datenbanken_2HWII/` |
 
 **Mitgenommen aus KM3/KM4 (Vorwissen):** CRUD, JOIN/Self-JOIN, GROUP BY/HAVING,
 DDL/Constraints (PK/FK/CHECK), N:M/Zwischentabelle, ER (bigER), Prisma-Grundlagen —
-Details: `docs/lehrplan/jg2-einheiten.md`.
+Details: `../2HWII/jg2-einheiten.md`.
 
 **Mitnahme nach KM6:** CTEs/Views für Reports, Transaktionen für `$transaction` in Prisma,
 EXPLAIN für das Index-Audit, Normalformen für die TPH-vs.-TPT-Diskussion im Verbund.

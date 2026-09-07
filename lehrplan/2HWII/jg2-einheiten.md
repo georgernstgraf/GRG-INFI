@@ -2,7 +2,7 @@
 
 > **Status:** Rückgepflegt aus dem tatsächlich gehaltenen Unterricht im Schuljahr 2025/26 (Klasse 2AHWII).
 > **Quelle:** [`../../ARCHIV/2025-26-2ahwii/`](../../ARCHIV/2025-26-2ahwii/) – Unterrichtsordner `YYYY-MM-DD_thema/` + [`SEMESTERPLAN.md`](../../ARCHIV/2025-26-2ahwii/SEMESTERPLAN.md) + [`Hausübungen.md`](../../ARCHIV/2025-26-2ahwii/Hausübungen.md) + [`README.md`](../../ARCHIV/2025-26-2ahwii/README.md).
-> **Offizieller Lehrstoff:** siehe [`LEHRPLAN.md`](LEHRPLAN.md) – II. Jahrgang, Bereich Datenbanken (KM3 + KM4).
+> **Offizieller Lehrstoff:** siehe [`infi-lehrplan-text.md`](../infi-lehrplan-text.md) – II. Jahrgang, Bereich Datenbanken (KM3 + KM4).
 
 ## Vorbemerkung
 

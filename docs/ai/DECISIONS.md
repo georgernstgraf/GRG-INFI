@@ -59,3 +59,19 @@ Superseded decisions are relocated to HISTORY.md.
 - **Reason**: PMM-Stil-Ablage (s. o.); doppelte Pflege vermeiden.
 - **Tradeoff**: Externe Links auf die alte Datei (z. B. aus GRG-SWP-Doku) zeigen auf 3HWII/ um —
   in den neuen Dateien als Verweis gepflegt.
+
+## 2026-09-07: Vollmigration auf Skill-Standard-Layout (`lehrplan/` im Root)
+
+- **Choice**: Das gesamte Lehrplan-Werk liegt im Standard-Layout des `lehrplan`-Skills:
+  `lehrplan/infi-lehrplan-text.md` (aus `docs/lehrplan/LEHRPLAN.md`), `lehrplan/METADATA.md`,
+  `lehrplan/RIS.md`, `lehrplan/HWII_INFI.pdf`; Klassenordner `2HWII/`–`5HWII/` (je mit neuem
+  `<KLASSE>.lehrplan.md`-Extrakt aus ①, erzeugt 2026-09-07) und `kompetenzmodule/` — alles
+  unter `lehrplan/`. (Die Einheiten-Dokumente heißen unverändert `jgN-einheiten.md`.)
+- **Reason**: Der `lehrplan`-Skill wurde verbindlich verschärft („migrieren, nicht dulden“):
+  Standard-Layout = Zielzustand; Abweichungen (`docs/lehrplan/`, Root-Klassenordner) sind
+  Legacy. Die dreischichtige Datei bleibt erlaubtes Dateiformat, Ablageort ist `lehrplan/`.
+- **Considered**: Alte Struktur belassen (Abweichung war dokumentiert) — verworfen, weil
+  der Skill sie als Befund mit Migrationspflicht behandelt.
+- **Tradeoff**: Cross-Repo-Links aus GRG-SWP auf `GRG-INFI/3HWII/…` brechen — dort
+  angepasst (SR 2026-09-07). Novellen-Check am 2026-09-07 live bestätigt (262/2015
+  „zuletzt geändert durch“ 235/2019); Skill-Mapping-Tabelle um Zeile INFI→HWII ergänzt.

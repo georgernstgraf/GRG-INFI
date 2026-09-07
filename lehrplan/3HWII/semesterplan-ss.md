@@ -1,19 +1,19 @@
 # Semesterplan 3HWII INFI — Sommersemester 2027
 
 Informatik und Informationssysteme (INFI) — KM6
-(BGBl. II Nr. 262/2015 idF 235/2019, Anlage 1.24; Schichten: `docs/lehrplan/LEHRPLAN.md` +
-`docs/lehrplan/RIS.md`)
+(BGBl. II Nr. 262/2015 idF 235/2019, Anlage 1.24; Schichten: `../infi-lehrplan-text.md` +
+`../RIS.md`)
 
 **Zeitmodell:** 13 echte UE (1 DS/Woche à 2 h = Georgs Anteil am 2+1-Split) + 2 PLF-DS.
 Offiziell 18 Schulwochen — Ausfälle einkalkuliert; bei Glücksfall Bonus-UE (siehe unten).
 **Werkzeug:** Deno / TypeScript · **Prisma** (SQLite) · `node:sqlite` (Raw SQL) ·
 `Deno.serve` (REST, framework-frei)
-**KM-Steckbrief:** `kompetenzmodule/km6.md` · **Verbund mit SWP:** `3HWII/README.md`
+**KM-Steckbrief:** `../kompetenzmodule/km6.md` · **Verbund mit SWP:** `README.md`
 
 > **Vorwissen aus KM5 (WS):** Unterabfragen, CTEs, Views, Normalformen, Transaktionen,
 > DDL/Indizes, EXPLAIN. Prisma-Grundlagen aus Jg II (Schema, `migrate`, einfache Queries).
 > **Parallel beim Kollegen (Vorschlag, TBD):** Use-Case-/Masken-Methodik, Benutzerführung
-> (CLI/TUI), Reportgenerierung — siehe unten und `3HWII/README.md` → Kollegen-Soll.
+> (CLI/TUI), Reportgenerierung — siehe unten und `README.md` → Kollegen-Soll.
 
 ---
 
@@ -49,7 +49,7 @@ Offiziell 18 Schulwochen — Ausfälle einkalkuliert; bei Glücksfall Bonus-UE (
 > Lehrplan-Soll ①: „Anwendungsfälle … identifizieren", „Entwicklung von DB-Programmen",
 > „Benutzerführung", „Reportgenerierung", „genormte DB-Schnittstellen" — Gesamtschau im Team.
 > PM-Rahmung (Teams, Rollen, Issues): **SWP-Kollege (PRE)**; INFI↔SWP-Abstimmung: Georg.
-> Details und Rubriken: `3HWII/README.md`.
+> Details und Rubriken: `README.md`.
 
 | UE | Thema | KM-Bezug ① | Inhalt / HÜ |
 |----|-------|------------|--------------|
@@ -78,7 +78,7 @@ Offiziell 18 Schulwochen — Ausfälle einkalkuliert; bei Glücksfall Bonus-UE (
 - **Use-Case-/Masken-Methodik** (UE 1, konzeptioneller Teil)
 - **Benutzerführung/CLI-TUI** (KM6 „Benutzerführung" — zeitlich ~UE 8–10 passend)
 - **Reportgenerierung** (UE 8)
-- Absprache und Verteilung (wöchentlich/geblockt): `3HWII/README.md` → Offene Punkte.
+- Absprache und Verteilung (wöchentlich/geblockt): `README.md` → Offene Punkte.
 
 ---
 
@@ -87,4 +87,4 @@ Offiziell 18 Schulwochen — Ausfälle einkalkuliert; bei Glücksfall Bonus-UE (
 **SWP-Synchronisation:** SWP definiert das Repository-Interface (SWP UE 5); Domänenwahl
 gemeinsam (SWP UE 9 ≙ INFI UE 9); INFI liefert die Prisma-Implementierung (UE 10), SWP
 integriert (SWP UE 10–11); UE 11–13 gemeinsames Projekt. Details:
-`3HWII/README.md` → Sequenz-Abstimmung.
+`README.md` → Sequenz-Abstimmung.

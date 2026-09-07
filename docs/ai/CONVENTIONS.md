@@ -4,14 +4,20 @@ Coding patterns, naming rules, and style agreements for this project.
 Follow these without question. Do not deviate unless explicitly told.
 
 > Repo-Grundregeln (Deno/TS/SQL, Formatierung, Kommentarsprache): Root-`AGENTS.md`.
-> Hier nur die Doku-Konventionen der Lehrplan-Landschaft (seit 2026-07-26, PMM-Stil).
+> Hier nur die Doku-Konventionen der Lehrplan-Landschaft (PMM-Stil; seit 2026-09-07
+> im Skill-Standard-Layout unter `lehrplan/`).
 
-## Doku-Struktur (PMM-Stil)
+## Doku-Struktur (PMM-Stil, Standard-Layout)
 
-- KM-Steckbriefe in `kompetenzmodule/kmN.md`; Matrix + Zeitmodell in `kompetenzmodule/README.md`.
-- Klassenordner im Root **groß** schreiben (z. B. `3HWII/`, mögliche Parallelklassen 3a/3b).
-- Pro Klassenordner: `README.md` (Drehscheibe: Rahmen, Verbund, Offene Punkte) +
-  `semesterplan-ws.md` + `semesterplan-ss.md`.
+- Alles Lehrplan-Bezogene unter `lehrplan/` (Skill-Standard-Layout, Migration 2026-09-07):
+  - `infi-lehrplan-text.md` = offizieller ①-Extrakt aller Jahrgänge (die QUELLE);
+  - Klassenordner `<KLASSE>/` (UPPERCASE, z. B. `2HWII/`–`5HWII/`) je mit
+    `<KLASSE>.lehrplan.md` (klassenrelevanter ①-Extrakt: Bildungs- und Lehraufgabe +
+    Lehrstoff der KM des Jahrgangs) und Einheiten-Doku (`jgN-einheiten.md`);
+  - aktuelle Klassenordner zusätzlich mit `README.md` (Drehscheibe) +
+    `semesterplan-{ws,ss}.md`.
+- KM-Steckbriefe in `lehrplan/kompetenzmodule/kmN.md`; Matrix + Zeitmodell in `lehrplan/kompetenzmodule/README.md`.
+- Klassenordner **groß** schreiben (z. B. `lehrplan/3HWII/`, mögliche Parallelklassen 3a/3b).
 - Schichten-Notation: **①** offizieller RIS-Text · **②** Schuladaption · **③** Unterricht/Repo-Didaktik.
 
 ## Semesterplan-Format
@@ -37,7 +43,7 @@ Follow these without question. Do not deviate unless explicitly told.
 - Repo-interne Links **relativ**; Cross-Repo-Links (GRG-SWP) als **GitHub-URL**
   (`https://github.com/georgernstgraf/GRG-SWP/blob/main/…`).
 - Lehrstoff-Zitate ① wörtlich (aus NOR40217058), Schuladaption ② als `HWII_INFI.pdf`
-  in `docs/lehrplan/` beilegen.
+  in `lehrplan/` beilegen.
 
 ## Sprache
 

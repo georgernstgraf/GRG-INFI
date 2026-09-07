@@ -3,7 +3,7 @@
 **Klasse/Semester:** 4HWII, 7. Semester (WS, voraussichtlich ab 2027/28)
 **Wochenstunden:** 2 (schulautonom; offiziell 2(2))
 **Bereich:** **Enterprise Resource Planning (ERP)** — Domänenwechsel!
-**Einheiten-Gerüst:** `docs/lehrplan/jg4-einheiten.md`
+**Einheiten-Gerüst:** `../4HWII/jg4-einheiten.md`
 
 ## Worum geht es? (Skizze)
 

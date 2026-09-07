@@ -17,9 +17,8 @@ Key technologies:
 ### Directory Structure
 
 - `ARCHIV/`: Abgeschlossene Schuljahre, z. B. `2025-26-2ahwii/` (Deno + SQLite). Jährlich wird ein neuer Ordner angelegt.
-- `3HWII/`: Klassen-Drehscheibe + Semesterpläne des aktuellen Jahrgangs (SJ 2026/27, KM5/KM6) im PMM-Stil (13 UE + 2 PLF), inkl. SWP-Verbund-Doku. Klassenordner groß geschrieben (mögliche Parallelklassen).
-- `kompetenzmodule/`: Didaktische Steckbriefe pro Kompetenzmodul (`README.md` = Matrix, `kmN.md` pro KM).
-- `docs/`: Rahmenlehrplan und Einheitenplanung (`docs/lehrplan/` mit `LEHRPLAN.md` = offizieller ①-Extrakt, `RIS.md` = Rechtsstand/Schichten-Vergleich, `METADATA.md`), Session-Doku (`docs/ai/`).
+- `lehrplan/`: Standard-Lehrplan-Layout (Skill `lehrplan`): `infi-lehrplan-text.md` (offizieller ①-Extrakt), `RIS.md` (Rechtsstand/Schichten-Vergleich), `METADATA.md`, `HWII_INFI.pdf` (② Schuladaption), Klassenordner `2HWII/`–`5HWII/` je mit `<KLASSE>.lehrplan.md` (klassenrelevanter ①-Extrakt) und Einheiten-Doku (`jgN-einheiten.md`), plus `kompetenzmodule/` (Didaktische Steckbriefe, `README.md` = Matrix, `kmN.md` pro KM). Der aktuelle Klassenordner `3HWII/` enthält zusätzlich Klassen-Drehscheibe (`README.md`) + Semesterpläne (PMM-Stil, 13 UE + 2 PLF, SJ 2026/27, KM5/KM6, SWP-Verbund-Doku). Klassenordner groß geschrieben (mögliche Parallelklassen).
+- `docs/`: Session-Doku (`docs/ai/`).
 - `Leetcodes/`: Algorithmic and SQL problems. Each problem has its own folder.
 - `sqlite-datenbanken/`: Common database files (`.db`, `.sqlite`) and seed scripts (`.sql`).
 - `_Experimente/`: Experimental projects and prototyping.

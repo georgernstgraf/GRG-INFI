@@ -79,12 +79,12 @@ schulautonome Klausel (§5) gedeckt.
 
 **Befund 2026-07-26:** Die Schuladaption ② ([`HWII_INFI.pdf`](HWII_INFI.pdf)) ist **inhaltlich
 deckungsgleich mit ①** (nur Format: K-Labels, andere Gliederung). Abweichungen fanden sich stattdessen
-in der **älteren Redaktion von [`LEHRPLAN.md`](LEHRPLAN.md)** (Schicht ③) — diese wurden mit
-dem heutigen Stand **korrigiert** (LEHRPLAN.md ist wieder getreuer ①-Extrakt). Die Abweichungen
+in der **älteren Redaktion von [`infi-lehrplan-text.md`](infi-lehrplan-text.md)** (Schicht ③) — diese wurden mit
+dem heutigen Stand **korrigiert** (infi-lehrplan-text.md ist wieder getreuer ①-Extrakt). Die Abweichungen
 (Stand vor der Korrektur, mutmaßlich aus der gleichnamigen Fachbeschreibung der Anlage 1.28 /
 Technisches Management übernommen):
 
-| Thema | ① Offiziell (RIS) = ② Schul-PDF | ③ LEHRPLAN.md (alt, korrigiert) |
+| Thema | ① Offiziell (RIS) = ② Schul-PDF | ③ infi-lehrplan-text.md (alt, korrigiert) |
 |-------|----------------------------------|----------------------------------|
 | Normalformen | **KM3** (im Datenbankentwurf) | KM4 → **nach ① zurückverschoben** |
 | Data Definition Language (physischer Entwurf, Abfragegeneratoren, SQL) | **KM3** | fehlte → **ergänzt** |
@@ -98,13 +98,13 @@ Technisches Management übernommen):
 
 > **Didaktische Einordnung:** Die Korrektur ändert die Planung kaum — ① erwartet Normalformen
 > bereits in KM3 (Jg II); die tatsächliche Lücke aus dem Unterricht SJ 2025/26 (nur gestreift)
-> wird weiterhin in KM5 geschlossen (siehe [`kompetenzmodule/km5.md`](../../kompetenzmodule/km5.md)).
+> wird weiterhin in KM5 geschlossen (siehe [`kompetenzmodule/km5.md`](kompetenzmodule/km5.md)).
 > DCL/Benutzerverwaltung wird in KM5 unterrichtet — ① deckt das über den KM5-Lehrstoffpunkt
 > „Benutzerverwaltung" (DCL selbst steht in ① bei KM4).
 
 ## 7. Offizieller INFI-Extrakt (①, getreu aus NOR40217058)
 
-→ Gepflegt in [`LEHRPLAN.md`](LEHRPLAN.md) (seit 2026-07-26 verifiziert gegen ①).
+→ Gepflegt in [`infi-lehrplan-text.md`](infi-lehrplan-text.md) (seit 2026-07-26 verifiziert gegen ①).
 Absolventenprofil (III. Abschnitt der Anlage 1.24), Bereich Datenbanken:
 
 > *„Im Bereich Datenbanken können die Absolventinnen und Absolventen aus einer Problemstellung
@@ -117,8 +117,8 @@ Absolventenprofil (III. Abschnitt der Anlage 1.24), Bereich Datenbanken:
 
 1. [`METADATA.md`](METADATA.md) führt die Rechtsgrundlage als **„BGBl. II Nr. 262/2015 idF
    BGBl. II Nr. 235/2019"** und die korrekte RIS-Stundentafel (§4).
-2. [`LEHRPLAN.md`](LEHRPLAN.md) ist getreuer ①-Extrakt; Schuladaption ② liegt als
+2. [`infi-lehrplan-text.md`](infi-lehrplan-text.md) ist getreuer ①-Extrakt; Schuladaption ② liegt als
    [`HWII_INFI.pdf`](HWII_INFI.pdf) bei; der reale Unterricht (③) ist in
-   `docs/lehrplan/jg2-einheiten.md` (Ist SJ 2025/26) bzw. `3HWII/` (Plan SJ 2026/27) dokumentiert.
+   `2HWII/jg2-einheiten.md` (Ist SJ 2025/26) bzw. `3HWII/` (Plan SJ 2026/27) dokumentiert.
 3. **Re-Check-Empfehlung:** einmal jährlich (Sommerferien) die konsolidierte Fassung (Link oben)
    auf eine neue „Änderung"-Zeile prüfen. Nächster Check: Sommer 2027.

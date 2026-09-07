@@ -1,18 +1,18 @@
 # Semesterplan 3HWII INFI — Wintersemester 2026/27
 
 Informatik und Informationssysteme (INFI) — KM5
-(BGBl. II Nr. 262/2015 idF 235/2019, Anlage 1.24; Schichten: `docs/lehrplan/LEHRPLAN.md` +
-`docs/lehrplan/RIS.md`)
+(BGBl. II Nr. 262/2015 idF 235/2019, Anlage 1.24; Schichten: `../infi-lehrplan-text.md` +
+`../RIS.md`)
 
 **Zeitmodell:** 13 echte UE (1 DS/Woche à 2 h = Georgs Anteil am 2+1-Split) + 2 PLF-DS.
 Offiziell 18 Schulwochen — Ausfälle durch Feiertage/Krankheit sind einkalkuliert;
 bei Glücksfall Bonus-UE (siehe unten).
 **Werkzeug:** SQLite (`sqlite3`, `node:sqlite` via Deno) · PostgreSQL via Docker (DCL-Demo, UE 11)
 **Didaktik:** abfrage-zentriert, Musik-Streaming-DB als Dauerbeispiel (aus Jg II)
-**KM-Steckbrief:** `kompetenzmodule/km5.md` · **Verbund mit SWP:** `3HWII/README.md`
+**KM-Steckbrief:** `../kompetenzmodule/km5.md` · **Verbund mit SWP:** `README.md`
 
 > **Vorwissen aus Jg II (KM3/KM4):** CRUD, JOIN/Self-JOIN, GROUP BY/HAVING, DDL/Constraints,
-> N:M/Zwischentabelle, ER (bigER), Prisma-Grundlagen. Details: `docs/lehrplan/jg2-einheiten.md`.
+> N:M/Zwischentabelle, ER (bigER), Prisma-Grundlagen. Details: `../2HWII/jg2-einheiten.md`.
 > **Wichtigste Lücke:** Normalformen (① KM3) nur gestreift → UE 2 schließt sie.
 > **UE 1 startet mit Diagnostik-Rep** (ohne eigene Reserve-DS — Einstieg ist Teil der UE).
 
@@ -71,7 +71,7 @@ bei Glücksfall Bonus-UE (siehe unten).
 ## Kollegen-Parallelnotiz (1 h/Woche, Vorschlag — TBD)
 
 - **UE 12 (Import/Export, Archivierung)** ist der natürliche Kandidat für die Kollegen-Stunde
-  (Betriebssicht, kein Abfrage-Kern) — Absprache: `3HWII/README.md` → Offene Punkte.
+  (Betriebssicht, kein Abfrage-Kern) — Absprache: `README.md` → Offene Punkte.
 - Übrige Kollegen-Stunden: Vertiefung/Übung parallel zum jeweiligen UE-Stoff.
 
 ---
@@ -80,4 +80,4 @@ bei Glücksfall Bonus-UE (siehe unten).
 4 UE Schema/Optimierung/Konsistenz/Zugriff · 1 UE Betrieb · 2 UE Workshop+Projekt
 **SWP-Synchronisation:** INFI bleibt SQL-nah; SWP läuft DB-frei (OOP). Ab ~Dez (SWP UE 12)
 gemeinsame Beispieldomäne — INFI UE 13 kann sie im Mini-Projekt aufgreifen. Details:
-`3HWII/README.md` → Sequenz-Abstimmung.
+`README.md` → Sequenz-Abstimmung.
