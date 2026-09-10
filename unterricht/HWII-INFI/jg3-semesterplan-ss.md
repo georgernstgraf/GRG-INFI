@@ -1,7 +1,7 @@
 # Semesterplan 3HWII INFI — Sommersemester 2027
 
 Informatik und Informationssysteme (INFI) — KM6
-(BGBl. II Nr. 262/2015 idF 235/2019, Anlage 1.24; Schichten: `../infi-lehrplan-text.md` +
+(BGBl. II Nr. 262/2015 idF 235/2019, Anlage 1.24; Schichten: `../../lehrplan/infi-hwii/LEHRPLAN.md` +
 `../RIS.md`)
 
 **Zeitmodell:** 13 echte UE (1 DS/Woche à 2 h = Georgs Anteil am 2+1-Split) + 2 PLF-DS.

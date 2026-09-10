@@ -2,7 +2,7 @@
 
 > **Klassen-Zuordnung:** `2HWII` (generisches Label, deckt 2AHWII/2BHWII …) ↔ **II. Jahrgang** ↔ **Kompetenzmodul 3 (3. Semester)** und **Kompetenzmodul 4 (4. Semester)**.
 > **Rechtsgrundlage:** Anlage 1.24 zu BGBl. II Nr. 262/2015 idF BGBl. II Nr. 235/2019 — Höhere Lehranstalt für Wirtschaftsingenieure – Betriebsinformatik, Fach „Informatik und Informationssysteme".
-> **Quelle (①):** konsolidierte Fassung [NOR40217058](https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40217058/NOR40217058.html) — getreu extrahiert aus [`../infi-lehrplan-text.md`](../infi-lehrplan-text.md) (verifiziert 2026-07-26).
+> **Quelle (①):** konsolidierte Fassung [NOR40217058](https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40217058/NOR40217058.html) — getreu extrahiert aus [`../LEHRPLAN.md`](../LEHRPLAN.md) (verifiziert 2026-07-26).
 > **Extraktion:** 2026-09-07 · Rechtsstand ①: unverändert seit 2015 ([`../RIS.md`](../RIS.md)).
 
 > **Unterrichtsstand:** II. Jahrgang wurde im **SJ 2025/26 unterrichtet** (Klasse 2AHWII, Georg allein, 2 h/Woche). Die konkrete Ist-Doku liegt in [`jg2-einheiten.md`](jg2-einheiten.md), die didaktischen Steckbriefe in [`../kompetenzmodule/km3.md`](../kompetenzmodule/km3.md) und [`../kompetenzmodule/km4.md`](../kompetenzmodule/km4.md).

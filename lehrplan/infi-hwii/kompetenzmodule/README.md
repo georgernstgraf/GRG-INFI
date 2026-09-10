@@ -6,7 +6,7 @@ je ein Markdown-File pro KM.
 
 Rechtsgrundlage: BGBl. II Nr. 262/2015 idF BGBl. II Nr. 235/2019, Anlage 1.24
 (Recherche & Schichten-Vergleich: `../RIS.md` ·
-Lehrstoff-Extrakt: `../infi-lehrplan-text.md`).
+Lehrstoff-Extrakt: `../LEHRPLAN.md`).
 
 ## Semester ↔ Klasse ↔ KM
 
@@ -51,9 +51,9 @@ betreffende Semester konkret plant.
 
 ## Verknüpfte Dokumente
 
-- `../infi-lehrplan-text.md` — offizieller Lehrstoff (①-Extrakt, verifiziert 2026-07-26)
+- `../LEHRPLAN.md` — offizieller Lehrstoff (①-Extrakt, verifiziert 2026-07-26)
 - `../RIS.md` — Rechtsstand, Stundentafel, Schichten-Vergleich
 - `../METADATA.md` — Stundentafel, Planungskonvention
-- `../3HWII/README.md`, `../3HWII/semesterplan-ws.md`, `../3HWII/semesterplan-ss.md` — konkrete
+- `../3HWII/README.md`, `../../unterricht/HWII-INFI/jg3-semesterplan-ws.md`, `../../unterricht/HWII-INFI/jg3-semesterplan-ss.md` — konkrete
   Semesterpläne (KM5/KM6) inkl. SWP-Verbund
-- `../2HWII/jg2-einheiten.md` — rückgepflegter Unterricht KM3/KM4 (SJ 2025/26)
+- `../../unterricht/HWII-INFI/jg2-einheiten.md` — rückgepflegter Unterricht KM3/KM4 (SJ 2025/26)

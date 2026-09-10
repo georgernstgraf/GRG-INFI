@@ -13,8 +13,8 @@
 | **Beurteilung** | PLF / Hausübungen / Mitarbeit je 1/3 (Details: Root-`README.md`) |
 | **Stack** | SQLite (`sqlite3`, `node:sqlite`) · Deno/TypeScript · Prisma · `Deno.serve` (REST) · PostgreSQL via Docker (DCL-Demo) |
 | **KM-Steckbriefe** | [`kompetenzmodule/km5.md`](../kompetenzmodule/km5.md) · [`kompetenzmodule/km6.md`](../kompetenzmodule/km6.md) |
-| **Semesterpläne** | [`semesterplan-ws.md`](semesterplan-ws.md) (KM5) · [`semesterplan-ss.md`](semesterplan-ss.md) (KM6) |
-| **Vorwissen** | [`2HWII/jg2-einheiten.md`](../2HWII/jg2-einheiten.md) — CRUD, JOIN/Self-JOIN, GROUP BY/HAVING, DDL/Constraints, N:M/Zwischentabelle, ER (bigER), Prisma-Grundlagen. **Lücke:** Normalformen nur gestreift → UE 2 (WS). |
+| **Semesterpläne** | [`jg3-semesterplan-ws.md`](../../../unterricht/HWII-INFI/jg3-semesterplan-ws.md) (KM5) · [`jg3-semesterplan-ss.md`](../../../unterricht/HWII-INFI/jg3-semesterplan-ss.md) (KM6) |
+| **Vorwissen** | [`jg2-einheiten.md`](../../../unterricht/HWII-INFI/jg2-einheiten.md) — CRUD, JOIN/Self-JOIN, GROUP BY/HAVING, DDL/Constraints, N:M/Zwischentabelle, ER (bigER), Prisma-Grundlagen. **Lücke:** Normalformen nur gestreift → UE 2 (WS). |
 
 ---
 
@@ -127,7 +127,7 @@ Die Schüler wählen mit (Abstimmung zu Verbundprojekt-Start im SS); die gewähl
 ## Kollegen-Soll (1 h/Woche) — Extraktionsvorschlag, Absprache TBD
 
 Auftrag: Der INFI-Kollege übernimmt, was **nicht SQL/Datenbank-Kern** ist. Extraktion aus dem
-Lehrstoff KM5/KM6 (①, `../infi-lehrplan-text.md`):
+Lehrstoff KM5/KM6 (①, `../LEHRPLAN.md`):
 
 | Lehrstoffpunkt | KM | Inhalt (Vorschlag Kollege) |
 |---|---|---|

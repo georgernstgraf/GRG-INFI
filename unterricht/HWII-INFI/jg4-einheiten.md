@@ -1,6 +1,6 @@
 # 4. Klasse – Einheitenplan (KM7 + KM8) — Stub
 
-> **Status:** Stub / Gerüst. Wird in einer späteren Session aus [`infi-lehrplan-text.md`](../infi-lehrplan-text.md) befüllt.
+> **Status:** Stub / Gerüst. Wird in einer späteren Session aus [`lehrplan/infi-hwii/LEHRPLAN.md`](../../lehrplan/infi-hwii/LEHRPLAN.md) befüllt.
 > **Domänenwechsel:** Ab Jg IV wechselt das Fach „Informatik und Informationssysteme" von **Datenbanken** (Jg II/III) zu **Enterprise Resource Planning (ERP)**. Inhaltlich geht es um SAP-ähnliche Systeme, Finanzbuchhaltung und Materialwirtschaft – *keine* Datenbank-Programmierung im engeren Sinn.
 > **Voraussetzungen für die Planung:** Die Lehrperson muss klären, welches ERP-System an der Schule verfügbar ist (SAP UE, Übungs-Firma, Simulation). Diese Information fehlt aktuell → Stub.
 
@@ -8,11 +8,11 @@
 
 ## 7. Semester – Kompetenzmodul 7 (Bereich ERP)
 
-**Bildungs- und Lehraufgabe (Soll, aus `infi-lehrplan-text.md`):**
+**Bildungs- und Lehraufgabe (Soll, aus `lehrplan/infi-hwii/LEHRPLAN.md`):**
 - den Aufbau und die Einsatzgebiete gängiger ERP-Systeme in Unternehmen erläutern;
 - einfache Geschäftsfälle im ERP-System verbuchen und entsprechende Reports erstellen.
 
-**Lehrstoff (Soll, aus `infi-lehrplan-text.md`):**
+**Lehrstoff (Soll, aus `lehrplan/infi-hwii/LEHRPLAN.md`):**
 ERP-Systeme (Systeme und Anbieter, Module, Organisationseinheiten, Benutzeroberfläche, Reports); Finanzbuchhaltung (Konten, Kontenplan, Buchungen, Kreditoren- und Debitorenbuchhaltung, Bilanz und GuV-Rechnung, Auswertungen und Analysen).
 
 ### Einheiten (zu befüllen)
@@ -36,10 +36,10 @@ ERP-Systeme (Systeme und Anbieter, Module, Organisationseinheiten, Benutzeroberf
 
 ## 8. Semester – Kompetenzmodul 8 (Bereich ERP)
 
-**Bildungs- und Lehraufgabe (Soll, aus `infi-lehrplan-text.md`):**
+**Bildungs- und Lehraufgabe (Soll, aus `lehrplan/infi-hwii/LEHRPLAN.md`):**
 - Stammdaten in einem ERP-System anlegen und die entsprechenden Beschaffungs-, Produktions- und Vertriebsprozesse abbilden.
 
-**Lehrstoff (Soll, aus `infi-lehrplan-text.md`):**
+**Lehrstoff (Soll, aus `lehrplan/infi-hwii/LEHRPLAN.md`):**
 Materialwirtschaft (Beschaffungsprozess, Materialstammdaten, Lieferantenstammdaten, Bedarfsermittlung, Bestellung, Wareneingang, Rechnungsprüfung, Zahlungsausgang); Produktionsplanung und -steuerung (Produktionsprozess, Bedarfsplanung, Bedarfsermittlung, Dispositionsarten, Erzeugnisgliederung, Stücklisten, Arbeitsplatzstammdaten, Arbeitsplan, Terminierung, Strategien zur Durchlaufzeitreduzierung, Vorkalkulation, Planauftrag, Fertigungsauftrag, Betriebsdatenerfassung, Rückmeldungen, Nachkalkulation, Auswertungen und Analysen).
 
 ### Einheiten (zu befüllen)
@@ -63,7 +63,7 @@ Materialwirtschaft (Beschaffungsprozess, Materialstammdaten, Lieferantenstammdat
 
 ## Notiz für die befüllende Session
 
-Anleitung zum Ausfüllen: siehe [`infi-lehrplan-text.md`](../infi-lehrplan-text.md) Abschnitt „Anleitung: So wird ein Jahrgangs-Plan generiert".
+Anleitung zum Ausfüllen: siehe [`lehrplan/infi-hwii/LEHRPLAN.md`](../../lehrplan/infi-hwii/LEHRPLAN.md) Abschnitt „Anleitung: So wird ein Jahrgangs-Plan generiert".
 Vorab zu klären:
 1. Verfügbares ERP-System an der HTL Spengergasse (SAP UE? Übungsfirma? Simulation?).
 2. Ist die Lehrperson Georg Graf für ERP-Fach zuständig, oder wird Jg IV von einer anderen Fachlehrkraft unterrichtet?

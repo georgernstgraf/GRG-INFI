@@ -3,7 +3,7 @@
 **Klasse/Semester:** 5HWII, 9.+10. Semester (SJ, voraussichtlich ab 2028/29)
 **Wochenstunden:** 4 (schulautonom; offiziell 6(4)) — höchste Stundung im Fach
 **Bereiche:** **Informationssysteme** + **Datenbanken** + **ERP** (drei Bereiche in einem KM)
-**Einheiten-Gerüst:** `../5HWII/jg5-einheiten.md`
+**Einheiten-Gerüst:** `../../unterricht/HWII-INFI/jg5-einheiten.md`
 
 ## Worum geht es? (Skizze)
 

@@ -4,7 +4,7 @@
 **Wochenstunden (schulautonom):** 3 — davon **Georg 2 h** (1 DS/Woche) + **Kollege 1 h**
 **Zeitmodell:** 13 echte UE + 2 PLF-DS
 **Bereich:** Datenbanken (**Georg**: SQL-Kern · **Kollege**: Nicht-SQL-Anteile, Vorschlag unten)
-**Konkreter Semesterplan:** `../3HWII/semesterplan-ws.md` · **Verbund mit SWP:** `../3HWII/README.md`
+**Konkreter Semesterplan:** `../../unterricht/HWII-INFI/jg3-semesterplan-ws.md` · **Verbund mit SWP:** `../3HWII/README.md`
 
 ## Worum geht es?
 
@@ -95,7 +95,7 @@ Lehrstoffpunkte von KM5 **ohne SQL/DB-Kern**, Kandidaten für die Kollegen-Stund
 
 **Mitgenommen aus KM3/KM4 (Vorwissen):** CRUD, JOIN/Self-JOIN, GROUP BY/HAVING,
 DDL/Constraints (PK/FK/CHECK), N:M/Zwischentabelle, ER (bigER), Prisma-Grundlagen —
-Details: `../2HWII/jg2-einheiten.md`.
+Details: `../../unterricht/HWII-INFI/jg2-einheiten.md`.
 
 **Mitnahme nach KM6:** CTEs/Views für Reports, Transaktionen für `$transaction` in Prisma,
 EXPLAIN für das Index-Audit, Normalformen für die TPH-vs.-TPT-Diskussion im Verbund.

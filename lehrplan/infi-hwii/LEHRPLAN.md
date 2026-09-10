@@ -82,7 +82,7 @@ Anwendungsfälle (Applikationsentwurf); Praktische Datenbankanwendungen (Entwick
 
 ## IV. Jahrgang — Bereich Enterprise Resource Planning (ERP)
 
-> **Domänenwechsel:** Ab Jg IV wechselt das Fach von der Datenbank-Domäne in die ERP-Domäne (SAP, Finanzbuchhaltung, Materialwirtschaft). Der offizielle Lehrstoff (KM7+KM8) ist hier dokumentiert; eine detaillierte Einheitenplanung liegt in `4HWII/jg4-einheiten.md` als Stub.
+> **Domänenwechsel:** Ab Jg IV wechselt das Fach von der Datenbank-Domäne in die ERP-Domäne (SAP, Finanzbuchhaltung, Materialwirtschaft). Der offizielle Lehrstoff (KM7+KM8) ist hier dokumentiert; eine detaillierte Einheitenplanung liegt in `unterricht/HWII-INFI/jg4-einheiten.md` als Stub.
 
 ### 7. Semester – Kompetenzmodul 7
 
@@ -105,7 +105,7 @@ Materialwirtschaft (Beschaffungsprozess, Materialstammdaten, Lieferantenstammdat
 
 ## V. Jahrgang – Kompetenzmodul 9
 
-> **Domäne:** Informationssysteme (Datawarehouse, Datamining, KI, Geschäftsprozessmodellierung), **Datenbanken** (Datenbankanwendung implementieren; Web- und GUI-Applikationen) und ERP (Vertrieb, Kostenrechnung). Einheitenplanung in `5HWII/jg5-einheiten.md` als Stub.
+> **Domäne:** Informationssysteme (Datawarehouse, Datamining, KI, Geschäftsprozessmodellierung), **Datenbanken** (Datenbankanwendung implementieren; Web- und GUI-Applikationen) und ERP (Vertrieb, Kostenrechnung). Einheitenplanung in `unterricht/HWII-INFI/jg5-einheiten.md` als Stub.
 
 ### 9. Semester
 
@@ -163,16 +163,16 @@ Kostenrechnung und Controlling (Kostenarten, Kostenstellen, innerbetriebliche Le
 unterrichtet, gibt es einen **Klassenordner** `lehrplan/<KLASSE>/` (z. B. [`3HWII/`](3HWII/))
 mit [`<KLASSE>.lehrplan.md`](3HWII/3HWII.lehrplan.md) (klassenrelevanter ①-Extrakt) — der
 aktuelle Ordner zusätzlich mit `README.md` (Klassen-Drehscheibe) und
-`semesterplan-{ws,ss.md}` (**13 echte UE + 2 PLF-DS** pro Semester, Tabellenformat).
+`unterricht/HWII-INFI/jgN-semesterplan-{ws,ss}.md` (**13 echte UE + 2 PLF-DS** pro Semester, Tabellenformat).
 Didaktische **KM-Steckbriefe** liegen in [`kompetenzmodule/`](kompetenzmodule/). Die
-`jgN-einheiten.md` stehen im jeweiligen Klassenordner als Gerüste für nicht konkret
+`jgN-einheiten.md` stehen unter `unterricht/HWII-INFI/` als Gerüste für nicht konkret
 geplante Jahrgänge (derzeit Jg IV/V) bzw. als historische Ist-Doku (Jg II).
 
-Um z. B. `4HWII/jg4-einheiten.md` oder `5HWII/jg5-einheiten.md` zu befüllen, genügt diese Datei plus `METADATA.md`:
+Um z. B. `unterricht/HWII-INFI/jg4-einheiten.md` oder `unterricht/HWII-INFI/jg5-einheiten.md` zu befüllen, genügt diese Datei plus `METADATA.md`:
 
 1. **Offiziellen Lehrstoff übernehmen:** Kopiere den Lehrstoff des jeweiligen Semesters (KM) aus dieser Datei in den Kopf des Jahrgangs-Dokuments als „Soll".
-2. **Steckbrief + Semesterplan anlegen:** KM-Steckbrief in `kompetenzmodule/` (Struktur wie `kompetenzmodule/km5.md`), Semesterplan im Klassenordner (Format wie `3HWII/semesterplan-ws.md`, 13 UE + 2 PLF).
-3. **Vorwissen verankern:** Verweise auf den jeweils vorherigen Jahrgang (z. B. baut Jg III beim DB-Track auf `2HWII/jg2-einheiten.md` auf).
+2. **Steckbrief + Semesterplan anlegen:** KM-Steckbrief in `kompetenzmodule/` (Struktur wie `kompetenzmodule/km5.md`), Semesterplan unter `unterricht/HWII-INFI/` (Format wie `jg3-semesterplan-ws.md`, 13 UE + 2 PLF).
+3. **Vorwissen verankern:** Verweise auf den jeweils vorherigen Jahrgang (z. B. baut Jg III beim DB-Track auf `unterricht/HWII-INFI/jg2-einheiten.md` auf).
 4. **Bewertungsrahmen:** Halte dich an die Abgabe-/Beurteilungsregeln aus dem Wurzel-`README.md` des Repos (PLF/HÜ/Mitarbeit je 1/3); konkrete PLF-Termine sind schulspezifisch.
 5. **Bei Domänenwechsel (Jg IV ERP, Jg V IS):** explizit kennzeichnen, dass andere Expertise/Werkzeuge (SAP-System, ERP-Software) nötig sind; ggf. nur Gerüst belassen.
 6. **Sprache & Stil:** deutsche Kommentare, SQL in GROSSBUCHSTABEN, 2/4 Leerzeichen Einrückung (siehe `AGENTS.md`).
@@ -182,7 +182,7 @@ Um z. B. `4HWII/jg4-einheiten.md` oder `5HWII/jg5-einheiten.md` zu befüllen, ge
 
 ```
 ### Einheit N – <Thema>
-- KM / Lehrplan-Bezug: <genauer Lehrstoffpunkt aus infi-lehrplan-text.md>
+- KM / Lehrplan-Bezug: <genauer Lehrstoffpunkt aus LEHRPLAN.md>
 - Vorwissen: <welche frühere Einheit/Jahrgang>
 - Inhalt: <geplanter Unterrichtsstoff, Stichpunkte>
 - Hausübung: <Aufgabe oder „keine">
@@ -195,10 +195,10 @@ Um z. B. `4HWII/jg4-einheiten.md` oder `5HWII/jg5-einheiten.md` zu befüllen, ge
 | Jahrgang | Status | Datei |
 |----------|--------|-------|
 | I. | *(nicht geplant – Jg I ist rawData/Office, kein DB)* | — |
-| II. (KM3+KM4) | **Rückgepflegt aus Unterricht SJ 2025/26** (erledigt, Referenz) | [`2HWII/2HWII.lehrplan.md`](2HWII/2HWII.lehrplan.md) + `2HWII/jg2-einheiten.md` + [`kompetenzmodule/km3.md`](kompetenzmodule/km3.md), [`km4.md`](kompetenzmodule/km4.md) |
+| II. (KM3+KM4) | **Rückgepflegt aus Unterricht SJ 2025/26** (erledigt, Referenz) | [`2HWII/2HWII.lehrplan.md`](2HWII/2HWII.lehrplan.md) + `unterricht/HWII-INFI/jg2-einheiten.md` + [`kompetenzmodule/km3.md`](kompetenzmodule/km3.md), [`km4.md`](kompetenzmodule/km4.md) |
 | III. (KM5+KM6) | **Aktiv unterrichtet (SJ 2026/27)**; seit 2026-07-26 Steckbriefe + Klassenordner | [`3HWII/3HWII.lehrplan.md`](3HWII/3HWII.lehrplan.md) + [`kompetenzmodule/km5.md`](kompetenzmodule/km5.md), [`km6.md`](kompetenzmodule/km6.md), [`3HWII/`](3HWII/) |
-| IV. (KM7+KM8) | Stub (ERP) | [`4HWII/4HWII.lehrplan.md`](4HWII/4HWII.lehrplan.md) + `4HWII/jg4-einheiten.md` + [`kompetenzmodule/km7.md`](kompetenzmodule/km7.md), [`km8.md`](kompetenzmodule/km8.md) |
-| V. (KM9) | Stub (IS + DB + ERP) | [`5HWII/5HWII.lehrplan.md`](5HWII/5HWII.lehrplan.md) + `5HWII/jg5-einheiten.md` + [`kompetenzmodule/km9.md`](kompetenzmodule/km9.md) |
+| IV. (KM7+KM8) | Stub (ERP) | [`4HWII/4HWII.lehrplan.md`](4HWII/4HWII.lehrplan.md) + `unterricht/HWII-INFI/jg4-einheiten.md` + [`kompetenzmodule/km7.md`](kompetenzmodule/km7.md), [`km8.md`](kompetenzmodule/km8.md) |
+| V. (KM9) | Stub (IS + DB + ERP) | [`5HWII/5HWII.lehrplan.md`](5HWII/5HWII.lehrplan.md) + `unterricht/HWII-INFI/jg5-einheiten.md` + [`kompetenzmodule/km9.md`](kompetenzmodule/km9.md) |
 
 > **Layout-Migration 2026-09-07:** Der Lehrplan-Bereich liegt im Skill-Standard-Layout —
 > zuvor: `docs/lehrplan/LEHRPLAN.md` + Klassenordner im Root. Die Klassen-Extrakte
@@ -208,5 +208,5 @@ Um z. B. `4HWII/jg4-einheiten.md` oder `5HWII/jg5-einheiten.md` zu befüllen, ge
 > verifiziert und an mehreren Stellen an den offiziellen Text (①) angeglichen — u. a.
 > Normalformen zurück nach KM3, DCL nach KM4, Jg V um den Bereich Datenbanken ergänzt.
 > Die Abweichungen der Vorversion sind in [`RIS.md`](RIS.md) §6 dokumentiert. Die
-> Abdeckungstabelle in `2HWII/jg2-einheiten.md` (historische Ist-Doku) bezieht sich noch auf die
+> Abdeckungstabelle in `unterricht/HWII-INFI/jg2-einheiten.md` (historische Ist-Doku) bezieht sich noch auf die
 > Vorversion dieser Redaktion — inhaltlich bleibt die dortige Ist-Abdeckung unberührt.

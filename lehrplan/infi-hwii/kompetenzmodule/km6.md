@@ -5,7 +5,7 @@
 **Zeitmodell:** 13 echte UE + 2 PLF-DS
 **Bereich:** Datenbanken (**Georg**: DB-Programme/Schnittstellen · **Kollege**: Nicht-SQL-Anteile,
 Vorschlag unten)
-**Konkreter Semesterplan:** `../3HWII/semesterplan-ss.md` · **Verbund mit SWP:** `../3HWII/README.md`
+**Konkreter Semesterplan:** `../../unterricht/HWII-INFI/jg3-semesterplan-ss.md` · **Verbund mit SWP:** `../3HWII/README.md`
 
 ## Worum geht es?
 

@@ -9,15 +9,15 @@ Follow these without question. Do not deviate unless explicitly told.
 
 ## Doku-Struktur (PMM-Stil, Standard-Layout)
 
-- Alles Lehrplan-Bezogene unter `lehrplan/` (Skill-Standard-Layout, Migration 2026-09-07):
-  - `infi-lehrplan-text.md` = offizieller ①-Extrakt aller Jahrgänge (die QUELLE);
-  - Klassenordner `<KLASSE>/` (UPPERCASE, z. B. `2HWII/`–`5HWII/`) je mit
+- Alles Lehrplan-Bezogene unter `lehrplan/` (Skill-Standard-Layout, Migration 2026-09-07; Zweig-Retrofit 2026-09-10):
+  - `infi-hwii/LEHRPLAN.md` = offizieller ①-Extrakt aller Jahrgänge (die QUELLE);
+  - Klassen-Extrakte `infi-hwii/<KLASSE>/` (UPPERCASE, z. B. `2HWII/`–`5HWII/`) je mit
     `<KLASSE>.lehrplan.md` (klassenrelevanter ①-Extrakt: Bildungs- und Lehraufgabe +
-    Lehrstoff der KM des Jahrgangs) und Einheiten-Doku (`jgN-einheiten.md`);
-  - aktuelle Klassenordner zusätzlich mit `README.md` (Drehscheibe) +
-    `semesterplan-{ws,ss}.md`.
-- KM-Steckbriefe in `lehrplan/kompetenzmodule/kmN.md`; Matrix + Zeitmodell in `lehrplan/kompetenzmodule/README.md`.
-- Klassenordner **groß** schreiben (z. B. `lehrplan/3HWII/`, mögliche Parallelklassen 3a/3b).
+    Lehrstoff der KM des Jahrgangs);
+  - aktuelle Klassenordner zusätzlich mit `README.md` (Drehscheibe).
+- KM-Steckbriefe in `lehrplan/infi-hwii/kompetenzmodule/kmN.md`; Matrix + Zeitmodell in `lehrplan/infi-hwii/kompetenzmodule/README.md`.
+- Unterrichts-Ebene am Repo-Root: `unterricht/HWII-INFI/` mit `jgN-einheiten.md` und `jgN-semesterplan-{ws,ss}.md`.
+- Klassenordner **groß** schreiben (z. B. `lehrplan/infi-hwii/3HWII/`, mögliche Parallelklassen 3a/3b).
 - Schichten-Notation: **①** offizieller RIS-Text · **②** Schuladaption · **③** Unterricht/Repo-Didaktik.
 
 ## Semesterplan-Format

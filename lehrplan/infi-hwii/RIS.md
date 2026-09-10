@@ -7,7 +7,7 @@
 >
 > **Schwester-Recherche:** Dieselbe Verordnung und Anlage wurde für das Fach SWP im Repo
 > `../GRG-SWP` recherchiert — siehe
-> [`GRG-SWP/docs/lehrplan/RIS.md`](https://github.com/georgernstgraf/GRG-SWP/blob/main/docs/lehrplan/RIS.md).
+> [`GRG-SWP/blob/main/lehrplan/swp-hwii/RIS.md`](https://github.com/georgernstgraf/GRG-SWP/blob/main/lehrplan/swp-hwii/RIS.md).
 > Die Rechtsstand-Fakten (§1–§3) sind identisch und dort ausführlich belegt; hier die INFI-Sicht.
 
 ---
@@ -37,7 +37,7 @@
 ## 3. Novellen-Historie (geprüft bis 2026-07-26)
 
 Kompaktfassung — ausführliche Tabelle mit allen Prüfvermerken:
-[`GRG-SWP/docs/lehrplan/RIS.md`](https://github.com/georgernstgraf/GRG-SWP/blob/main/docs/lehrplan/RIS.md) §3.
+[`GRG-SWP/blob/main/lehrplan/swp-hwii/RIS.md`](https://github.com/georgernstgraf/GRG-SWP/blob/main/lehrplan/swp-hwii/RIS.md) §3.
 
 | Novelle | Berührt Anlage 1.24 / INFI-Lehrstoff? |
 |---------|----------------------------------------|
@@ -79,12 +79,12 @@ schulautonome Klausel (§5) gedeckt.
 
 **Befund 2026-07-26:** Die Schuladaption ② ([`HWII_INFI.pdf`](HWII_INFI.pdf)) ist **inhaltlich
 deckungsgleich mit ①** (nur Format: K-Labels, andere Gliederung). Abweichungen fanden sich stattdessen
-in der **älteren Redaktion von [`infi-lehrplan-text.md`](infi-lehrplan-text.md)** (Schicht ③) — diese wurden mit
-dem heutigen Stand **korrigiert** (infi-lehrplan-text.md ist wieder getreuer ①-Extrakt). Die Abweichungen
+in der **älteren Redaktion von [`LEHRPLAN.md`](LEHRPLAN.md)** (Schicht ③) — diese wurden mit
+dem heutigen Stand **korrigiert** (LEHRPLAN.md ist wieder getreuer ①-Extrakt). Die Abweichungen
 (Stand vor der Korrektur, mutmaßlich aus der gleichnamigen Fachbeschreibung der Anlage 1.28 /
 Technisches Management übernommen):
 
-| Thema | ① Offiziell (RIS) = ② Schul-PDF | ③ infi-lehrplan-text.md (alt, korrigiert) |
+| Thema | ① Offiziell (RIS) = ② Schul-PDF | ③ LEHRPLAN.md (alt, korrigiert) |
 |-------|----------------------------------|----------------------------------|
 | Normalformen | **KM3** (im Datenbankentwurf) | KM4 → **nach ① zurückverschoben** |
 | Data Definition Language (physischer Entwurf, Abfragegeneratoren, SQL) | **KM3** | fehlte → **ergänzt** |
@@ -104,7 +104,7 @@ Technisches Management übernommen):
 
 ## 7. Offizieller INFI-Extrakt (①, getreu aus NOR40217058)
 
-→ Gepflegt in [`infi-lehrplan-text.md`](infi-lehrplan-text.md) (seit 2026-07-26 verifiziert gegen ①).
+→ Gepflegt in [`LEHRPLAN.md`](LEHRPLAN.md) (seit 2026-07-26 verifiziert gegen ①).
 Absolventenprofil (III. Abschnitt der Anlage 1.24), Bereich Datenbanken:
 
 > *„Im Bereich Datenbanken können die Absolventinnen und Absolventen aus einer Problemstellung
@@ -117,7 +117,7 @@ Absolventenprofil (III. Abschnitt der Anlage 1.24), Bereich Datenbanken:
 
 1. [`METADATA.md`](METADATA.md) führt die Rechtsgrundlage als **„BGBl. II Nr. 262/2015 idF
    BGBl. II Nr. 235/2019"** und die korrekte RIS-Stundentafel (§4).
-2. [`infi-lehrplan-text.md`](infi-lehrplan-text.md) ist getreuer ①-Extrakt; Schuladaption ② liegt als
+2. [`LEHRPLAN.md`](LEHRPLAN.md) ist getreuer ①-Extrakt; Schuladaption ② liegt als
    [`HWII_INFI.pdf`](HWII_INFI.pdf) bei; der reale Unterricht (③) ist in
    `2HWII/jg2-einheiten.md` (Ist SJ 2025/26) bzw. `3HWII/` (Plan SJ 2026/27) dokumentiert.
 3. **Re-Check-Empfehlung:** einmal jährlich (Sommerferien) die konsolidierte Fassung (Link oben)

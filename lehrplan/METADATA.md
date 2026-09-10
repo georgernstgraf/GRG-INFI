@@ -24,13 +24,13 @@
 
 ## Quelle (Primärtext)
 
-Der Primärtext (Schicht ①) ist die konsolidierte Fassung der Anlage 1.24 (siehe RIS-Verweise oben); das vollständige Exzerpt des Fachs liegt in [`infi-lehrplan-text.md`](infi-lehrplan-text.md) — am 2026-07-26 gegen ① verifiziert und korrigiert (Details: [`RIS.md`](RIS.md) §6).
+Der Primärtext (Schicht ①) ist die konsolidierte Fassung der Anlage 1.24 (siehe RIS-Verweise oben); das vollständige Exzerpt des Fachs liegt in [`infi-hwii/LEHRPLAN.md`](infi-hwii/LEHRPLAN.md) — am 2026-07-26 gegen ① verifiziert und korrigiert (Details: [`infi-hwii/RIS.md`](infi-hwii/RIS.md) §6).
 
 Weitere Quellen:
 
-- **Schuladaption (Schicht ②):** [`HWII_INFI.pdf`](HWII_INFI.pdf) (in diesem Verzeichnis; mit `pdftotext -layout` lesbar) — inhaltlich deckungsgleich mit ①.
+- **Schuladaption (Schicht ②):** [`infi-hwii/HWII_INFI.pdf`](infi-hwii/HWII_INFI.pdf) (im Zweig-Ordner; mit `pdftotext -layout` lesbar) — inhaltlich deckungsgleich mit ①.
 - **Schul-Download „Lehrplan":** `LP_ab14_Betriebsinformatik.pdf` (174 KB), https://www.spengergasse.at/wp-content/uploads/2020/04/LP_ab14_Betriebsinformatik.pdf (= RIS-Originaltext).
-- **Pendant (Abteilung Technisches Management, Anlage 1.28):** verwaltet im Repo `GRG-PMM/docs/lehrplan/` – *nicht* für WII maßgeblich.
+- **Pendant (Abteilung Technisches Management, Anlage 1.28):** primär verwaltet im Fachgruppen-Repo `WI-Fachgruppe-Informatik` (`lehrplan/infi-hwit/`); im Zweig-Ordner `infi-hwit/` dieses Repos liegt nur ein Skelett (Extraktion via Task 2 ausstehend) – *nicht* für WII maßgeblich.
 
 ## Stundentafel (HTL Spengergasse, schulautonom)
 
@@ -60,10 +60,10 @@ Quelle: https://www.spengergasse.at/?page_id=2085 (schulautonome Stundentafel �
 
 ## Planungskonvention
 
-- **Zeitmodell ab Jg III (PMM-Stil, Vorbild GRG-SWP):** **13 echte Unterrichtseinheiten (UE) + 2 PLF-Doppelstunden** pro Semester (1 UE = 1 DS à 2 h = Georgs Anteil am 2+1-Split; der Kollege hat 1 h/Woche). Details: [`kompetenzmodule/README.md`](kompetenzmodule/README.md).
+- **Zeitmodell ab Jg III (PMM-Stil, Vorbild GRG-SWP):** **13 echte Unterrichtseinheiten (UE) + 2 PLF-Doppelstunden** pro Semester (1 UE = 1 DS à 2 h = Georgs Anteil am 2+1-Split; der Kollege hat 1 h/Woche). Details: [`infi-hwii/kompetenzmodule/README.md`](infi-hwii/kompetenzmodule/README.md).
 - **Jg II (2 h, Georg allein):** ca. 12 thematische Doppelstunden pro Semester (Netto nach Abzug administrativer Termine, Tests, PLF, Ferien).
-- **Dokumente pro Jahrgang:** KM-Steckbriefe in [`kompetenzmodule/`](kompetenzmodule/) + Klassenordner unter `lehrplan/` (z. B. [`3HWII/`](3HWII/)) je mit `<KLASSE>.lehrplan.md` (klassenrelevanter ①-Extrakt), im aktuellen Ordner zusätzlich `README.md` und `semesterplan-{ws,ss}.md`. Die `jgN-einheiten.md` stehen im jeweiligen Klassenordner als Gerüste (Jg IV/V) und historische Ist-Doku (Jg II).
-- **Selbsttragend:** [`infi-lehrplan-text.md`](infi-lehrplan-text.md) enthält den vollständigen offiziellen Lehrstoff aller Jahrgänge, sodass eine spätere Session nur diese Datei benötigt, um weitere Pläne zu generieren (Anleitung dort am Ende).
+- **Dokumente pro Jahrgang:** KM-Steckbriefe in [`infi-hwii/kompetenzmodule/`](infi-hwii/kompetenzmodule/) + Klassen-Extrakte unter `lehrplan/infi-hwii/<KLASSE>/` (z. B. [`infi-hwii/3HWII/`](infi-hwii/3HWII/)) je mit `<KLASSE>.lehrplan.md` (klassenrelevanter ①-Extrakt). Die Lehrstoffverteilungen (`jgN-einheiten.md`) und Semesterpläne (`jgN-semesterplan-{ws,ss}.md`) liegen seit dem Retrofit 2026-09-10 unter `unterricht/HWII-INFI/` (Unterrichts-Ebene, Repo-Root).
+- **Selbsttragend:** [`infi-hwii/LEHRPLAN.md`](infi-hwii/LEHRPLAN.md) enthält den vollständigen offiziellen Lehrstoff aller Jahrgänge, sodass eine spätere Session nur diese Datei benötigt, um weitere Pläne zu generieren (Anleitung dort am Ende).
 
 ## Änderungshistorie des Lehrplans
 
@@ -82,30 +82,44 @@ Quelle: https://www.spengergasse.at/?page_id=2085 (schulautonome Stundentafel �
 | Jahrgang | Klassenname (generisch, UPPERCASE) | KM | Status |
 |----------|-------------------------------------|-----|--------|
 | I. | *(kein Klassenordner — rawData/Office, kein DB-Fokus in diesem Repo)* | — | nicht geplant |
-| II. | [`2HWII/`](2HWII/) | KM3 + KM4 | unterrichtet SJ 2025/26 (archiviert) |
-| III. | [`3HWII/`](3HWII/) | KM5 + KM6 | **aktiv SJ 2026/27** |
-| IV. | [`4HWII/`](4HWII/) | KM7 + KM8 | Stub (ERP) |
-| V. | [`5HWII/`](5HWII/) | KM9 | Stub (IS/DB/ERP) |
+| II. | [`infi-hwii/2HWII/`](infi-hwii/2HWII/) | KM3 + KM4 | unterrichtet SJ 2025/26 (archiviert) |
+| III. | [`infi-hwii/3HWII/`](infi-hwii/3HWII/) | KM5 + KM6 | **aktiv SJ 2026/27** |
+| IV. | [`infi-hwii/4HWII/`](infi-hwii/4HWII/) | KM7 + KM8 | Stub (ERP) |
+| V. | [`infi-hwii/5HWII/`](infi-hwii/5HWII/) | KM9 | Stub (IS/DB/ERP) |
 
-> **Layout-Migration 2026-09-07:** Dieses Verzeichnis liegt im Skill-Standard-Layout —
-> zuvor: `docs/lehrplan/` + Klassenordner im Repo-Root; `LEHRPLAN.md` heißt jetzt
-> `infi-lehrplan-text.md`.
+> **Layout-Migration 2026-09-07:** Von `docs/lehrplan/` + Klassenordnern im
+> Repo-Root in den `lehrplan/`-Standard migriert.
+>
+> **Layout-Retrofit 2026-09-10** (lehrplan-Skill v2): Zweig-Ordner
+> `infi-hwii/` angelegt — `LEHRPLAN.md` (ehem. `infi-lehrplan-text.md`),
+> Klassen-Extrakte, `kompetenzmodule/`, `RIS.md` und `HWII_INFI.pdf` (②)
+> dorthin verschoben; Einheiten (`jg2/jg4/jg5-einheiten.md`) und
+> Semesterpläne (`jg3-semesterplan-{ws,ss}.md`) wanderten nach
+> `unterricht/HWII-INFI/` (Unterrichts-Ebene, Repo-Root). Zweig-Ordner
+> `infi-hwit/` als Skelett angelegt (Anlage 1.28, Extraktion via Task 2
+> ausstehend; primäre Verwaltung im Fachgruppen-Repo).
 
 ## Dateien in diesem Verzeichnis
 
 | Datei | Beschreibung |
 |-------|--------------|
 | `METADATA.md` | Diese Datei – rechtliche Grundlage, Quellen, Stundentafel, Konvention |
-| `infi-lehrplan-text.md` | Offizieller Exzerpt (①) des Fachs „Informatik und Informationssysteme" für alle Jahrgänge (I–V) – die QUELLE |
-| `RIS.md` | Rechtsstand, Novellen-Historie, Stundentafel, Drei-Schichten-Vergleich (①/②/③) |
-| `HWII_INFI.pdf` | Schuladaption (Schicht ②) – mit `pdftotext -layout` lesbar |
-| `2HWII/` | 2. Klasse (KM3+KM4): `2HWII.lehrplan.md` (①-Extrakt) + `jg2-einheiten.md` (Ist SJ 2025/26, „erledigt") |
-| `3HWII/` | 3. Klasse (KM5+KM6, **aktiv SJ 2026/27**): `3HWII.lehrplan.md` + Klassen-Drehscheibe `README.md` + Semesterpläne |
-| `4HWII/` | 4. Klasse (KM7+KM8, ERP): `4HWII.lehrplan.md` + Einheiten-Gerüst `jg4-einheiten.md` – Stub |
-| `5HWII/` | 5. Klasse (KM9, IS): `5HWII.lehrplan.md` + Einheiten-Gerüst `jg5-einheiten.md` – Stub |
-| `kompetenzmodule/` | Didaktische KM-Steckbriefe (`README.md` = Matrix, `km3.md`–`km9.md`) |
+| `infi-hwii/LEHRPLAN.md` | Offizieller Exzerpt (①) des Fachs „Informatik und Informationssysteme" für alle Jahrgänge (I–V) – die QUELLE |
+| `infi-hwii/RIS.md` | Rechtsstand, Novellen-Historie, Stundentafel, Drei-Schichten-Vergleich (①/②/③) |
+| `infi-hwii/HWII_INFI.pdf` | Schuladaption (Schicht ②) – mit `pdftotext -layout` lesbar |
+| `infi-hwii/2HWII/` | 2. Klasse (KM3+KM4): `2HWII.lehrplan.md` (①-Extrakt) |
+| `infi-hwii/3HWII/` | 3. Klasse (KM5+KM6, **aktiv SJ 2026/27**): `3HWII.lehrplan.md` + Klassen-Drehscheibe `README.md` |
+| `infi-hwii/4HWII/` | 4. Klasse (KM7+KM8, ERP): `4HWII.lehrplan.md` – Stub |
+| `infi-hwii/5HWII/` | 5. Klasse (KM9, IS): `5HWII.lehrplan.md` – Stub |
+| `infi-hwii/kompetenzmodule/` | Didaktische KM-Steckbriefe (`README.md` = Matrix, `km3.md`–`km9.md`) |
+| `infi-hwit/` | Skelett (Anlage 1.28, HWIT): Extraktion via Task 2 ausstehend; primäre Verwaltung im Fachgruppen-Repo `WI-Fachgruppe-Informatik` |
+| `unterricht/HWII-INFI/jg2-einheiten.md` | Ist SJ 2025/26 („erledigt") |
+| `unterricht/HWII-INFI/jg3-semesterplan-{ws,ss}.md` | Semesterpläne 3. Klasse (aktiv SJ 2026/27) |
+| `unterricht/HWII-INFI/jg4-einheiten.md` | Einheiten-Gerüst – Stub (ERP) |
+| `unterricht/HWII-INFI/jg5-einheiten.md` | Einheiten-Gerüst – Stub (IS/DB/ERP) |
 
 > **3. Klasse (KM5+KM6):** seit 2026-07-26 im PMM-Stil organisiert — KM-Steckbriefe
-> [`kompetenzmodule/km5.md`](kompetenzmodule/km5.md) / [`km6.md`](kompetenzmodule/km6.md),
-> Semesterpläne und Verbund-Doku in [`3HWII/`](3HWII/). (Die frühere Datei
+> [`infi-hwii/kompetenzmodule/km5.md`](infi-hwii/kompetenzmodule/km5.md) /
+> [`km6.md`](infi-hwii/kompetenzmodule/km6.md),
+> Semesterpläne und Verbund-Doku in [`infi-hwii/3HWII/`](infi-hwii/3HWII/). (Die frühere Datei
 > `jg3-einheiten.md` wurde nach verlustfreier Migration entfernt.)

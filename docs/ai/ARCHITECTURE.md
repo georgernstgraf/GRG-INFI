@@ -18,14 +18,16 @@ Lehrplan-Doku (① offiziell / ② Schuladaption / ③ Unterricht) + PMM-Stil-Ja
 
 | Ort | Zweck | Bemerkung |
 |-----|-------|-----------|
-| `lehrplan/infi-lehrplan-text.md` | **①** getreuer Extrakt Anlage 1.24 (alle Jg) | QUELLE, 2026-07-26 gegen RIS verifiziert |
-| `lehrplan/RIS.md` | Rechtsstand, Novellen, Stundentafel, Schichten-Vergleich | verweist auf GRG-SWP-RIS.md |
-| `lehrplan/HWII_INFI.pdf` | **②** Schuladaption (≡ ①) | `pdftotext -layout` |
+| `lehrplan/infi-hwii/LEHRPLAN.md` | **①** getreuer Extrakt Anlage 1.24 (alle Jg) | QUELLE, 2026-07-26 gegen RIS verifiziert |
+| `lehrplan/infi-hwii/RIS.md` | Rechtsstand, Novellen, Stundentafel, Schichten-Vergleich | verweist auf GRG-SWP-RIS.md |
+| `lehrplan/infi-hwii/HWII_INFI.pdf` | **②** Schuladaption (≡ ①) | `pdftotext -layout` |
 | `lehrplan/METADATA.md` | Rechtsgrundlage, Stundentafel, Planungskonvention | — |
-| `lehrplan/2HWII/` | **③** Ist SJ 2025/26 (`jg2-einheiten.md`, historisch) + `2HWII.lehrplan.md` (①-Extrakt KM3/KM4) | nicht anfassen |
-| `lehrplan/4HWII/`, `lehrplan/5HWII/` | Klassen-Extrakte (① KM7/KM8 bzw. KM9) + Einheiten-Gerüste (ERP / IS) | Befüll-Anleitung in infi-lehrplan-text.md |
-| `lehrplan/kompetenzmodule/` | KM-Steckbriefe (km5/km6 voll; km3/km4 Gerüst+; km7/8/9 Gerüst) + Matrix-README | PMM-Stil |
-| `lehrplan/3HWII/` | Klassen-Drehscheibe SJ 2026/27 + Semesterpläne (je 13 UE + 2 PLF) | enthält SWP-Verbund-Doku |
+| `lehrplan/infi-hwit/` | Skelett (Anlage 1.28, HWIT) | Extraktion Task 2 ausstehend; primär im Fachgruppen-Repo |
+| `lehrplan/infi-hwii/2HWII/` | **③** Ist SJ 2025/26: `2HWII.lehrplan.md` (①-Extrakt KM3/KM4) | nicht anfassen |
+| `lehrplan/infi-hwii/4HWII/`, `lehrplan/infi-hwii/5HWII/` | Klassen-Extrakte (① KM7/KM8 bzw. KM9) | Befüll-Anleitung in LEHRPLAN.md |
+| `lehrplan/infi-hwii/kompetenzmodule/` | KM-Steckbriefe (km5/km6 voll; km3/km4 Gerüst+; km7/8/9 Gerüst) + Matrix-README | PMM-Stil |
+| `lehrplan/infi-hwii/3HWII/` | Klassen-Drehscheibe SJ 2026/27 | enthält SWP-Verbund-Doku |
+| `unterricht/HWII-INFI/` | Unterrichts-Ebene (Retrofit 2026-09-10): `jg2/jg4/jg5-einheiten.md`, `jg3-semesterplan-{ws,ss}.md` (je 13 UE + 2 PLF) | am Repo-Root |
 | `ARCHIV/2025-26-2ahwii/` | Unterrichtsmaterial SJ 2025/26 | archiviert |
 | `Leetcodes/`, `sqlite-datenbanken/`, `Unterlagen/`, `_Experimente/` | Übungen, DBs, Material, Spielwiese | unverändert |
 
@@ -44,7 +46,7 @@ Lehrplan-Doku (① offiziell / ② Schuladaption / ③ Unterricht) + PMM-Stil-Ja
 
 ## Data Flows (Doku)
 
-- RIS (NOR40217058) → `infi-lehrplan-text.md` (①-Extrakt) → Klassen-Extrakte `<KLASSE>/<KLASSE>.lehrplan.md` → Steckbriefe/Semesterpläne (KM-Bezug ①).
+- RIS (NOR40217058) → `lehrplan/infi-hwii/LEHRPLAN.md` (①-Extrakt) → Klassen-Extrakte `<KLASSE>/<KLASSE>.lehrplan.md` → Steckbriefe/Semesterpläne (KM-Bezug ①).
 - `HWII_INFI.pdf` (②) → Vergleich in `RIS.md` §6 (Befund: ≡ ①).
-- `jg2-einheiten.md` (③ Ist) → km3/km4 (rückgepflegt) → Vorwissen in km5 + `lehrplan/3HWII/`.
-- `lehrplan/3HWII/semesterplan-*.md` ↔ `GRG-SWP/3HWII/` (Sequenz-Sync des Verbunds; Cross-Repo-Links via GitHub-URL).
+- `unterricht/HWII-INFI/jg2-einheiten.md` (③ Ist) → km3/km4 (rückgepflegt) → Vorwissen in km5 + `lehrplan/infi-hwii/3HWII/`.
+- `unterricht/HWII-INFI/jg3-semesterplan-*.md` ↔ `GRG-SWP/unterricht/HWII-SWP/` (Sequenz-Sync des Verbunds; Cross-Repo-Links via GitHub-URL).

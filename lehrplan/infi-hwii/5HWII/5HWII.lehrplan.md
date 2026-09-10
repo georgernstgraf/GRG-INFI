@@ -2,7 +2,7 @@
 
 > **Klassen-Zuordnung:** `5HWII` (generisches Label) ↔ **V. Jahrgang** ↔ **Kompetenzmodul 9 (9. und 10. Semester)**.
 > **Rechtsgrundlage:** Anlage 1.24 zu BGBl. II Nr. 262/2015 idF BGBl. II Nr. 235/2019 — Höhere Lehranstalt für Wirtschaftsingenieure – Betriebsinformatik, Fach „Informatik und Informationssysteme".
-> **Quelle (①):** konsolidierte Fassung [NOR40217058](https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40217058/NOR40217058.html) — getreu extrahiert aus [`../infi-lehrplan-text.md`](../infi-lehrplan-text.md) (verifiziert 2026-07-26).
+> **Quelle (①):** konsolidierte Fassung [NOR40217058](https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40217058/NOR40217058.html) — getreu extrahiert aus [`../LEHRPLAN.md`](../LEHRPLAN.md) (verifiziert 2026-07-26).
 > **Extraktion:** 2026-09-07 · Rechtsstand ①: unverändert seit 2015 ([`../RIS.md`](../RIS.md)).
 
 > **Unterrichtsstand:** V. Jahrgang ist **noch nicht geplant** (Stub). Einheiten-Gerüst: [`jg5-einheiten.md`](jg5-einheiten.md); didaktischer Steckbrief: [`../kompetenzmodule/km9.md`](../kompetenzmodule/km9.md).

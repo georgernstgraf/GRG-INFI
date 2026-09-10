@@ -3,7 +3,7 @@
 Unterlagen, Übungen und Lösungen für den Informatik-Unterricht (Wirtschaftsingenieure – Betriebsinformatik) an der **HTL Spengergasse**.
 
 > Schuljahr 2025/26 (Klasse 2AHWII) ist archiviert unter [`ARCHIV/2025-26-2ahwii/`](ARCHIV/2025-26-2ahwii/).
-> Schuljahr 2026/27 (Klasse 3AHWII): Klassen-Drehscheibe + Semesterpläne unter [`lehrplan/3HWII/`](lehrplan/3HWII/), KM-Steckbriefe unter [`lehrplan/kompetenzmodule/`](lehrplan/kompetenzmodule/).
+> Schuljahr 2026/27 (Klasse 3AHWII): Klassen-Drehscheibe unter [`lehrplan/infi-hwii/3HWII/`](lehrplan/infi-hwii/3HWII/), Semesterpläne unter [`unterricht/HWII-INFI/`](unterricht/HWII-INFI/), KM-Steckbriefe unter [`lehrplan/infi-hwii/kompetenzmodule/`](lehrplan/infi-hwii/kompetenzmodule/).
 > Der offizielle Rahmenlehrplan und die Jahrgangs-Dokumente liegen unter [`lehrplan/`](lehrplan/).
 
 ---
@@ -38,8 +38,8 @@ Intensität werden von der Lehrperson beurteilt.
 
 - **Gegenstand:** Informatik und Informationssysteme – Datenbanken & SQL
 - **Klasse:** 3AHWII (3. Jahrgang, Abteilung Wirtschaftsingenieurwesen – Betriebsinformatik), SJ 2026/27
-- **Lehrperson:** Georg Graf (2 h/Woche) + Kollege (1 h/Woche) — Details: [`lehrplan/3HWII/README.md`](lehrplan/3HWII/README.md)
-- **Aktuelle Planung:** [`lehrplan/kompetenzmodule/km5.md`](lehrplan/kompetenzmodule/km5.md) · [`lehrplan/kompetenzmodule/km6.md`](lehrplan/kompetenzmodule/km6.md) · [`lehrplan/3HWII/semesterplan-ws.md`](lehrplan/3HWII/semesterplan-ws.md) · [`lehrplan/3HWII/semesterplan-ss.md`](lehrplan/3HWII/semesterplan-ss.md)
+- **Lehrperson:** Georg Graf (2 h/Woche) + Kollege (1 h/Woche) — Details: [`lehrplan/infi-hwii/3HWII/README.md`](lehrplan/infi-hwii/3HWII/README.md)
+- **Aktuelle Planung:** [`lehrplan/infi-hwii/kompetenzmodule/km5.md`](lehrplan/infi-hwii/kompetenzmodule/km5.md) · [`lehrplan/infi-hwii/kompetenzmodule/km6.md`](lehrplan/infi-hwii/kompetenzmodule/km6.md) · [`unterricht/HWII-INFI/jg3-semesterplan-ws.md`](unterricht/HWII-INFI/jg3-semesterplan-ws.md) · [`unterricht/HWII-INFI/jg3-semesterplan-ss.md`](unterricht/HWII-INFI/jg3-semesterplan-ss.md)
 
 ## Themen SJ 2025/26 (2AHWII, Archiv)
 
@@ -62,10 +62,10 @@ Eine detaillierte Aufschlüsselung findet sich im [Semesterplan](ARCHIV/2025-26-
 
 | Verzeichnis | Inhalt |
 |-------------|--------|
-| `lehrplan/3HWII/` | **SJ 2026/27:** Klassen-Drehscheibe 3AHWII inkl. SWP-Verbund-Doku + Semesterpläne (KM5/KM6, 13 UE + 2 PLF) |
-| `lehrplan/kompetenzmodule/` | Didaktische KM-Steckbriefe (km5/km6 voll; km3/km4 rückgepflegt; km7–km9 Gerüste) |
+| `lehrplan/infi-hwii/3HWII/` | **SJ 2026/27:** Klassen-Drehscheibe 3AHWII inkl. SWP-Verbund-Doku (Semesterpläne unter `unterricht/HWII-INFI/`) |
+| `lehrplan/infi-hwii/kompetenzmodule/` | Didaktische KM-Steckbriefe (km5/km6 voll; km3/km4 rückgepflegt; km7–km9 Gerüste) |
 | `ARCHIV/2025-26-2ahwii/` | Unterricht SJ 2025/26 (wöchentliche Ordner, Aufgaben, Lösungen, Hausübungen) – archiviert |
-| `lehrplan/` | Lehrplan-Werk (Betriebsinformatik): `infi-lehrplan-text.md` (①-Extrakt), RIS-Recherche, METADATA, Klassenordner `2HWII`–`5HWII` je mit `<KLASSE>.lehrplan.md`, KM-Steckbriefe |
+| `lehrplan/` | Lehrplan-Werk (Betriebsinformatik, Zweig HWII/Anlage 1.24): `infi-hwii/LEHRPLAN.md` (①-Extrakt), `infi-hwii/RIS.md`, `infi-hwii/HWII_INFI.pdf` (②), METADATA, Klassen-Extrakte `infi-hwii/2HWII`–`5HWII` je mit `<KLASSE>.lehrplan.md`, Skelett `infi-hwit/` (Anlage 1.28); Unterrichts-Ebene `unterricht/HWII-INFI/` (Einheiten + Semesterpläne) |
 | `docs/ai/` | Session-Dokumentation (HANDOFF, STATE) |
 | `Leetcodes/` | SQL-LeetCode-Lösungen (EASY, z. B. Combine Two Tables, Duplicate Emails) |
 | `Unterlagen/` | Lehrmaterial: Datenbank-Buch, ERD-PDFs, SQL-Injection-Demo, MS-Access-Archiv, SQL-Referenz |

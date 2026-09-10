@@ -3,7 +3,7 @@
 **Klasse/Semester:** 2HWII → 2AHWII, 3. Semester (WS, rückgepflegt SJ 2025/26)
 **Wochenstunden:** 2 (schulautonom; offiziell 3(3) — Georg allein)
 **Bereich:** Datenbanken
-**Konkrete Einheiten:** `../2HWII/jg2-einheiten.md` (Ist-Zustand aus dem
+**Konkrete Einheiten:** `../../unterricht/HWII-INFI/jg2-einheiten.md` (Ist-Zustand aus dem
 tatsächlich gehaltenen Unterricht) · Archiv: `ARCHIV/2025-26-2ahwii/`
 
 ## Worum geht es?
@@ -17,7 +17,7 @@ auflösen; Tabellen und Beziehungen in einem DB-System erstellen."
 **Besonderheit dieser Kohorte:** Der reale Verlauf mischte KM3- und KM4-Anteile
 (CRUD/Abfragen bereits ab Herbst, Modellierung/DDL verstärkt im Frühjahr) — inhaltlich
 alles abgedeckt, Sequenz weicht vom strikten Semester-Soll ab (Details:
-`../2HWII/jg2-einheiten.md`).
+`../../unterricht/HWII-INFI/jg2-einheiten.md`).
 
 ## Inhalte (Ist, SJ 2025/26)
 
