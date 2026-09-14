@@ -23,6 +23,21 @@ Domänenwahl): `lehrplan/infi-hwii/3HWII/README.md` → Offene Punkte bzw. `STAT
 
 ---
 
+## Task ab 2026-09-14 (optionale Erweiterung Server + Telegram-Bot) — **erledigt 2026-09-14**
+
+> **Erstellt:** 2026-09-14 · **Tracking:** Issue
+> [#4](https://github.com/georgernstgraf/GRG-INFI/issues/4).
+
+Im UE-Ordner `3ahwii/2026-09-15_agentic-coding-einstieg/` ergänzt:
+
+- `opencode-server-windows.md` — opencode als lokaler, passwortgeschützter Server
+  (`127.0.0.1:4096`), Autostart via Task Scheduler bzw. NSSM, Shell-Aliase `oc`/`ocr`
+  mit **`--dir`** (Pflicht beim Attach an einen geteilten Server).
+- `opencode-telegram-bot.md` — Bot bei @BotFather, Wizard/`.env`, Autostart, Befehle, Security.
+- UE-README: Abschnitt „Für Eifrige: eigener Server + Telegram-Bot (optional)" + Links.
+
+---
+
 ## Tasks ab 2026-09-14 (aus GRG-SWP) — **erledigt 2026-09-14**
 
 > **Erstellt:** 2026-09-14 (aus GRG-SWP heraus, Spiegel-Session-Auftrag gemäß

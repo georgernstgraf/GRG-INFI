@@ -119,6 +119,14 @@ Als optionaler Semester-/Jahresstart das eigene (private) Windows entrümpeln �
 **von opencode gesteuert**, mit Sicherheitsnetz und Undo:
 [`../windows-debloat.md`](../windows-debloat.md).
 
+## Für Eifrige: eigener Server + Telegram-Bot (optional)
+
+- **opencode als lokaler Server** (Windows-Dienst, passwortgeschützt) und
+  Shell-Aliase, die mit `--dir` im aktuellen Projektordner andocken:
+  [`opencode-server-windows.md`](opencode-server-windows.md)
+- **opencode-Telegram-Bot:** den Agenten vom Handy steuern (nur deine User-ID,
+  keine offenen Ports): [`opencode-telegram-bot.md`](opencode-telegram-bot.md)
+
 ## Wenn du mehr wissen willst (optional)
 
 - opencode-Dokumentation: <https://opencode.ai/docs/>

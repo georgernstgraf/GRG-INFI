@@ -8,7 +8,9 @@ Kohorten-Ordner **`3ahwii/`** für SJ 2026/27 etabliert (Issue **#2**): Hub, Koh
 (`semesterplan-ws.md`, Vollkopie des Gerüsts) und die **Agentic-Coding-Sondereinheit**
 (beide Gruppen, Schulübung, HÜ nur Gruppe X) aus `GRG-SWP` herübergezogen; `unterricht/HWII-INFI/`
 bleibt allgemeines Gerüst (ADR 2026-09-14). Eigenes Folge-Issue **#3** für einen regulären
-lehrplan-Skill-Lauf inkl. Novellen-Check.
+lehrplan-Skill-Lauf inkl. Novellen-Check. Zusätzlich optionale „Für Eifrige"-Erweiterung im
+UE-Ordner (Issue **#4**): opencode als lokaler Server (Windows) + Shell-Aliase (`--dir`) und
+Telegram-Bot.
 
 Lehrplan-Werk liegt im **Skill-Standard-Layout** unter `lehrplan/` (Migration 2026-09-07 /
 Retrofit 2026-09-10, Zweig-Ordner `infi-hwii/` + Unterrichts-Ebene `unterricht/HWII-INFI/`).
@@ -31,6 +33,9 @@ Nächster Fokus: operative Vorbereitung des WS 2026/27 (Kollegen-Absprache, Term
       SWP-`METADATA.md`/`HANDOFF.md` aktualisiert
 - [x] `lehrplan-annotator`-Subagent registriert (`~/.config/opencode/agents`-Symlink),
       auf Kopiervorlage getestet, für die Annotations-Läufe eingesetzt; `HANDOFF.md` fortgeschrieben
+- [x] optionale „Für Eifrige"-Erweiterung (Issue **#4**): `opencode-server-windows.md` (Dienst
+      NSSM/Task Scheduler, Passwort, Aliase `oc`/`ocr` mit `--dir`) + `opencode-telegram-bot.md`
+      (Anleitung), verlinkt aus dem UE-README
 
 ## Completed (previous cycle, 2026-09-07)
 
