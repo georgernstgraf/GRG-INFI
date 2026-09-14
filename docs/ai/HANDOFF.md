@@ -9,10 +9,11 @@ Domänenwahl): `lehrplan/infi-hwii/3HWII/README.md` → Offene Punkte bzw. `STAT
 
 ---
 
-## Neue offene Tasks (ab 2026-09-14, aus GRG-SWP)
+## Tasks ab 2026-09-14 (aus GRG-SWP) — **erledigt 2026-09-14**
 
 > **Erstellt:** 2026-09-14 (aus GRG-SWP heraus, Spiegel-Session-Auftrag gemäß
 > `GRG-SWP/docs/ai/HANDOFF.md` Task 1) · **Tracking:** dieses File (Issues deaktiviert)
+> **Abschluss:** 2026-09-14 — siehe Fortschritt unten und `STATE.md`.
 
 ### Aufgabe 1 (sofort): lehrplan-Skill ausführen — Aufgabe A + Konformitäts-Check
 
@@ -63,8 +64,21 @@ löschen (SWP-HANDOFF vermerkt das).
 
 ### Fortschritt
 
-- [ ] lehrplan-Skill Aufgabe A ausgeführt (Befundbericht inkl. Erläuterungs-Ebene-Lücke)
-- [ ] Erläuterungs-Ebene in `lehrplan/infi-hwii/LEHRPLAN.md` (Jg I–V)
-- [ ] Erläuterungs-Ebene in den Klassenextrakten (`2HWII`–`5HWII`, `infi-hwit` analog prüfen)
-- [ ] `HWII_INFI.pdf`-Duplikat in GRG-SWP entfernt (nach Georg-Abstimmung)
-- [ ] Rückmeldung an GRG-SWP (HANDOFF dort aktualisieren)
+- [x] **lehrplan-Skill Aufgabe A ausgeführt** (2026-09-14): Konformitäts-Check — Layout
+      konform; Hauptbefund **Erläuterungs-Ebene fehlte komplett** (0× `**Überblick:**`/
+      `**Erläuterung:**`); Zusatzbefund **11 gebrochene Relativ-Links** aus dem Retrofit 2026-09-10
+- [x] **Erläuterungs-Ebene in `lehrplan/infi-hwii/LEHRPLAN.md` (Jg I–V)** — 8 KM-Überblicke,
+      46 Erläuterungen (25 Lernziel + 21 Lehrstoff), rein additiv; Kopf-Legende ergänzt
+- [x] **Erläuterungs-Ebene in den Klassenextrakten** `2HWII` (2+10), `3HWII` (2+6),
+      `4HWII` (2+7), `5HWII` (2+14); `infi-hwit` ist Skelett-README → nichts zu annotieren
+- [x] **11 gebrochene Links repariert** (METADATA/LEHRPLAN/RIS/Klassenextrakte →
+      `../METADATA.md`, `infi-hwii/RIS.md`, `unterricht/HWII-INFI/…`); Link-Check = 0 gebrochen
+- [x] **`HWII_INFI.pdf`-Duplikat in GRG-SWP entfernt** (byte-identisch, `git rm`;
+      SWP-`METADATA.md` „Duplikat bereinigt 2026-09-14")
+- [x] **Rückmeldung an GRG-SWP** (dortiger HANDOFF Task 1 abgehakt)
+
+> **Werkzeug:** Die Erläuterungs-Ebene wurde mit dem `lehrplan-annotator`-Subagent
+> (`opencode-go/glm-5.3`, non-flash) erzeugt — vorab auf einer Kopiervorlage
+> (`/tmp/opencode/annotator-test/`) getestet; `~/.config/opencode/agents`-Symlink neu
+> angelegt. Verifikation je Datei: `git diff --numstat` = 0 gelöschte Zeilen, Umlaute
+> UTF-8, keine kyrillischen Verwechsler.

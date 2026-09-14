@@ -1,15 +1,28 @@
 # Project State
 
-Current status as of 2026-09-07.
+Current status as of 2026-09-14.
 
 ## Current Focus
 
-Lehrplan-Werk liegt im **Skill-Standard-Layout** unter `lehrplan/` (Migration 2026-09-07,
-aus der alten Struktur `docs/lehrplan/` + Root-Klassenordner). Lehrplan-Werk SJ 2026/27 für
-INFI steht (Issue [GRG-INFI#1](https://github.com/georgernstgraf/GRG-INFI/issues/1)).
+Lehrplan-Werk liegt im **Skill-Standard-Layout** unter `lehrplan/` (Migration 2026-09-07 /
+Retrofit 2026-09-10, Zweig-Ordner `infi-hwii/` + Unterrichts-Ebene `unterricht/HWII-INFI/`).
+Die **Erläuterungs-Ebene ist vollständig** (2026-09-14, via `lehrplan-annotator`, `glm-5.3`):
+`LEHRPLAN.md` + alle Klassenextrakte annotiert, 11 Retrofit-Links repariert, SWP-PDF-Duplikat
+entfernt. Lehrplan-Werk SJ 2026/27 für INFI steht (Issue
+[GRG-INFI#1](https://github.com/georgernstgraf/GRG-INFI/issues/1)).
 Nächster Fokus: operative Vorbereitung des WS 2026/27 (Kollegen-Absprache, Termine, Material).
 
-## Completed (this cycle)
+## Completed (this cycle, 2026-09-14)
+
+- [x] lehrplan-Skill Aufgabe A (Konformitäts-Check) + Aufgabe 2 (Erläuterungs-Ebene) —
+      `LEHRPLAN.md` (8 Überblicke, 46 Erläuterungen) + `2HWII`/`3HWII`/`4HWII`/`5HWII`
+- [x] 11 beim Retrofit gebrochene Relativ-Links repariert (Link-Check = 0)
+- [x] `HWII_INFI.pdf`-Duplikat in `GRG-SWP/lehrplan/swp-hwii/` entfernt (byte-identisch);
+      SWP-`METADATA.md`/`HANDOFF.md` aktualisiert
+- [x] `lehrplan-annotator`-Subagent registriert (`~/.config/opencode/agents`-Symlink),
+      auf Kopiervorlage getestet, für die Annotations-Läufe eingesetzt; `HANDOFF.md` fortgeschrieben
+
+## Completed (previous cycle, 2026-09-07)
 
 - [x] **Vollmigration auf Standard-Layout** (2026-09-07): `lehrplan/` enthält ①-Extrakt
       (`LEHRPLAN.md`), RIS, METADATA, Schuladaption-PDF, Klassenordner

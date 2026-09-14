@@ -60,7 +60,7 @@ Jg III **+1**, Jg II **−1**, Jg V **−2** gegenüber der offiziellen Stundung
 Lehrstoffverteilung (Anlage 1.24) ist davon nicht berührt; die Umstundung ist über die
 schulautonome Klausel (§5) gedeckt.
 
-> **Korrektur 2026-07-26:** [`METADATA.md`](METADATA.md) nannte bisher fälschlich
+> **Korrektur 2026-07-26:** [`METADATA.md`](../METADATA.md) nannte bisher fälschlich
 > *2(2)/2(2)/2(2)/2(2)/4(4)* als RIS-Werte — richtig ist **2(2)/3(3)/2(2)/2(2)/6(4)** (dort
 > inzwischen berichtigt).
 
@@ -115,7 +115,7 @@ Absolventenprofil (III. Abschnitt der Anlage 1.24), Bereich Datenbanken:
 
 ## 8. Konsequenzen für dieses Repo
 
-1. [`METADATA.md`](METADATA.md) führt die Rechtsgrundlage als **„BGBl. II Nr. 262/2015 idF
+1. [`METADATA.md`](../METADATA.md) führt die Rechtsgrundlage als **„BGBl. II Nr. 262/2015 idF
    BGBl. II Nr. 235/2019"** und die korrekte RIS-Stundentafel (§4).
 2. [`LEHRPLAN.md`](LEHRPLAN.md) ist getreuer ①-Extrakt; Schuladaption ② liegt als
    [`HWII_INFI.pdf`](HWII_INFI.pdf) bei; der reale Unterricht (③) ist in

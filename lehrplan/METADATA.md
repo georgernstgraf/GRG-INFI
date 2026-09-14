@@ -40,7 +40,7 @@ Weitere Quellen:
 
 Quelle: https://www.spengergasse.at/?page_id=2085 (schulautonome Stundentafel „Betriebsinformatik").
 
-> Hinweis: Die Wochenstunden betragen für IuI in der RIS-Stundentafel *2(2)/3(3)/2(2)/2(2)/6(4)* — Summe 15 (Werte in Klammern = Übungsanteile, Fußnote 4; korrigiert am 2026-07-26, zuvor fälschlich 2(2)/2(2)/2(2)/2(2)/4(4)). Die Spengergasse weist schulautonom **2/2/3/2/4 = 13** aus (III +1, II −1, V −2) und führt die Übungsanteile integriert. Die inhaltliche Lehrstoffverteilung (Anlage 1.24) ist davon nicht berührt. Details: [`RIS.md`](RIS.md) §4.
+> Hinweis: Die Wochenstunden betragen für IuI in der RIS-Stundentafel *2(2)/3(3)/2(2)/2(2)/6(4)* — Summe 15 (Werte in Klammern = Übungsanteile, Fußnote 4; korrigiert am 2026-07-26, zuvor fälschlich 2(2)/2(2)/2(2)/2(2)/4(4)). Die Spengergasse weist schulautonom **2/2/3/2/4 = 13** aus (III +1, II −1, V −2) und führt die Übungsanteile integriert. Die inhaltliche Lehrstoffverteilung (Anlage 1.24) ist davon nicht berührt. Details: [`RIS.md`](infi-hwii/RIS.md) §4.
 
 ## Kompetenzmodule und Bereiche (Fach: Informatik und Informationssysteme)
 
@@ -73,7 +73,7 @@ Quelle: https://www.spengergasse.at/?page_id=2085 (schulautonome Stundentafel �
 | 01.09.2019 | BGBl. II Nr. 235/2019 – Deutschförderklasse-Stundentafel (Anhang) | ja, aber nur Anhang — INFI-Lehrstoff unverändert |
 
 > Übrige Novellen (55/2017, 250/2021, 383/2021, 368/2022, 2/2023) berühren die Anlage 1.24
-> **nicht** — ausführliche Prüftabelle: [`RIS.md`](RIS.md) §3. Nächster Re-Check: Sommer 2027.
+> **nicht** — ausführliche Prüftabelle: [`RIS.md`](infi-hwii/RIS.md) §3. Nächster Re-Check: Sommer 2027.
 
 **RIS-Status abgefragt am 2026-09-07:** NOR-Dokument der Anlage 1.24 ([NOR40217058](https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40217058/NOR40217058.html)) meldet „BGBl. II Nr. 262/2015 **zuletzt geändert durch** BGBl. II Nr. 235/2019" — deckt sich exakt mit der Tabelle oben; **keine neue Novelle**.
 
