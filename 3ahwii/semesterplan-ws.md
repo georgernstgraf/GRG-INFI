@@ -1,20 +1,42 @@
-# Semesterplan 3HWII INFI — Wintersemester 2026/27
+# Semesterplan 3HWII INFI — Wintersemester 2026/27 (Kohorten-Fassung 3AHWII)
+
+> **Konkretisierung der Kohorte 3AHWII.** Gerüst/Vorlage:
+> [`../unterricht/HWII-INFI/jg3-semesterplan-ws.md`](../unterricht/HWII-INFI/jg3-semesterplan-ws.md).
+> Das Gerüst bleibt allgemein und wird für Kohorten-Abweichungen **nicht** angefasst;
+> Abweichungen werden ausschließlich hier gepflegt.
 
 Informatik und Informationssysteme (INFI) — KM5
-(BGBl. II Nr. 262/2015 idF 235/2019, Anlage 1.24; Schichten: `../../lehrplan/infi-hwii/LEHRPLAN.md` +
-`../../lehrplan/infi-hwii/RIS.md`)
+(BGBl. II Nr. 262/2015 idF 235/2019, Anlage 1.24; Schichten: `../lehrplan/infi-hwii/LEHRPLAN.md` +
+`../lehrplan/infi-hwii/RIS.md`)
 
-**Zeitmodell:** 13 echte UE (1 DS/Woche à 2 h = Georgs Anteil am 2+1-Split) + 2 PLF-DS.
-Offiziell 18 Schulwochen — Ausfälle durch Feiertage/Krankheit sind einkalkuliert;
-bei Glücksfall Bonus-UE (siehe unten).
+**Zeitmodell:** 13 echte UE (1 DS/Woche à 2 h = Georgs Anteil am 2+1-Split) + 2 PLF-DS,
+**zuzüglich der Sondereinheit „Agentic Coding"** zu Semesterbeginn (beide Gruppen
+gemeinsam, außerhalb der 13+2-Zählung). Offiziell 18 Schulwochen — Ausfälle durch
+Feiertage/Krankheit sind einkalkuliert; bei Glücksfall Bonus-UE (siehe unten).
 **Werkzeug:** SQLite (`sqlite3`, `node:sqlite` via Deno) · PostgreSQL via Docker (DCL-Demo, UE 11)
+· Agentic Coding mit **opencode** (Node/npm nur als Host)
 **Didaktik:** abfrage-zentriert, Musik-Streaming-DB als Dauerbeispiel (aus Jg II)
-**KM-Steckbrief:** `../../lehrplan/infi-hwii/kompetenzmodule/km5.md` · **Verbund mit SWP:** `../../lehrplan/infi-hwii/3HWII/README.md`
+**KM-Steckbrief:** `../lehrplan/infi-hwii/kompetenzmodule/km5.md` · **Verbund mit SWP:** `../lehrplan/infi-hwii/3HWII/README.md`
 
 > **Vorwissen aus Jg II (KM3/KM4):** CRUD, JOIN/Self-JOIN, GROUP BY/HAVING, DDL/Constraints,
-> N:M/Zwischentabelle, ER (bigER), Prisma-Grundlagen. Details: `jg2-einheiten.md`.
+> N:M/Zwischentabelle, ER (bigER), Prisma-Grundlagen. Details: `../unterricht/HWII-INFI/jg2-einheiten.md`.
 > **Wichtigste Lücke:** Normalformen (① KM3) nur gestreift → UE 2 schließt sie.
 > **UE 1 startet mit Diagnostik-Rep** (ohne eigene Reserve-DS — Einstieg ist Teil der UE).
+
+---
+
+## Sondereinheit: Agentic Coding – Einstieg (kombiniert, beide Gruppen)
+
+> Auftakt des Semesters. Wird von **beiden Gruppen gemeinsam** gehalten und steht
+> **außerhalb** der 13-UE-Zählung (+2 PLF-DS) — das Zeitmodell bleibt unangetastet.
+> Inhaltlich hat Agentic Coding hier **Vorrang vor SQL-Detailtiefe**.
+
+| UE | Thema | KM-Bezug (①) | Inhalt / HÜ |
+|----|-------|--------------|-------------|
+| S | **Agentic Coding mit opencode – Einstieg** | *Enrichment* (Werkzeug-/Berufskompetenz) | **Schulübung**: Setup Windows/winget (Node LTS → `opencode` → Git/gh/coreutils), freier Provider via `/connect`, erster Agent-Loop (Plan/Build, `@`, `/init`, `/undo`). Nicht Fertiggestelltes ist **HÜ nur für die X-Gruppe**. |
+
+Unterlagen: [`2026-09-15_agentic-coding-einstieg/`](2026-09-15_agentic-coding-einstieg/) ·
+Optional: [`windows-debloat.md`](windows-debloat.md) (Semester-/Jahresstart, von opencode gesteuert)
 
 ---
 
@@ -71,13 +93,14 @@ bei Glücksfall Bonus-UE (siehe unten).
 ## Kollegen-Parallelnotiz (1 h/Woche, Vorschlag — TBD)
 
 - **UE 12 (Import/Export, Archivierung)** ist der natürliche Kandidat für die Kollegen-Stunde
-  (Betriebssicht, kein Abfrage-Kern) — Absprache: `../../lehrplan/infi-hwii/3HWII/README.md` → Offene Punkte.
+  (Betriebssicht, kein Abfrage-Kern) — Absprache: `../lehrplan/infi-hwii/3HWII/README.md` → Offene Punkte.
 - Übrige Kollegen-Stunden: Vertiefung/Übung parallel zum jeweiligen UE-Stoff.
 
 ---
 
-**Schwerpunkte:** 4 UE komplexe Abfragen (Subqueries/CTEs/Views) · 2 UE Fundament (Rep, Normalformen) ·
-4 UE Schema/Optimierung/Konsistenz/Zugriff · 1 UE Betrieb · 2 UE Workshop+Projekt
+**Schwerpunkte:** Sondereinheit Agentic Coding (Auftakt) · 4 UE komplexe Abfragen (Subqueries/CTEs/Views) ·
+2 UE Fundament (Rep, Normalformen) · 4 UE Schema/Optimierung/Konsistenz/Zugriff · 1 UE Betrieb ·
+2 UE Workshop+Projekt
 **SWP-Synchronisation:** INFI bleibt SQL-nah; SWP läuft DB-frei (OOP). Ab ~Dez (SWP UE 12)
 gemeinsame Beispieldomäne — INFI UE 13 kann sie im Mini-Projekt aufgreifen. Details:
-`../../lehrplan/infi-hwii/3HWII/README.md` → Sequenz-Abstimmung.
+`../lehrplan/infi-hwii/3HWII/README.md` → Sequenz-Abstimmung.

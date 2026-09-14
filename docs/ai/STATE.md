@@ -4,6 +4,12 @@ Current status as of 2026-09-14.
 
 ## Current Focus
 
+Kohorten-Ordner **`3ahwii/`** für SJ 2026/27 etabliert (Issue **#2**): Hub, Kohorten-Semesterplan
+(`semesterplan-ws.md`, Vollkopie des Gerüsts) und die **Agentic-Coding-Sondereinheit**
+(beide Gruppen, Schulübung, HÜ nur Gruppe X) aus `GRG-SWP` herübergezogen; `unterricht/HWII-INFI/`
+bleibt allgemeines Gerüst (ADR 2026-09-14). Eigenes Folge-Issue **#3** für einen regulären
+lehrplan-Skill-Lauf inkl. Novellen-Check.
+
 Lehrplan-Werk liegt im **Skill-Standard-Layout** unter `lehrplan/` (Migration 2026-09-07 /
 Retrofit 2026-09-10, Zweig-Ordner `infi-hwii/` + Unterrichts-Ebene `unterricht/HWII-INFI/`).
 Die **Erläuterungs-Ebene ist vollständig** (2026-09-14, via `lehrplan-annotator`, `glm-5.3`):
@@ -14,6 +20,10 @@ Nächster Fokus: operative Vorbereitung des WS 2026/27 (Kollegen-Absprache, Term
 
 ## Completed (this cycle, 2026-09-14)
 
+- [x] Kohorten-Ordner `3ahwii/`: Hub `README.md` + `semesterplan-ws.md` (Vollkopie des Gerüsts + Sondereinheit vor UE 1)
+- [x] Agentic-Coding-Sondereinheit `3ahwii/2026-09-15_agentic-coding-einstieg/` (INFI-angepasst) + `3ahwii/windows-debloat.md`
+- [x] veraltete Pfad-Referenzen in `unterricht/HWII-INFI/jg3-semesterplan-{ws,ss}.md` korrigiert (keine inhaltliche Änderung)
+- [x] `docs/ai/` (ARCHITECTURE/DECISIONS-ADR/STATE/HANDOFF) + `README.md`-Strukturzeile
 - [x] lehrplan-Skill Aufgabe A (Konformitäts-Check) + Aufgabe 2 (Erläuterungs-Ebene) —
       `LEHRPLAN.md` (8 Überblicke, 46 Erläuterungen) + `2HWII`/`3HWII`/`4HWII`/`5HWII`
 - [x] 11 beim Retrofit gebrochene Relativ-Links repariert (Link-Check = 0)
@@ -47,6 +57,8 @@ Nächster Fokus: operative Vorbereitung des WS 2026/27 (Kollegen-Absprache, Term
 
 ## Pending
 
+- [ ] Sondereinheit am 2026-09-15 halten; HÜ-Eingang **nur Gruppe X** prüfen
+- [ ] lehrplan-Skill regulär in INFI anwenden / Novellen-Check — Issue **#3**
 - [ ] Kollegen-Thema abstimmen (Vorschlag: `lehrplan/infi-hwii/3HWII/README.md` → Kollegen-Soll) — **menschlich**,
       vor WS-Start
 - [ ] PLF-Termine nach Schulkalender in `unterricht/HWII-INFI/jg3-semesterplan-*.md` eintragen

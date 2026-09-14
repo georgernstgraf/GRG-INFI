@@ -75,3 +75,17 @@ Superseded decisions are relocated to HISTORY.md.
 - **Tradeoff**: Cross-Repo-Links aus GRG-SWP auf `GRG-INFI/3HWII/…` brechen — dort
   angepasst (SR 2026-09-07). Novellen-Check am 2026-09-07 live bestätigt (262/2015
   „zuletzt geändert durch“ 235/2019); Skill-Mapping-Tabelle um Zeile INFI→HWII ergänzt.
+
+## 2026-09-14: Kohorten-Ordner konkretisiert, `unterricht/` bleibt allgemeines Gerüst
+
+- **Choice**: `unterricht/HWII-INFI/` ist die **allgemeine Planung** (Gerüst) und wird für
+  Kohorten-Abweichungen **nicht** angefasst. Die laufende Kohorte SJ 2026/27 erhält den
+  eigenen Ordner `3ahwii/` mit Hub (`README.md`), Kohorten-Semesterplan
+  (`semesterplan-ws.md`, Vollkopie des Gerüsts) und UE-Ordnern; Abweichungen (z. B. die
+  Sondereinheit „Agentic Coding" vor UE 1) werden **nur hier** gepflegt.
+- **Reason**: Trennung von allgemeiner, kohortenübergreifender Planung und dem tatsächlich
+  gehaltenen Plan der Klasse; verhindert, dass Einzelklassen-Änderungen das Gerüst verändern.
+  Spiegel des gleichnamigen SWP-ADR (`GRG-SWP/docs/ai/DECISIONS.md`).
+- **Considered**: Abweichungen direkt im Gerüst `unterricht/HWII-INFI/`; nur ein
+  Delta-Dokument statt Vollkopie.
+- **Tradeoff**: Zweite Plan-Datei pro Kohorte (Duplikat), bewusst als lebende Kohorten-Fassung.

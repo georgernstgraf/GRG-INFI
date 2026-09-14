@@ -3,7 +3,7 @@
 Unterlagen, Übungen und Lösungen für den Informatik-Unterricht (Wirtschaftsingenieure – Betriebsinformatik) an der **HTL Spengergasse**.
 
 > Schuljahr 2025/26 (Klasse 2AHWII) ist archiviert unter [`ARCHIV/2025-26-2ahwii/`](ARCHIV/2025-26-2ahwii/).
-> Schuljahr 2026/27 (Klasse 3AHWII): Klassen-Drehscheibe unter [`lehrplan/infi-hwii/3HWII/`](lehrplan/infi-hwii/3HWII/), Semesterpläne unter [`unterricht/HWII-INFI/`](unterricht/HWII-INFI/), KM-Steckbriefe unter [`lehrplan/infi-hwii/kompetenzmodule/`](lehrplan/infi-hwii/kompetenzmodule/).
+> Schuljahr 2026/27 (Klasse 3AHWII): Kohorten-Ordner [`3ahwii/`](3ahwii/) (konkrete Planung/UEs), Klassen-Drehscheibe unter [`lehrplan/infi-hwii/3HWII/`](lehrplan/infi-hwii/3HWII/), allgemeine Semesterpläne unter [`unterricht/HWII-INFI/`](unterricht/HWII-INFI/), KM-Steckbriefe unter [`lehrplan/infi-hwii/kompetenzmodule/`](lehrplan/infi-hwii/kompetenzmodule/).
 > Der offizielle Rahmenlehrplan und die Jahrgangs-Dokumente liegen unter [`lehrplan/`](lehrplan/).
 
 ---
@@ -63,6 +63,7 @@ Eine detaillierte Aufschlüsselung findet sich im [Semesterplan](ARCHIV/2025-26-
 | Verzeichnis | Inhalt |
 |-------------|--------|
 | `lehrplan/infi-hwii/3HWII/` | **SJ 2026/27:** Klassen-Drehscheibe 3AHWII inkl. SWP-Verbund-Doku (Semesterpläne unter `unterricht/HWII-INFI/`) |
+| `3ahwii/` | **SJ 2026/27:** Kohorten-Ordner (Hub, Kohorten-Semesterplan, UE-Ordner) — allgemeine Planung bleibt unter `unterricht/HWII-INFI/` |
 | `lehrplan/infi-hwii/kompetenzmodule/` | Didaktische KM-Steckbriefe (km5/km6 voll; km3/km4 rückgepflegt; km7–km9 Gerüste) |
 | `ARCHIV/2025-26-2ahwii/` | Unterricht SJ 2025/26 (wöchentliche Ordner, Aufgaben, Lösungen, Hausübungen) – archiviert |
 | `lehrplan/` | Lehrplan-Werk (Betriebsinformatik, Zweig HWII/Anlage 1.24): `infi-hwii/LEHRPLAN.md` (①-Extrakt), `infi-hwii/RIS.md`, `infi-hwii/HWII_INFI.pdf` (②), METADATA, Klassen-Extrakte `infi-hwii/2HWII`–`5HWII` je mit `<KLASSE>.lehrplan.md`, Skelett `infi-hwit/` (Anlage 1.28); Unterrichts-Ebene `unterricht/HWII-INFI/` (Einheiten + Semesterpläne) |

@@ -9,6 +9,20 @@ Domänenwahl): `lehrplan/infi-hwii/3HWII/README.md` → Offene Punkte bzw. `STAT
 
 ---
 
+## Tasks ab 2026-09-14 (Agentic Coding / Kohorten-Ordner) — **offen**
+
+> **Erstellt:** 2026-09-14 (aus GRG-SWP heraus) · **Tracking:** Issues
+> [#2](https://github.com/georgernstgraf/GRG-INFI/issues/2) (Move + Kohorten-Ordner) und
+> [#3](https://github.com/georgernstgraf/GRG-INFI/issues/3) (lehrplan-Skill).
+
+1. [ ] **Sondereinheit 2026-09-15 halten** (beide Gruppen, INFI-Unterricht) —
+   `3ahwii/2026-09-15_agentic-coding-einstieg/README.md`; **Schulübung**, HÜ-Rest **nur Gruppe X**
+   (opencode installiert, Provider verbunden, `AGENTS.md` committet). Optional:
+   `3ahwii/windows-debloat.md` (privat, von opencode gesteuert).
+2. [ ] **lehrplan-Skill in INFI anwenden / Novellen-Check** — Issue **#3** (großer Chunk).
+
+---
+
 ## Tasks ab 2026-09-14 (aus GRG-SWP) — **erledigt 2026-09-14**
 
 > **Erstellt:** 2026-09-14 (aus GRG-SWP heraus, Spiegel-Session-Auftrag gemäß

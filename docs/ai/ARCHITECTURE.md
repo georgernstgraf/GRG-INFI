@@ -8,7 +8,8 @@ Overwritten when structural changes occur during a session.
 GRG-INFI ist ein Unterrichts-Repo (HTL Spengergasse, WII–Betriebsinformatik, Fach INFI).
 Kein Software-System — die „Architektur" ist die **Doku-Landschaft**: dreischichtige
 Lehrplan-Doku (① offiziell / ② Schuladaption / ③ Unterricht) + PMM-Stil-Jahrgangsplanung
-(KM-Steckbriefe + Klassenordner unter `lehrplan/`) + Session-Wissen (`docs/ai/`).
+(KM-Steckbriefe + Klassenordner unter `lehrplan/`) + Unterrichts-Ebene (allgemeines Gerüst
+`unterricht/HWII-INFI/`, konkrete Kohorten-Ordner wie `3ahwii/`) + Session-Wissen (`docs/ai/`).
 
 > **2026-09-07 — Standard-Layout-Migration:** Das Lehrplan-Werk liegt seit 2026-09-07 im
 > Skill-Standard-Layout unter `lehrplan/` (zuvor: `docs/lehrplan/`, Root-`3HWII/`,
@@ -27,7 +28,8 @@ Lehrplan-Doku (① offiziell / ② Schuladaption / ③ Unterricht) + PMM-Stil-Ja
 | `lehrplan/infi-hwii/4HWII/`, `lehrplan/infi-hwii/5HWII/` | Klassen-Extrakte (① KM7/KM8 bzw. KM9) | Befüll-Anleitung in LEHRPLAN.md |
 | `lehrplan/infi-hwii/kompetenzmodule/` | KM-Steckbriefe (km5/km6 voll; km3/km4 Gerüst+; km7/8/9 Gerüst) + Matrix-README | PMM-Stil |
 | `lehrplan/infi-hwii/3HWII/` | Klassen-Drehscheibe SJ 2026/27 | enthält SWP-Verbund-Doku |
-| `unterricht/HWII-INFI/` | Unterrichts-Ebene (Retrofit 2026-09-10): `jg2/jg4/jg5-einheiten.md`, `jg3-semesterplan-{ws,ss}.md` (je 13 UE + 2 PLF) | am Repo-Root |
+| `unterricht/HWII-INFI/` | **Allgemeine Planung/Gerüst** (Retrofit 2026-09-10): `jg2/jg4/jg5-einheiten.md`, `jg3-semesterplan-{ws,ss}.md` (je 13 UE + 2 PLF) | am Repo-Root; für Kohorten-Abweichungen **nicht** anfassen |
+| `3ahwii/` | **Kohorten-Ordner SJ 2026/27** (konkrete Klasse): Hub `README.md`, Kohorten-Semesterplan `semesterplan-ws.md` (Vollkopie des Gerüsts + Abweichungen), UE-Ordner `YYYY-MM-DD_thema/` | konkretisiert `unterricht/HWII-INFI/` (ADR 2026-09-14) |
 | `ARCHIV/2025-26-2ahwii/` | Unterrichtsmaterial SJ 2025/26 | archiviert |
 | `Leetcodes/`, `sqlite-datenbanken/`, `Unterlagen/`, `_Experimente/` | Übungen, DBs, Material, Spielwiese | unverändert |
 
@@ -50,3 +52,5 @@ Lehrplan-Doku (① offiziell / ② Schuladaption / ③ Unterricht) + PMM-Stil-Ja
 - `HWII_INFI.pdf` (②) → Vergleich in `RIS.md` §6 (Befund: ≡ ①).
 - `unterricht/HWII-INFI/jg2-einheiten.md` (③ Ist) → km3/km4 (rückgepflegt) → Vorwissen in km5 + `lehrplan/infi-hwii/3HWII/`.
 - `unterricht/HWII-INFI/jg3-semesterplan-*.md` ↔ `GRG-SWP/unterricht/HWII-SWP/` (Sequenz-Sync des Verbunds; Cross-Repo-Links via GitHub-URL).
+- `3ahwii/semesterplan-ws.md` → **Vollkopie/Konkretisierung** von `unterricht/HWII-INFI/jg3-semesterplan-ws.md`; Kohorten-Abweichungen (z. B. Sondereinheit Agentic Coding) nur hier.
+- `3ahwii/README.md` → Kohorten-Hub: UE-Übersicht, Kohorten-Semesterplan, Log; Schwester-Hub `GRG-SWP/3ahwii/`.

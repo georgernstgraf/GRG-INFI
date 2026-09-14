@@ -1,0 +1,45 @@
+# 3AHWII – INFI (SJ 2026/27)
+
+Kohorten-Ordner der **3AHWII** für das Fach **INFI** (HTL Spengergasse,
+WII–Betriebsinformatik), Schuljahr 2026/27.
+
+**Stack:** SQLite (`sqlite3`, `node:sqlite`) · Deno/TypeScript · Prisma ·
+PostgreSQL via Docker.
+
+> **Konkrete Kohorten-Fassung.** Die **allgemeine Planung** liegt unter
+> [`../unterricht/HWII-INFI/`](../unterricht/HWII-INFI/); die Klassen-Drehscheibe
+> unter [`../lehrplan/infi-hwii/3HWII/`](../lehrplan/infi-hwii/3HWII/).
+> Konkretisierungen und Abweichungen dieser Kohorte werden **hier** gepflegt –
+> `unterricht/` bleibt unangetastet.
+
+## Semesterplan
+
+- **Wintersemester 2026/27:** [`semesterplan-ws.md`](semesterplan-ws.md) –
+  Kohorten-Fassung, konkretisiert aus
+  [`../unterricht/HWII-INFI/jg3-semesterplan-ws.md`](../unterricht/HWII-INFI/jg3-semesterplan-ws.md).
+
+## Unterrichtseinheiten
+
+| Datum | UE | Thema |
+|-------|----|-------|
+| 2026-09-15 | S | [Agentic Coding – Einstieg (Sondereinheit, beide Gruppen; Schulübung, HÜ nur X)](2026-09-15_agentic-coding-einstieg/) |
+
+## Log SJ 2026/27
+
+### 2026-09-15 – Sondereinheit: Agentic Coding (Einstieg)
+
+Auftakt des Semesters, beide Gruppen gemeinsam, im **INFI-Unterricht**. Einstieg
+ins agentic coding mit opencode: Node-Setup (winget) + `opencode` + erster
+Agent-Loop (Beispiel aus Jg II) — als **Schulübung**.
+Details: [`2026-09-15_agentic-coding-einstieg/README.md`](2026-09-15_agentic-coding-einstieg/README.md).
+
+- **HÜ nur Gruppe X:** nicht Fertiggestelltes bis nächste UE — `opencode` installiert
+  (Nachweis `opencode --version`), freier Provider verbunden, `AGENTS.md` im eigenen
+  Repo angepasst und committet.
+- Optional: [`windows-debloat.md`](windows-debloat.md) (Semester-/Jahresstart, von
+  opencode gesteuert).
+
+## Schwester-Repo
+
+Dieselbe Kohorte hat parallel **SWP** (OOP/GUI) — Klassen-Hub:
+[`georgernstgraf/GRG-SWP/3ahwii/`](https://github.com/georgernstgraf/GRG-SWP/tree/main/3ahwii/).
