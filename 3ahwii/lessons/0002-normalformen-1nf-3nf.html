@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 0002 – Normalisierung 1NF–3NF (UE 2)</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body>
+<main>
+<nav class="breadcrumb"><a href="0001-wiederholung-diagnose.html">Lesson 0001</a> · Lesson 0002 von 0003 · Nächste: <a href="0003-unterabfragen-eins.html">Unterabfragen I</a></nav>
+<h1>Normalisierung 1NF–3NF</h1>
+<p class="subtitle">Lückenschluss aus KM3: eine „schlechte" Bestelltabelle schrittweise heilen — und jede Stufe begründen.</p>
+
+<h2>1. Das Ziel dieser Lesson</h2>
+<p>Du erkennst <strong>Anomalien</strong> (Einfüge-, Änderungs-, Löschfehler) als Schema-Fehler und zerlegst
+eine denormalisierte Tabelle bis <strong>3NF</strong>. Dein Win: die HÜ-Tabelle mit Begründung pro Stufe.</p>
+
+<h2>2. Wissen: der Weg in drei Fragen</h2>
+<p>Ausgangslage (nicht normalisiert):</p>
+<pre><code>bestellung(id, kunde_name, kunde_ort, tracks, gesamt_preis)</code></pre>
+<table>
+<tr><th>Stufe</th><th>Frage</th><th>Was tun?</th></tr>
+<tr><td><strong>1NF</strong></td><td>Steht in einer Zelle mehr als ein Wert? (<code>tracks = "A,B,C"</code>)</td><td>Pro Track eine Zeile: <code>bestellposition(bestellung_id, track_id)</code></td></tr>
+<tr><td><strong>2NF</strong></td><td>Hängt etwas nur von einem Schlüssel<em>teil</em> ab? (Track-Titel vom Track, nicht von der Bestellung)</td><td><code>track(id, titel, preis)</code> auslagern</td></tr>
+<tr><td><strong>3NF</strong></td><td>Hängt etwas von einem Nichtschlüssel ab? (<code>kunde_ort</code> vom Kunden, nicht von der Bestellung)</td><td><code>kunde(id, name, ort)</code> auslagern</td></tr>
+</table>
+<p>Begriffe: <a href="../reference/glossar.html#schema">Glossar (Schema)</a> · Checkliste: <a href="../reference/sql-spickzettel.html#nf">Spickzettel</a>.</p>
+<div class="callout"><strong>Denormalisierung (Ausblick):</strong> Für Lese-Performance legt man Tabellen später
+<em>bewusst</em> wieder zusammen — erst nach Messung, nie aus Bequemlichkeit.</div>
+
+<h2>3. Üben: Quiz</h2>
+<div class="quiz" data-answer="d">
+<strong>1. Was verletzt <code>tracks = "A,B,C"</code> in einer Zelle?</strong>
+<button data-opt="a">Die zweite Normalform direkt</button>
+<button data-opt="b">Die dritte Normalform direkt</button>
+<button data-opt="c">Nur die Schlüsselregel allein</button>
+<button data-opt="d">Die erste Normalform direkt</button>
+<p class="feedback" aria-live="polite"></p>
+</div>
+<div class="quiz" data-answer="a">
+<strong>2. Was ist eine Anomalie?</strong>
+<button data-opt="a">Schemafehler erzwingt Datenfehler</button>
+<button data-opt="b">Tippfehler erzeugt Abfragefehler</button>
+<button data-opt="c">Indexmangel bremst Lesezugriffe</button>
+<button data-opt="d">NULL-Wert blockiert Abfragen</button>
+<p class="feedback" aria-live="polite"></p>
+</div>
+<div class="quiz" data-answer="b">
+<strong>3. Wann ist Denormalisierung richtig?</strong>
+<button data-opt="a">Immer bei vielen Tabellen</button>
+<button data-opt="b">Bewusst nach gemessener Leselast</button>
+<button data-opt="c">Immer bei jedem JOIN</button>
+<button data-opt="d">Bewusst bei jedem Schreibzugriff</button>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>4. Skill: dein Win</h2>
+<ol>
+<li>Zeige je <em>eine</em> konkrete Anomalie (Einfügen, Ändern, Löschen) an der Ausgangstabelle.</li>
+<li>Normalisiere bis 3NF: notiere die neuen Tabellen mit Schlüsseln (FK markieren).</li>
+<li>Begründe jede Stufe in 1–2 Sätzen mit Schlüsselbezug („… hängt von … ab").</li>
+</ol>
+<div class="callout"><strong>HÜ (aus dem Semesterplan):</strong> „schlechte" Bestelltabelle normalisieren,
+jede Stufe begründen. Abgabe als Text + Tabellenliste (SQL optional).</div>
+
+<h2>5. Primärquelle</h2>
+<p>Lies als Hauptquelle das Schulbuch (<code>Unterlagen/Buch_Datenbanken_2HWII/</code>, Kapitel Relationenmodell/Normalformen).
+Vertiefung zum KM-Bezug: <a href="../../lehrplan/infi-hwii/kompetenzmodule/km5.md">KM5-Steckbrief</a>.</p>
+
+<hr>
+<footer class="lesson-foot">
+Zurück: <a href="0001-wiederholung-diagnose.html">Lesson 0001</a> · Weiter: <a href="0003-unterabfragen-eins.html">Lesson 0003 – Unterabfragen I</a> ·
+Referenz: <a href="../reference/sql-spickzettel.html">Spickzettel</a> · <a href="../reference/glossar.html">Glossar</a><br>
+Unklar? Frag den Agent — er ist dein Lehrer und hilft bei jeder Normalform-Frage weiter.
+</footer>
+</main>
+</body>
+</html>

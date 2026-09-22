@@ -18,15 +18,19 @@ Prisma 7 hat sich gegenüber Prisma 4/5 (den Zeiten der "Deno-Ärgernisse") grun
 
 ## Setup (CLI-Befehle)
 
+> **Wichtig:** `npm:prisma` (ohne Version) löst aktuell Prisma **8.0.0-rc** auf, dessen `init`
+> keine Schema-Scaffolding-Optionen mehr hat. Für dieses Projekt daher **Prisma 7 pinnen**:
+
 ```bash
 # 1. Pakete installieren
-deno add npm:prisma npm:@prisma/client npm:@prisma/adapter-better-sqlite3
+deno add npm:prisma@7 npm:@prisma/client@7 npm:@prisma/adapter-better-sqlite3@7
 
 # 2. node_modules + Lifecycle-Scripts (der kritische Schritt!)
 deno install --allow-scripts
 
-# 3. Prisma initialisieren (SQLite)
-deno run -A npm:prisma init --datasource-provider sqlite --output ../generated/prisma
+# 3. Prisma initialisieren (SQLite) — erzeugt prisma/schema.prisma,
+#    prisma7.config.ts, .env und .gitignore
+deno run -A npm:prisma@7 init --datasource-provider sqlite --output ../generated/prisma
 
 # 4. Migration erstellen und Client generieren
 deno task db:migrate --name init
@@ -41,14 +45,16 @@ deno task db:migrate --name init
   "nodeModulesDir": "auto",
   "tasks": {
     "dev": "deno run --watch --allow-net --allow-read --allow-env main.ts",
-    "db:migrate": "deno run -A npm:prisma migrate dev",
-    "db:generate": "deno run -A npm:prisma generate",
-    "db:studio": "deno run -A npm:prisma studio"
+    "db:migrate": "deno run -A --env-file=.env npm:prisma@7 migrate dev",
+    "db:generate": "deno run -A --env-file=.env npm:prisma@7 generate",
+    "db:studio": "deno run -A --env-file=.env npm:prisma@7 studio",
+    "db:push": "deno run -A --env-file=.env npm:prisma@7 db push"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1",
     "@prisma/client": "npm:@prisma/client@^7.0.0",
     "@prisma/adapter-better-sqlite3": "npm:@prisma/adapter-better-sqlite3@^7.0.0",
+    "dotenv": "npm:dotenv@^17.0.0",
     "prisma": "npm:prisma@^7.0.0"
   }
 }
@@ -60,7 +66,7 @@ deno task db:migrate --name init
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
-  runtime  = "deno"
+  runtime  = "deno" // erforderlich unter Deno
 }
 
 datasource db {
@@ -72,6 +78,23 @@ model Beispiel {
   id   Int    @id @default(autoincrement())
   name String
 }
+```
+
+### prisma7.config.ts
+
+Wird von `init` erzeugt (heißt `prisma7.config.ts`, weil Prisma 8 daneben ein
+`prisma.config.ts` verwenden würde). Die DB-URL steht hier, nicht im Schema:
+
+```typescript
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+  },
+  datasource: {
+    url: process.env["DATABASE_URL"], // aus .env: DATABASE_URL="file:./dev.db"
+  },
+});
 ```
 
 ## Verwendung in main.ts

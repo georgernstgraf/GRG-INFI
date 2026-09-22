@@ -18,6 +18,14 @@ PostgreSQL via Docker.
   Kohorten-Fassung, konkretisiert aus
   [`../unterricht/HWII-INFI/jg3-semesterplan-ws.md`](../unterricht/HWII-INFI/jg3-semesterplan-ws.md).
 
+## Lessons (teach-Skill, UE 1–3)
+
+- [Lesson 0001: Wiederholung Jg II & Diagnose (UE 1)](lessons/0001-wiederholung-diagnose.html)
+- [Lesson 0002: Normalisierung 1NF–3NF (UE 2)](lessons/0002-normalformen-1nf-3nf.html)
+- [Lesson 0003: Unterabfragen I (UE 3)](lessons/0003-unterabfragen-eins.html)
+- Referenzen: [Glossar](reference/glossar.html) · [SQL-Spickzettel](reference/sql-spickzettel.html)
+- [MISSION.md](MISSION.md) · [RESOURCES.md](RESOURCES.md)
+
 ## Unterrichtseinheiten
 
 | Datum | UE | Thema |

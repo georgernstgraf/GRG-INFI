@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossar – INFI KM5-Einstieg (3AHWII)</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<nav class="breadcrumb"><a href="../MISSION.md">Mission</a> · Glossar (Referenz)</nav>
+<h1>Glossar</h1>
+<p class="subtitle">Komprimierte Begriffe für UE 1–3. Gilt für alle Lessons dieses Workspaces.</p>
+
+<h2 id="abfragen">Abfragen</h2>
+<p><strong>Self-JOIN</strong>: Ein JOIN einer Tabelle mit sich selbst über zwei Aliase.<br>
+<em>Meiden</em>: Selbstverbund, Selbst-Join mit Bindestrich-Varianten.</p>
+<p><strong>Gruppierung (GROUP BY + HAVING)</strong>: Zeilen zu Gruppen verdichten und Gruppen mit einer Bedingung filtern.<br>
+<em>Meiden</em>: „Gruppen-Where“ — <code>WHERE</code> filtert Zeilen, <code>HAVING</code> filtert Gruppen.</p>
+<p><strong>Skalar-Subquery</strong>: Eine Unterabfrage, die genau einen Wert liefert.<br>
+<em>Meiden</em>: Einzelwert-Abfrage, skalare Abfrage.</p>
+<p><strong>Tabellen-Subquery</strong>: Eine Unterabfrage in <code>FROM</code>, die wie eine Tabelle lesbar ist.<br>
+<em>Meiden</em>: Inline-View (Oracle-Jargon).</p>
+
+<h2 id="schema">Schema</h2>
+<p><strong>Anomalie</strong>: Ein Schema-Fehler, der Einfüge-, Änderungs- oder Löschfehler erzwingt.<br>
+<em>Meiden</em>: Datenfehler — die Daten sind Symptom, das Schema ist Ursache.</p>
+<p><strong>1NF (Atomarität)</strong>: Jede Zelle enthält genau einen unteilbaren Wert.<br>
+<em>Meiden</em>: „keine Listen in Zellen“ als alleinige Definition.</p>
+<p><strong>2NF (volle funktionale Abhängigkeit)</strong>: Kein Nichtschlüssel-Attribut hängt von einem Teil eines zusammengesetzten Schlüssels ab.<br>
+<em>Meiden</em>: „keine Teilabhängigkeiten“ ohne Schlüsselbezug.</p>
+<p><strong>3NF (keine transitive Abhängigkeit)</strong>: Kein Nichtschlüssel-Attribut hängt über ein anderes Nichtschlüssel-Attribut vom Schlüssel ab.<br>
+<em>Meiden</em>: „alles hängt nur vom Schlüssel ab“ (das ist sinngemäß richtig, aber zu grob).</p>
+<p><strong>Denormalisierung</strong>: Bewusstes Zusammenlegen normalisierter Tabellen aus Lese- oder Performance-Gründen.<br>
+<em>Meiden</em>: Entnormalisierung.</p>
+
+<hr>
+<footer class="lesson-foot">Referenz zu <a href="../lessons/0001-wiederholung-diagnose.html">Lesson 0001</a> · <a href="../lessons/0002-normalformen-1nf-3nf.html">Lesson 0002</a> · <a href="../lessons/0003-unterabfragen-eins.html">Lesson 0003</a></footer>
+</main>
+</body>
+</html>

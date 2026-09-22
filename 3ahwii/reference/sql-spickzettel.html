@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SQL-Spickzettel UE 1–3 – INFI 3AHWII</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<nav class="breadcrumb"><a href="../MISSION.md">Mission</a> · SQL-Spickzettel (Referenz)</nav>
+<h1>SQL-Spickzettel UE 1–3</h1>
+<p class="subtitle">Nur was in den ersten drei Lessons vorkommt. SQLite-Dialekt.</p>
+
+<h2 id="rep">Wiederholung (UE 1)</h2>
+<pre><code>-- JOIN + Gruppierung + HAVING
+SELECT a.name, COUNT(*) AS n
+FROM artist a
+JOIN track t ON t.artist_id = a.id
+GROUP BY a.name
+HAVING COUNT(*) &gt; 5
+ORDER BY n DESC;
+
+-- Self-JOIN: Paare in derselben Tabelle
+SELECT x.name, y.name
+FROM artist x
+JOIN artist y ON y.label_id = x.label_id
+WHERE x.id &lt; y.id;
+
+-- COUNT-Falle
+SELECT COUNT(*) AS zeilen, COUNT(label_id) AS mit_label
+FROM artist;</code></pre>
+
+<h2 id="nf">Normalformen-Check (UE 2)</h2>
+<table>
+<tr><th>Stufe</th><th>Frage</th><th>Fix</th></tr>
+<tr><td>1NF</td><td>Steht in einer Zelle mehr als ein Wert?</td><td>Pro Wert eine Zeile / eigene Tabelle</td></tr>
+<tr><td>2NF</td><td>Hängt ein Attribut nur von einem Schlüsselteil ab?</td><td>Tabelle am Teilschlüssel aufspalten</td></tr>
+<tr><td>3NF</td><td>Hängt ein Attribut von einem Nichtschlüssel ab?</td><td>Faktentabelle auslagern (z. B. Kunde)</td></tr>
+</table>
+
+<h2 id="sub">Unterabfragen (UE 3)</h2>
+<pre><code>-- Skalar in WHERE: ein Wert
+SELECT title FROM track
+WHERE plays &gt; (SELECT AVG(plays) FROM track);
+
+-- Tabelle in FROM: erst filtern, dann zählen
+SELECT label, COUNT(*) AS n
+FROM (SELECT * FROM artist WHERE active = 1) AS a
+GROUP BY label;
+
+-- Zeile in WHERE: ein Tupel vergleichen
+SELECT name FROM artist
+WHERE (label_id, active) = (SELECT id, 1 FROM label WHERE name = 'Indie');</code></pre>
+
+<div class="callout"><strong>Regel:</strong> Subquery in <code>SELECT</code> muss skalar sein (genau ein Wert pro Zeile).
+Subquery in <code>FROM</code> braucht in SQLite fast immer einen Alias (<code>AS x</code>).</div>
+
+<hr>
+<footer class="lesson-foot">Referenz zu <a href="../lessons/0001-wiederholung-diagnose.html">Lesson 0001</a> · <a href="../lessons/0002-normalformen-1nf-3nf.html">Lesson 0002</a> · <a href="../lessons/0003-unterabfragen-eins.html">Lesson 0003</a> · Primärquellen: <a href="https://www.sqlite.org/lang_select.html">SQLite SELECT</a> · <a href="https://www.sqlite.org/lang_expr.html#subqueries">SQLite Subqueries</a></footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 0003 – Unterabfragen I (UE 3)</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body>
+<main>
+<nav class="breadcrumb"><a href="0002-normalformen-1nf-3nf.html">Lesson 0002</a> · Lesson 0003 von 0003 · UE 3</nav>
+<h1>Unterabfragen I: Skalar, Zeile, Tabelle</h1>
+<p class="subtitle">KM5-Kern, Teil 1: schwierige Fragen in Stufen zerlegen — eine Abfrage in der anderen.</p>
+
+<h2>1. Das Ziel dieser Lesson</h2>
+<p>Du platzierst Unterabfragen gezielt in <code>WHERE</code>, <code>FROM</code> und <code>SELECT</code>.
+Dein Win: 3 Übungen auf der Musik-DB — je eine Skalar- und Tabellen-Subquery plus eine freie.</p>
+
+<h2>2. Wissen: drei Formen, drei Orte</h2>
+<table>
+<tr><th>Form</th><th>Liefert</th><th>Typischer Ort</th></tr>
+<tr><td><strong>Skalar</strong></td><td>Genau einen Wert</td><td><code>WHERE plays &gt; (SELECT AVG(plays) …)</code>, auch in <code>SELECT</code></td></tr>
+<tr><td><strong>Zeile</strong></td><td>Genau eine Zeile</td><td><code>WHERE (a, b) = (SELECT …)</code> (Tupelvergleich)</td></tr>
+<tr><td><strong>Tabelle</strong></td><td>Eine Ergebnismenge</td><td><code>FROM (SELECT …) AS x</code> — Alias in SQLite Pflicht</td></tr>
+</table>
+<pre><code>-- Skalar: über Durchschnitt?
+SELECT title FROM track
+WHERE plays &gt; (SELECT AVG(plays) FROM track);
+
+-- Tabelle: erst filtern, dann gruppieren
+SELECT label, COUNT(*) AS n
+FROM (SELECT * FROM artist WHERE active = 1) AS a
+GROUP BY label;</code></pre>
+<p>Mehr Muster: <a href="../reference/sql-spickzettel.html#sub">Spickzettel</a> · Begriffe: <a href="../reference/glossar.html#abfragen">Glossar</a>.</p>
+<div class="callout"><strong>Regel:</strong> Subquery in <code>SELECT</code> muss skalar sein.
+Subquery in <code>FROM</code> braucht einen Alias. (Korreliert, <code>EXISTS</code>/<code>IN</code> + NULL-Falle folgen in UE 4.)</div>
+
+<h2>3. Üben: Quiz</h2>
+<div class="quiz" data-answer="b">
+<strong>1. Was liefert eine Skalar-Subquery?</strong>
+<button data-opt="a">Genau eine ganze Zeile</button>
+<button data-opt="b">Genau einen einzelnen Wert</button>
+<button data-opt="c">Genau eine sortierte Tabelle</button>
+<button data-opt="d">Genau einen benannten Alias</button>
+<p class="feedback" aria-live="polite"></p>
+</div>
+<div class="quiz" data-answer="c">
+<strong>2. Was braucht eine Subquery in FROM?</strong>
+<button data-opt="a">Einen Verweis auf die Außenzeilen</button>
+<button data-opt="b">Eine Bedingung mit einem Einzelwert</button>
+<button data-opt="c">Einen Alias hinter der Klammer</button>
+<button data-opt="d">Einen Index auf der Quelltabelle</button>
+<p class="feedback" aria-live="polite"></p>
+</div>
+<div class="quiz" data-answer="a">
+<strong>3. Wohin gehört der Durchschnittsvergleich?</strong>
+<button data-opt="a">Skalar-Subquery in WHERE-Klausel</button>
+<button data-opt="b">Tabellen-Subquery in FROM-Klausel</button>
+<button data-opt="c">Zeilen-Subquery in GROUP-Klausel</button>
+<button data-opt="d">Spalten-Subquery in ORDER-Klausel</button>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>4. Skill: dein Win</h2>
+<ol>
+<li>Tracks über dem Durchschnitts-Playcount (Skalar-Subquery in <code>WHERE</code>).</li>
+<li>Anzahl aktiver Künstler pro Label über eine Tabellen-Subquery in <code>FROM</code> (mit Alias).</li>
+<li>Eine Abfrage mit Subquery in <code>SELECT</code> (z. B. Durchschnittswert als Vergleichsspalte pro Zeile).</li>
+</ol>
+<div class="callout"><strong>HÜ (aus dem Semesterplan):</strong> genau diese 3 Übungen (Skalar-/Table-Subqueries) auf der Musik-DB.</div>
+
+<h2>5. Primärquelle</h2>
+<p>Lies als Hauptquelle <a href="https://www.sqlite.org/lang_expr.html#subqueries">SQLite-Doku: Subqueries</a>
+— alle Formen und Platzierungen dieser Lesson sind dort belegt.</p>
+
+<hr>
+<footer class="lesson-foot">
+Zurück: <a href="0002-normalformen-1nf-3nf.html">Lesson 0002</a> · Von vorn: <a href="0001-wiederholung-diagnose.html">Lesson 0001</a> ·
+Referenz: <a href="../reference/sql-spickzettel.html">Spickzettel</a> · <a href="../reference/glossar.html">Glossar</a> ·
+Ausblick UE 4: korreliert, EXISTS/IN, NULL-Falle<br>
+Unklar? Frag den Agent — er ist dein Lehrer und hilft bei jeder Unterabfrage weiter.
+</footer>
+</main>
+</body>
+</html>

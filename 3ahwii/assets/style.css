@@ -1,0 +1,61 @@
+/* Teach-Workspace 3AHWII — shared stylesheet (Tufte-nah, druckfreundlich). */
+:root {
+  --ink: #1a1a1a;
+  --muted: #5b5b5b;
+  --accent: #1d4ed8;
+  --rule: #e2e2e2;
+  --bg: #fff;
+  --code-bg: #f6f6f4;
+  --maxw: 42rem;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 17px/1.65 Georgia, "Times New Roman", serif;
+}
+main {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+h1, h2, h3 { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.25; }
+h1 { font-size: 1.9rem; margin: 0 0 0.25rem; }
+.subtitle { color: var(--muted); margin: 0 0 1.5rem; }
+nav.breadcrumb { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; }
+nav.breadcrumb a { color: var(--accent); }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 2rem 0; }
+pre {
+  background: var(--code-bg);
+  padding: 1rem;
+  overflow-x: auto;
+  border-left: 3px solid var(--accent);
+  font-size: 0.9rem;
+}
+code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+p code, li code { background: var(--code-bg); padding: 0.1em 0.3em; }
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; margin: 1rem 0; }
+th, td { border: 1px solid var(--rule); padding: 0.5rem 0.6rem; text-align: left; }
+th { background: var(--code-bg); font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+.callout {
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem 1rem;
+  margin: 1.25rem 0;
+  background: #fafafa;
+  font-size: 0.95rem;
+}
+.quiz { border: 1px solid var(--rule); padding: 1rem; margin: 1.5rem 0; }
+.quiz legend, .quiz > strong { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+.quiz button { display: block; width: 100%; text-align: left; margin: 0.4rem 0; padding: 0.5rem 0.7rem; font-size: 0.95rem; cursor: pointer; }
+.quiz .feedback { margin-top: 0.6rem; font-weight: bold; min-height: 1.5em; }
+.quiz .ok { color: #15803d; }
+.quiz .no { color: #b91c1c; }
+footer.lesson-foot { margin-top: 2.5rem; font-size: 0.9rem; color: var(--muted); }
+footer.lesson-foot a { color: var(--accent); }
+@media print {
+  main { max-width: none; padding: 0; }
+  .quiz button { border: 1px solid #999; }
+  nav.breadcrumb { display: none; }
+}

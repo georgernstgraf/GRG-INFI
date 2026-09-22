@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 0001 – Wiederholung Jg II &amp; Diagnose (UE 1)</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body>
+<main>
+<nav class="breadcrumb">Lesson 0001 von 0003 · UE 1 · Nächste: <a href="0002-normalformen-1nf-3nf.html">Normalformen</a></nav>
+<h1>Wiederholung Jg II &amp; Diagnose</h1>
+<p class="subtitle">In einer Doppelstunde zurück auf KM4-Niveau: SELECT, JOIN, GROUP BY, HAVING — danach 5 Queries als HÜ.</p>
+
+<h2>1. Das Ziel dieser Lesson</h2>
+<p>Du reaktivierst das SQL-Grundhandwerk aus der 2. Klasse an der <strong>Musik-Streaming-DB</strong>.
+Am Ende schreibst du ohne Nachschlagen einen JOIN mit Gruppierung und Filter — das ist der Anker für alles in KM5.</p>
+
+<h2>2. Wissen: drei Diagnose-Stellen</h2>
+<h3>Self-JOIN — Paare in einer Tabelle</h3>
+<p>Zwei Aliase derselben Tabelle (<code>x</code>, <code>y</code>), Bedingung <code>x.id &lt; y.id</code> gegen Doppelpaare.
+Typfrage: „Welche Künstler teilen sich ein Label?" Siehe <a href="../reference/sql-spickzettel.html#rep">Spickzettel</a>.</p>
+<h3><code>COUNT(*)</code> vs. <code>COUNT(spalte)</code></h3>
+<p><code>COUNT(*)</code> zählt Zeilen. <code>COUNT(label_id)</code> zählt nur Zeilen mit Wert (kein NULL).
+Begriffe: <a href="../reference/glossar.html#abfragen">Glossar</a>.</p>
+<h3><code>WHERE</code> vs. <code>HAVING</code></h3>
+<p><code>WHERE</code> filtert <strong>Zeilen</strong> vor der Gruppierung. <code>HAVING</code> filtert <strong>Gruppen</strong> danach.
+Merksatz: Kein Aggregat in <code>WHERE</code> — dafür ist <code>HAVING</code> da.</p>
+
+<h2>3. Üben: Diagnose-Quiz</h2>
+<div class="quiz" data-answer="c">
+<strong>1. Wohin gehört <code>COUNT(*) &gt; 5</code> als Filter?</strong>
+<button data-opt="a">Immer in die WHERE-Klausel</button>
+<button data-opt="b">Immer in die ORDER-Klausel</button>
+<button data-opt="c">Immer in die HAVING-Klausel</button>
+<button data-opt="d">Immer in die LIMIT-Klausel</button>
+<p class="feedback" aria-live="polite"></p>
+</div>
+<div class="quiz" data-answer="b">
+<strong>2. Was zählt <code>COUNT(label_id)</code>?</strong>
+<button data-opt="a">Jede Zeile der Tabelle</button>
+<button data-opt="b">Nur Zeilen mit Wert</button>
+<button data-opt="c">Nur Zeilen mit Labelwert</button>
+<button data-opt="d">Nur Zeilen ohne Duplikat</button>
+<p class="feedback" aria-live="polite"></p>
+</div>
+<div class="quiz" data-answer="a">
+<strong>3. Wozu dient <code>x.id &lt; y.id</code> im Self-JOIN?</strong>
+<button data-opt="a">Doppelpaare sicher vermeiden</button>
+<button data-opt="b">NULL-Werte sicher vermeiden</button>
+<button data-opt="c">Gruppen exakt halbieren</button>
+<button data-opt="d">Spalten sauber benennen</button>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>4. Skill: dein Win</h2>
+<p>Schreibe auf der Musik-Streaming-DB (oder <code>w3schools.sqlite</code> als Ersatz):</p>
+<ol>
+<li>Top-5-Künstler nach Track-Anzahl (<code>JOIN</code> + <code>GROUP BY</code> + <code>ORDER BY … DESC LIMIT 5</code>).</li>
+<li>Künstlerpaare desselben Labels (Self-JOIN mit <code>&lt;</code>-Bedingung).</li>
+<li>Labels mit mehr als 5 aktiven Künstlern (<code>HAVING</code>).</li>
+<li><code>COUNT(*)</code> vs. <code>COUNT(label_id)</code> auf derselben Tabelle — erkläre die Differenz in einem Satz.</li>
+<li>Eine Abfrage deiner Wahl mit <code>WHERE</code> <em>und</em> <code>HAVING</code> kombiniert.</li>
+</ol>
+<div class="callout"><strong>HÜ (aus dem Semesterplan):</strong> genau diese 5 Auffrischungs-Queries auf der Musik-DB.
+Abgabe als <code>.sql</code>-Datei mit je einem Kommentar, was die Abfrage beantwortet.</div>
+
+<h2>5. Primärquelle</h2>
+<p>Lies als Hauptquelle <a href="https://www.sqlite.org/lang_select.html">SQLite-Doku: SELECT</a>
+(Abschnitte JOIN, GROUP BY, HAVING) — alles in dieser Lesson ist dort belegt.</p>
+
+<hr>
+<footer class="lesson-foot">
+Weiter: <a href="0002-normalformen-1nf-3nf.html">Lesson 0002 – Normalisierung</a> ·
+Referenz: <a href="../reference/sql-spickzettel.html">Spickzettel</a> · <a href="../reference/glossar.html">Glossar</a><br>
+Unklar? Frag den Agent — er ist dein Lehrer und hilft bei jeder Abfrage weiter.
+</footer>
+</main>
+</body>
+</html>
