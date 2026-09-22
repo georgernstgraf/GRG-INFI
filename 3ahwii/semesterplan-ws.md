@@ -45,7 +45,7 @@ Optional: [`windows-debloat.md`](windows-debloat.md) (Semester-/Jahresstart, von
 | UE | Thema | KM-Bezug (①) | Inhalt / HÜ |
 |----|-------|--------------|--------------|
 | 1 | **Wiederholung Jg II & Diagnose** | KM5-Anker („komplexe Abfragen"); Auffrischung KM3/KM4 | SELECT/JOIN/GROUP BY/HAVING/DDL wiederholen; kurzer Diagnose-Test (Self-JOIN, `COUNT(*)` vs. `COUNT(col)`, WHERE vs. HAVING — bekannte Schwächen); Musik-Streaming-ER (Jg II) als laufende Beispiel-DB. HÜ: 5 Auffrischungs-Queries auf der Musik-DB |
-| 2 | **Normalisierung (1NF–3NF)** | KM3 „Normalformen" (**Lückenschluss**) | Anomalien (Einfüge/Änderung/Löschung), 1NF (Atomarität), 2NF (partielle Abhängigkeit), 3NF (transitive Abhängigkeit); denormalisierte Tabelle schrittweise normalisieren; wann Denormalisierung sinnvoll ist. HÜ: „schlechte" Bestelltabelle normalisieren, jede Stufe begründen |
+| 2 | **Normalisierung (1NF–3NF)** | KM3 „Normalformen" (**Lückenschluss**) | Anomalien (Einfüge/Änderung/Löschung), 1NF (Atomarität), 2NF (partielle Abhängigkeit), 3NF (transitive Abhängigkeit); denormalisierte Tabelle schrittweise normalisieren; wann Denormalisierung sinnvoll ist. HÜ: „schlechte" Bestelltabelle normalisieren, jede Stufe begründen. **Material (X, 06.10.):** [`2026-10-06_normalisierung-3nf/`](2026-10-06_normalisierung-3nf/) (Teach-HTML, 11 Quizze, ohne Node) |
 
 ## UE 3–6: Komplexe Abfragen (KM-Kern)
 

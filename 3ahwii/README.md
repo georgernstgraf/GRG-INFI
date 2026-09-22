@@ -3,8 +3,11 @@
 Kohorten-Ordner der **3AHWII** für das Fach **INFI** (HTL Spengergasse,
 WII–Betriebsinformatik), Schuljahr 2026/27.
 
-**Stack:** SQLite (`sqlite3`, `node:sqlite`) · Deno/TypeScript · Prisma ·
-PostgreSQL via Docker.
+**Stack:** SQLite (`sqlite3`, `node:sqlite`) · Deno/TypeScript (`"nodeModulesDir": "none"`,
+kein Node, kein `npm:`) · PostgreSQL via Docker (nur DCL-Demo, UE 11).
+ORM-Evaluierung: Prisma 6-Setup aus Jg II ist deprecated (Adapter-Pflicht ab
+Prisma 7, RC auf npm-`latest`, kein Deno-nativer SQLite-Adapter) — Details siehe
+UE 2026-10-06.
 
 > **Konkrete Kohorten-Fassung.** Die **allgemeine Planung** liegt unter
 > [`../unterricht/HWII-INFI/`](../unterricht/HWII-INFI/); die Klassen-Drehscheibe
@@ -31,8 +34,19 @@ PostgreSQL via Docker.
 | Datum | UE | Thema |
 |-------|----|-------|
 | 2026-09-15 | S | [Agentic Coding – Einstieg (Sondereinheit, beide Gruppen; Schulübung, HÜ nur X)](2026-09-15_agentic-coding-einstieg/) |
+| 2026-10-06 | 2 | [Normalisierung 3NF – Fehlersuche (X-Gruppe, Teach-HTML, ohne Node)](2026-10-06_normalisierung-3nf/) |
 
 ## Log SJ 2026/27
+
+### 2026-10-06 – UE 2: Dritte Normalform (geplant, X-Gruppe)
+
+UE 2 nach Kohorten-Semesterplan (KM3-Lückenschluss Normalformen 1NF–3NF).
+Teach-Lesson im SWP-Stil mit 11 Quizzen (Fehlersuche transitiv, inkl.
+Trickfälle wo 3NF hält, 2 SWP-Crossover-Beispiele Konto/Person):
+[`2026-10-06_normalisierung-3nf/`](2026-10-06_normalisierung-3nf/).
+HÜ bis 13.10. (siehe UE-README).
+
+### 2026-09-15 – Sondereinheit: Agentic Coding (Einstieg)
 
 ### 2026-09-15 – Sondereinheit: Agentic Coding (Einstieg)
 

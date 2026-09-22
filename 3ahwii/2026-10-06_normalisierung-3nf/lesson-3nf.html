@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UE 2 — Dritte Normalform (3NF) — 3AHWII X</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <script type="module" src="assets/quiz.js"></script>
+  </head>
+  <body>
+    <header class="lesson-header">
+      <p class="kicker">
+        Lesson · UE 2026-10-06 · KM3 → KM5: Normalformen (Lückenschluss)
+      </p>
+      <h1>Die dritte Normalform — finde den Fehler</h1>
+      <p>
+        Letzte Woche haben wir ohne Node und ohne ORM wieder SELECT, JOIN und
+        GROUP BY fit gemacht. Heute fragen wir: Warum steht in einer Tabelle
+        plötzlich zweimal derselbe Ort — und warum tut das weh? Antwort:
+        <strong>transitive Abhängigkeit</strong>. Wer sie sieht, beherrscht
+        die <strong>3NF</strong>.
+      </p>
+    </header>
+
+    <h2>1. Warum überhaupt normalisieren? Die drei Anomalien</h2>
+    <pre><code><span class="hl-comment">-- Denormalisierte Bestelltabelle (der "Fehler", den wir heute jagen)</span>
+Bestellung(BestellNr, Kunde, PLZ, Ort)
+  101, "Auer",  1020, "Wien"
+  102, "Beck",  1020, "Wien"   <span class="hl-comment">-- Ort steht zum 2. Mal da</span>
+  103, "Cevik", 4020, "Linz"</code></pre>
+    <table>
+      <tr>
+        <th>Anomalie</th>
+        <th>Was passiert?</th>
+        <th>Beispiel</th>
+      </tr>
+      <tr>
+        <td>Änderungs-Anomalie</td>
+        <td>Ein Fakt muss an N Stellen geändert werden</td>
+        <td>PLZ 1020 bekommt neuen Ortsnamen → 2+ Zeilen anfassen</td>
+      </tr>
+      <tr>
+        <td>Einfüge-Anomalie</td>
+        <td>Fakt nicht speicherbar ohne Dummy-Zeile</td>
+        <td>Neue PLZ 8010 „Graz“ ohne Bestellung → keine Zeile möglich</td>
+      </tr>
+      <tr>
+        <td>Lösch-Anomalie</td>
+        <td>Löschen vernichtet mehr Wissen als beabsichtigt</td>
+        <td>Letzte 4020-Bestellung löschen → „4020 = Linz“ ist weg</td>
+      </tr>
+    </table>
+
+    <h2>2. Rep in 3 Minuten: 1NF und 2NF</h2>
+    <table>
+      <tr>
+        <th>Stufe</th>
+        <th>Regel (Merkform)</th>
+        <th>Verletzung sieht so aus</th>
+      </tr>
+      <tr>
+        <td>1NF</td>
+        <td>Jede Zelle atomar, keine Listen in einer Spalte</td>
+        <td><code>Hobbys = "Lesen, Schwimmen"</code> in einer Zelle</td>
+      </tr>
+      <tr>
+        <td>2NF</td>
+        <td>Kein Nicht-Schlüssel hängt an einem <em>Teil</em> des Schlüssels (nur bei zusammengesetztem PK relevant)</td>
+        <td><code>SongTitel</code> hängt nur an <code>SongID</code>, obwohl PK <code>(SongID, PlaylistID)</code> ist</td>
+      </tr>
+      <tr>
+        <td>3NF</td>
+        <td>Kein Nicht-Schlüssel hängt an einem anderen <em>Nicht-Schlüssel</em> (transitiv)</td>
+        <td><code>Ort</code> hängt an <code>PLZ</code>, nicht am Schlüssel (siehe unten)</td>
+      </tr>
+    </table>
+    <aside class="marginnote">
+      <strong>Eselsbrücke (Codd):</strong> „Jedes Attribut hängt vom Schlüssel
+      ab, vom <em>ganzen</em> Schlüssel (2NF) und von <em>nichts als</em> dem
+      Schlüssel (3NF)."
+    </aside>
+
+    <h2>3. Der Kern: transitive Abhängigkeit</h2>
+    <pre><code>BestellNr  →  PLZ  →  Ort
+<span class="hl-comment">(Schlüssel)   (Nicht-Schlüssel)   (Nicht-Schlüssel hängt an Nicht-Schlüssel!)</span></code></pre>
+    <p>
+      <code>Ort</code> hängt <em>nicht</em> direkt von <code>BestellNr</code>
+      ab, sondern über den Umweg <code>PLZ</code>. Genau diese Kette
+      <code>A → B → C</code> verbietet die 3NF. Die Reparatur ist immer
+      gleich: <strong>Tabelle spalten, Fremdschlüssel setzen.</strong>
+    </p>
+    <pre><code><span class="hl-comment">-- Nach der Zerlegung (3NF): jede Tatsache steht genau einmal</span>
+Bestellung(BestellNr, Kunde, PLZ → verweist auf PLZ.Ort)
+PLZ(PLZ, Ort)   <span class="hl-comment">-- "1020 = Wien" steht 1× da</span></code></pre>
+
+    <div class="quiz" data-answer="0">
+      <p class="quiz-question">
+        Was ist eine transitive Abhängigkeit?
+      </p>
+      <button class="quiz-option">
+        A hängt von C ab, aber nur über den Umweg B (A → B → C)
+      </button>
+      <button class="quiz-option">
+        A hängt von zwei Schlüsselteilen gleichzeitig ab
+      </button>
+      <button class="quiz-option">
+        A steht in zwei Tabellen gleichzeitig
+      </button>
+      <p class="quiz-feedback">
+        Richtig ist der Umweg: Nicht-Schlüssel hängt an Nicht-Schlüssel.
+        Die Reparatur: Tabelle spalten, die B→C-Tatsache in eigene Tabelle
+        mit Fremdschlüssel.
+      </p>
+    </div>
+
+    <h2>4. Fehlersuche, Runde 1: Klassiker</h2>
+
+    <h3>Quiz 1 — Bestellung</h3>
+    <pre><code>Bestellung(BestellNr PK, Kunde, PLZ, Ort)</code></pre>
+    <div class="quiz" data-answer="0">
+      <p class="quiz-question">Verletzt diese Tabelle die 3NF? Wo?</p>
+      <button class="quiz-option">
+        Ja: BestellNr → PLZ → Ort — Ort hängt an PLZ
+      </button>
+      <button class="quiz-option">
+        Nein: alles hängt direkt an BestellNr
+      </button>
+      <button class="quiz-option">
+        Nein: PLZ ist Teil des Schlüssels
+      </button>
+      <p class="quiz-feedback">
+        Ja. Kette: BestellNr → PLZ → Ort. Fix: PLZ(PLZ, Ort) auslagern,
+        Bestellung verweist per FK auf PLZ. (Siehe seed-3nf.sql, demo.ts.)
+      </p>
+    </div>
+
+    <h3>Quiz 2 — Schüler</h3>
+    <pre><code>Schueler(MatrNr PK, Name, Klasse, Klassensprecher)</code></pre>
+    <div class="quiz" data-answer="1">
+      <p class="quiz-question">Wo steckt der transitive Pfad?</p>
+      <button class="quiz-option">
+        MatrNr → Name → Klasse (Name bestimmt Klasse)
+      </button>
+      <button class="quiz-option">
+        MatrNr → Klasse → Klassensprecher (Sprecher hängt an Klasse)
+      </button>
+      <button class="quiz-option">
+        Kein Pfad: alles hängt am Schlüssel
+      </button>
+      <p class="quiz-feedback">
+        MatrNr → Klasse → Klassensprecher: Der Sprecher ist eine Tatsache
+        über die Klasse, nicht über den Schüler. Fix: Klasse(Klasse,
+        Klassensprecher) auslagern.
+      </p>
+    </div>
+
+    <h3>Quiz 3 — Album (Musik-DB, unser Dauerbeispiel)</h3>
+    <pre><code>Album(AlbumID PK, Titel, Label, LabelAdresse)</code></pre>
+    <div class="quiz" data-answer="2">
+      <p class="quiz-question">3NF-verletzt? Begründung?</p>
+      <button class="quiz-option">
+        Nein, LabelAdresse hängt direkt am Album
+      </button>
+      <button class="quiz-option">
+        Nein, Label ist Schlüssel
+      </button>
+      <button class="quiz-option">
+        Ja: AlbumID → Label → LabelAdresse
+      </button>
+      <p class="quiz-feedback">
+        Ja: Die Label-Adresse ist eine Tatsache über das Label. Fix:
+        Label(LabelName, Adresse) als eigene Tabelle, Album verweist per FK.
+      </p>
+    </div>
+
+    <h3>Quiz 4 — Mitarbeiter</h3>
+    <pre><code>Mitarbeiter(PersonalNr PK, AbtNr, AbtName, AbtLeiter)</code></pre>
+    <div class="quiz" data-answer="0">
+      <p class="quiz-question">Wie viele transitive Abhängigkeiten stecken hier?</p>
+      <button class="quiz-option">
+        Zwei: PersonalNr → AbtNr → AbtName und PersonalNr → AbtNr → AbtLeiter
+      </button>
+      <button class="quiz-option">
+        Keine: Abteilungsteile gehören zum Mitarbeiter
+      </button>
+      <button class="quiz-option">
+        Eine, und zwar PersonalNr → AbtName direkt
+      </button>
+      <p class="quiz-feedback">
+        Zwei Ketten über AbtNr. Fix: Abteilung(AbtNr, AbtName, AbtLeiter)
+        auslagern; Mitarbeiter behält nur AbtNr als FK.
+      </p>
+    </div>
+
+    <h2>5. Fehlersuche, Runde 2: SWP-Domänen (ihr kennt sie)</h2>
+
+    <h3>Quiz 5 — Konto (SWP-Unterrichtsdomäne)</h3>
+    <pre><code>Konto(IBAN PK, Inhaber, BLZ, Bankname)</code></pre>
+    <div class="quiz" data-answer="1">
+      <p class="quiz-question">Wo ist der Fehler?</p>
+      <button class="quiz-option">
+        Kein Fehler: Bankname hängt an IBAN
+      </button>
+      <button class="quiz-option">
+        IBAN → BLZ → Bankname: Bankname hängt an BLZ
+      </button>
+      <button class="quiz-option">
+        IBAN → Inhaber → Bankname
+      </button>
+      <p class="quiz-feedback">
+        IBAN → BLZ → Bankname. Fix: Bank(BLZ, Bankname) auslagern.
+        Dieselbe Struktur wie PLZ → Ort — Muster wiedererkennen!
+      </p>
+    </div>
+
+    <h3>Quiz 6 — Person (SWP-Testdomäne Schulverwaltung)</h3>
+    <pre><code>Person(SVNr PK, Name, PLZ, Ort)</code></pre>
+    <div class="quiz" data-answer="0">
+      <p class="quiz-question">3NF? Und was kostet die Verletzung konkret?</p>
+      <button class="quiz-option">
+        Verletzt (SVNr → PLZ → Ort); Änderungs-Anomalie bei Ortsumbenennung
+      </button>
+      <button class="quiz-option">
+        Hält: Ort hängt direkt an SVNr
+      </button>
+      <button class="quiz-option">
+        Verletzt, aber nur 1NF (PLZ nicht atomar)
+      </button>
+      <p class="quiz-feedback">
+        Verletzt; bei Ortsumbenennung müssen alle Personen-Zeilen mit dieser
+        PLZ angefasst werden. Fix: PLZ(PLZ, Ort) + FK.
+      </p>
+    </div>
+
+    <h2>6. Trickfälle: Wo die 3NF HÄLT</h2>
+    <aside class="marginnote">
+      <strong>Gegen den Ja-Sager-Bias:</strong> Nicht jede Tabelle mit vier
+      Spalten ist kaputt. Erst Kette nachweisen, dann spalten!
+    </aside>
+
+    <h3>Quiz 7 — Prüfung</h3>
+    <pre><code>Pruefung(MatrNr, LVNr, Note)  PK = (MatrNr, LVNr)</code></pre>
+    <div class="quiz" data-answer="2">
+      <p class="quiz-question">Hält diese Tabelle 2NF und 3NF?</p>
+      <button class="quiz-option">
+        Nein: Note hängt nur an MatrNr (partiell)
+      </button>
+      <button class="quiz-option">
+        Nein: MatrNr → LVNr → Note (transitiv)
+      </button>
+      <button class="quiz-option">
+        Ja: Note hängt am ganzen Schlüssel, keine Transitivität
+      </button>
+      <p class="quiz-feedback">
+        Ja. Note braucht beide Schlüsselteile (wer, welche LV) — voll
+        funktional abhängig, kein Umweg über einen Nicht-Schlüssel.
+      </p>
+    </div>
+
+    <h3>Quiz 8 — Song</h3>
+    <pre><code>Song(SongID PK, Titel, DauerSek)</code></pre>
+    <div class="quiz" data-answer="1">
+      <p class="quiz-question">3NF?</p>
+      <button class="quiz-option">
+        Verletzt: Titel → DauerSek
+      </button>
+      <button class="quiz-option">
+        Hält: Titel und Dauer hängen direkt an SongID
+      </button>
+      <button class="quiz-option">
+        Verletzt: SongID → Titel → DauerSek
+      </button>
+      <p class="quiz-feedback">
+        Hält. Weder hängt DauerSek vom Titel ab, noch gibt es einen
+        Umweg-Nicht-Schlüssel. Gleicher Titel bei zwei Songs wäre zwei
+        Zeilen — kein Widerspruch zur 3NF.
+      </p>
+    </div>
+
+    <h3>Quiz 9 — Bestellposition</h3>
+    <pre><code>Bestellposition(BestellNr, ProduktNr, Menge)  PK = (BestellNr, ProduktNr)</code></pre>
+    <div class="quiz" data-answer="0">
+      <p class="quiz-question">Hält 2NF/3NF?</p>
+      <button class="quiz-option">
+        Ja: Menge hängt an der ganzen Position (Bestellung + Produkt)
+      </button>
+      <button class="quiz-option">
+        Nein: Menge hängt nur an ProduktNr
+      </button>
+      <button class="quiz-option">
+        Nein: BestellNr → ProduktNr → Menge
+      </button>
+      <p class="quiz-feedback">
+        Ja. Menge braucht beide Teile (wie viel von welchem Produkt in
+        welcher Bestellung). Kein Teil-, kein Umweg-Pfad.
+      </p>
+    </div>
+
+    <h3>Quiz 10 — SongPlaylist (2NF-Falle!)</h3>
+    <pre><code>SongPlaylist(SongID, PlaylistID, SongTitel)  PK = (SongID, PlaylistID)</code></pre>
+    <div class="quiz" data-answer="1">
+      <p class="quiz-question">Was ist hier kaputt — und auf welcher Stufe?</p>
+      <button class="quiz-option">
+        3NF: SongID → PlaylistID → SongTitel
+      </button>
+      <button class="quiz-option">
+        Schon 2NF: SongTitel hängt nur an SongID (Teil des Schlüssels)
+      </button>
+      <button class="quiz-option">
+        Nichts: alles hängt am ganzen Schlüssel
+      </button>
+      <p class="quiz-feedback">
+        Schon 2NF verletzt (partielle Abhängigkeit vom Schlüsseteil
+        SongID). Fix: Titel zurück in Song-Tabelle; hier nur die beiden
+        FKs lassen. Merke: Stufen der Reihe nach prüfen — 1NF, dann 2NF,
+        dann 3NF.
+      </p>
+    </div>
+
+    <h2>7. Rezept (zum Mitnehmen)</h2>
+    <ol>
+      <li>Schlüssel bestimmen (was identifiziert die Zeile?).</li>
+      <li>Für jedes Nicht-Schlüssel-Attribut fragen: „Hängt es am
+        <em>ganzen</em> Schlüssel?" — nein → 2NF-Fix.</li>
+      <li>Dann fragen: „Hängt es an einem <em>anderen Nicht-Schlüssel</em>?"
+        — ja → 3NF-Fix: Tatsache in eigene Tabelle, FK zurücklassen.</li>
+      <li>Anomalien-Probe: Einfügen/Ändern/Löschen ohne Müll möglich?</li>
+    </ol>
+    <pre><code><span class="hl-comment">-- Prüffragen an jeder Tabelle (laut aufsagen!):</span>
+<span class="hl-comment">-- 1) Was ist der Schlüssel?  2) Ganzer Schlüssel?  3) Nur der Schlüssel?</span></code></pre>
+
+    <h2>8. HÜ bis 13.10. (X-Gruppe)</h2>
+    <ol>
+      <li>„Schlechte" Bestelltabelle (siehe seed-3nf.sql,
+        Tabelle <code>bestellung_denorm</code>) schriftlich bis 3NF
+        zerlegen; jede Stufe mit Abhängigkeitspfeilen begründen.</li>
+      <li>Zwei Quiz-Tabellen eigener Wahl aus dieser Lesson zerlegen
+        (SQL-CREATEs + je 3 Beispielzeilen).</li>
+      <li>Demo laufen lassen: <code>deno task demo</code> (braucht nur Deno,
+        kein Node, kein <code>npm:</code>).</li>
+    </ol>
+
+    <nav class="lesson-nav">
+      <span>← Vorher: Rep ohne Node (29.09.)</span>
+      <span>Nächste UE: Unterabfragen I (Skalar/Zeile/Tabelle)</span>
+    </nav>
+    <footer class="lesson-footer">
+      3AHWII X · INFI UE 2 (KM3-Lückenschluss → KM5) · SWP-Crossover: Konto-,
+      Person-Beispiele · Quelle Begriffe: Buch_Datenbanken 03_Normalisierung ·
+      Issue #5 · Stil: SWP-teach (style.css/quiz.js 1:1).
+    </footer>
+  </body>
+</html>
