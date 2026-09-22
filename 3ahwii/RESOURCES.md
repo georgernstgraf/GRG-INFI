@@ -27,3 +27,5 @@
 ## Gaps
 
 - Kein versionierter Seed-Stand der Musik-Streaming-DB im Repo (`STATE.md`-Pending) — Lessons referenzieren sie als Pfad, liefern aber keinen Dump mit.
+  Teillösung seit 29.09.: [`2026-09-29_rep-ohne-node/seed-musik-mini.sql`](2026-09-29_rep-ohne-node/seed-musik-mini.sql)
+  (Mini-Ausschnitt Label/Künstler/Song, versioniert, ohne Node lauffähig). Voller Dump weiter offen.

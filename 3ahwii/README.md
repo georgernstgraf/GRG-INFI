@@ -34,9 +34,18 @@ UE 2026-10-06.
 | Datum | UE | Thema |
 |-------|----|-------|
 | 2026-09-15 | S | [Agentic Coding – Einstieg (Sondereinheit, beide Gruppen; Schulübung, HÜ nur X)](2026-09-15_agentic-coding-einstieg/) |
+| 2026-09-29 | 1b | [Rep ohne Node + ORM-Lektüre (X-Gruppe, Deno + node:sqlite, dev.to-Leseauftrag)](2026-09-29_rep-ohne-node/) |
 | 2026-10-06 | 2 | [Normalisierung 3NF – Fehlersuche (X-Gruppe, Teach-HTML, ohne Node)](2026-10-06_normalisierung-3nf/) |
 
 ## Log SJ 2026/27
+
+### 2026-09-29 – UE 1b: Rep ohne Node (geplant, X-Gruppe)
+
+Reparatur-Stunde nach der UE-1-Krise (Prisma-Scaffold bleibt unberührt):
+5 Diagnose-Queries lauffähig (`node:sqlite`, `nodeModulesDir:none`) +
+dev.to-Lektüre Drizzle-vs-Prisma gemeinsam am Beamer:
+[`2026-09-29_rep-ohne-node/`](2026-09-29_rep-ohne-node/).
+HÜ bis 06.10. (siehe UE-README).
 
 ### 2026-10-06 – UE 2: Dritte Normalform (geplant, X-Gruppe)
 
