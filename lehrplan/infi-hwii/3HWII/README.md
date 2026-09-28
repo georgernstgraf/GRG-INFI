@@ -11,7 +11,7 @@
 | **Wochenstunden INFI (Jg III)** | 3 (schulautonom; offiziell 2(2) — `../RIS.md` §4) = **2 h Georg** (SQL/DB-Kern) + **1 h Kollege** (Nicht-SQL-Anteile, Vorschlag unten) |
 | **Zeitmodell (Georg)** | 1 DS/Woche → **13 echte UE + 2 PLF-DS** pro Semester |
 | **Beurteilung** | PLF / Hausübungen / Mitarbeit je 1/3 (Details: Root-`README.md`) |
-| **Stack** | SQLite (`sqlite3`, `node:sqlite`) · Deno/TypeScript · Prisma · `Deno.serve` (REST) · PostgreSQL via Docker (DCL-Demo) |
+| **Stack** | SQLite (`sqlite3`, `node:sqlite`) · Deno/TypeScript · **Prisma 7 via Node.js/npm** (Driver Adapter `better-sqlite3`, gepinnt `@7`; Entscheid 2026-09-29) · `Deno.serve` (REST) · PostgreSQL via Docker (DCL-Demo) |
 | **KM-Steckbriefe** | [`kompetenzmodule/km5.md`](../kompetenzmodule/km5.md) · [`kompetenzmodule/km6.md`](../kompetenzmodule/km6.md) |
 | **Semesterpläne** | [`jg3-semesterplan-ws.md`](../../../unterricht/HWII-INFI/jg3-semesterplan-ws.md) (KM5) · [`jg3-semesterplan-ss.md`](../../../unterricht/HWII-INFI/jg3-semesterplan-ss.md) (KM6) |
 | **Vorwissen** | [`jg2-einheiten.md`](../../../unterricht/HWII-INFI/jg2-einheiten.md) — CRUD, JOIN/Self-JOIN, GROUP BY/HAVING, DDL/Constraints, N:M/Zwischentabelle, ER (bigER), Prisma-Grundlagen. **Lücke:** Normalformen nur gestreift → UE 2 (WS). |

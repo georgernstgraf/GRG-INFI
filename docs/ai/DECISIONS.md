@@ -89,3 +89,22 @@ Superseded decisions are relocated to HISTORY.md.
 - **Considered**: Abweichungen direkt im Gerüst `unterricht/HWII-INFI/`; nur ein
   Delta-Dokument statt Vollkopie.
 - **Tradeoff**: Zweite Plan-Datei pro Kohorte (Duplikat), bewusst als lebende Kohorten-Fassung.
+
+## 2026-09-29: ORM = Prisma (vorerst); DB-Werkzeugkette → Node.js (+ SQLite/better-sqlite3)
+
+- **Choice**: Wir bleiben **vorerst bei Prisma** (kein Wechsel zu Drizzle) und stellen die
+  **DB-Werkzeugkette auf Node.js** um: Node LTS + `npm`, **Prisma 7 gezielt gepinnt**
+  (`prisma@7`, `@prisma/client@7`, `@prisma/adapter-better-sqlite3@7`), SQLite über den
+  `better-sqlite3`-Driver-Adapter. **Nur** die Prisma-/DB-Werkzeugkette läuft unter Node;
+  der allgemeine Unterrichts-Code bleibt **Deno/TypeScript** (`AGENTS.md` unverändert).
+- **Reason**: Prisma 7 verlangt zwingend einen nativen Driver Adapter. Unter Node ist
+  `better-sqlite3` der Normalfall — unter Deno war genau das die Reibung der UE-1-Krise
+  (2026-09-22: `npm:`-Specifier, `npm:prisma` → 8.0.0-RC, Adapter-Gefrickel). Der Wechsel
+  löst die Reibung, ohne das didaktische Ziel (ORM-Kompetenz für den SWP-Verbund) aufzugeben.
+- **Considered**: Drizzle (einmal „eher Drizzle"-geneigt, in der Rep-Stunde 29.09. verfolgt) —
+  verworfen für den Moment; Prisma bleibt gesetzt (KM6/SWP-Verbund „eine App, zwei Noten").
+- **Tradeoff**: Zwei Runtimes im Umfeld (Deno für Unterricht, Node+npm für Prisma-Tooling).
+  Das Cohort-Material zur UE 29.09. trug noch die alte „ohne Node"-Prämisse; die
+  **Prepared Lesson** `unterricht/KM5-01-nodejs-prisma/` ist das neue Original.
+- **Folgen**: KM6-/Verbund-Passagen („Prisma vertieft", `Deno.serve`) sind beim Ausarbeiten
+  auf Node+Prisma nachzuziehen; Prisma-Version immer **pinnen** (npm-`latest` = 8-RC).

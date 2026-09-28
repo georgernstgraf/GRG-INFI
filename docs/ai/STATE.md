@@ -1,26 +1,26 @@
 # Project State
 
-Current status as of 2026-09-14.
+Current status as of 2026-09-29.
 
 ## Current Focus
 
-Kohorten-Ordner **`3ahwii/`** für SJ 2026/27 etabliert (Issue **#2**): Hub, Kohorten-Semesterplan
-(`semesterplan-ws.md`, Vollkopie des Gerüsts) und die **Agentic-Coding-Sondereinheit**
-(beide Gruppen, Schulübung, HÜ nur Gruppe X) aus `GRG-SWP` herübergezogen; `unterricht/HWII-INFI/`
-bleibt allgemeines Gerüst (ADR 2026-09-14). Eigenes Folge-Issue **#3** für einen regulären
-lehrplan-Skill-Lauf inkl. Novellen-Check. Zusätzlich optionale „Für Eifrige"-Erweiterung im
-UE-Ordner (Issue **#4**): opencode als lokaler Server (Windows) + Shell-Aliase (`--dir`) und
-Telegram-Bot.
+ORM-Entscheid umgesetzt: **Prisma bleibt, DB-Werkzeugkette → Node.js** (ADR 2026-09-29).
+**Prepared Lesson** `unterricht/KM5-01-nodejs-prisma/` (Node LTS + Prisma 7 + SQLite/better-sqlite3,
+`praxis/` lauffähig, 5/5 Tests) als Original für die UE „Rep & ORM-Einstieg" (29.09.).
+lehrplan-Skill vollständig ausgeführt (Konformitäts-Check + Erläuterungen + Novellen-Check),
+Issue **#3** geschlossen. Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie
+durch die Node-Variante ersetzen und Stack-Zeilen angleichen.
 
-Lehrplan-Werk liegt im **Skill-Standard-Layout** unter `lehrplan/` (Migration 2026-09-07 /
-Retrofit 2026-09-10, Zweig-Ordner `infi-hwii/` + Unterrichts-Ebene `unterricht/HWII-INFI/`).
-Die **Erläuterungs-Ebene ist vollständig** (2026-09-14, via `lehrplan-annotator`, `glm-5.3`):
-`LEHRPLAN.md` + alle Klassenextrakte annotiert, 11 Retrofit-Links repariert, SWP-PDF-Duplikat
-entfernt. Lehrplan-Werk SJ 2026/27 für INFI steht (Issue
-[GRG-INFI#1](https://github.com/georgernstgraf/GRG-INFI/issues/1)).
-Nächster Fokus: operative Vorbereitung des WS 2026/27 (Kollegen-Absprache, Termine, Material).
+## Completed (2026-09-29)
 
-## Completed (this cycle, 2026-09-14)
+- [x] Prepared Lesson `unterricht/KM5-01-nodejs-prisma/` (`lesson.html`, `hausaufgabe.md`,
+      Tages-README-Vorlage, `praxis/`-Scaffold Node+Prisma-7) — real verifiziert (seed/run/test grün)
+- [x] ORM-ADR: Prisma vorerst beibehalten, Prisma-/DB-Toolchain auf Node.js (SQLite+better-sqlite3),
+      kein Drizzle; `AGENTS.md`-Runtime (Deno) unverändert
+- [x] lehrplan-Skill: Konformitäts-Check konform; Novellen-Check live (NOR-Kopf, keine neue Novelle);
+      `lehrplan/METADATA.md`-Belegzeile 2026-09-29; Issue **#3** geschlossen; HANDOFF abgehakt
+
+## Completed (2026-09-14)
 
 - [x] Kohorten-Ordner `3ahwii/`: Hub `README.md` + `semesterplan-ws.md` (Vollkopie des Gerüsts + Sondereinheit vor UE 1)
 - [x] Agentic-Coding-Sondereinheit `3ahwii/2026-09-15_agentic-coding-einstieg/` (INFI-angepasst) + `3ahwii/windows-debloat.md`
@@ -62,8 +62,10 @@ Nächster Fokus: operative Vorbereitung des WS 2026/27 (Kollegen-Absprache, Term
 
 ## Pending
 
-- [ ] Sondereinheit am 2026-09-15 halten; HÜ-Eingang **nur Gruppe X** prüfen
-- [ ] lehrplan-Skill regulär in INFI anwenden / Novellen-Check — Issue **#3**
+- [ ] **Kohorten-Nachzug 3ahwii:** Prepared Lesson `unterricht/KM5-01-nodejs-prisma/` in
+      `3ahwii/2026-09-29_rep-ohne-node/` übernehmen (Ordner/Präambel „ohne Node" ersetzen) und
+      Stack-Zeilen in `3ahwii/README.md`/`MISSION.md` auf „Prisma via Node" angleichen
+- [x] lehrplan-Skill regulär in INFI anwenden / Novellen-Check — Issue **#3** (erledigt 2026-09-29)
 - [ ] Kollegen-Thema abstimmen (Vorschlag: `lehrplan/infi-hwii/3HWII/README.md` → Kollegen-Soll) — **menschlich**,
       vor WS-Start
 - [ ] PLF-Termine nach Schulkalender in `unterricht/HWII-INFI/jg3-semesterplan-*.md` eintragen

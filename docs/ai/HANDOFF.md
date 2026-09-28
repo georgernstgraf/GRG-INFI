@@ -2,8 +2,10 @@
 
 No pending tasks from the 2026-09-07 cycle („Lehrplan-Werk SJ 2026/27 für INFI" — erfüllt,
 siehe `HISTORY.md`; Ergebnis-Zustand: `STATE.md`, Abschluss-Report: GRG-INFI#1).
-**2026-09-07:** Vollmigration auf Skill-Standard-Layout `lehrplan/` erledigt
-(Klassen-Extrakte `<KLASSE>.lehrplan.md` neu, Links repariert, Skill verschärft).
+**2026-09-29:** Prepared Lesson `unterricht/KM5-01-nodejs-prisma/` angelegt (Node.js + Prisma 7,
+SQLite) — Original für die UE „Rep & ORM-Einstieg"; ORM-Entscheid „Prisma bleibt, DB-Toolchain →
+Node" als ADR dokumentiert (DECISIONS.md). Kohorten-Kopie `3ahwii/2026-09-29_rep-ohne-node/`
+bleibt (noch) die alte Fassung → bei Übernahme durch die Node-Variante ersetzen.
 Organisatorische Follow-ups (Kollegen-Absprache, PLF-Termine, PG-Docker-Demo,
 Domänenwahl): `lehrplan/infi-hwii/3HWII/README.md` → Offene Punkte bzw. `STATE.md` → Pending.
 
@@ -19,7 +21,10 @@ Domänenwahl): `lehrplan/infi-hwii/3HWII/README.md` → Offene Punkte bzw. `STAT
    `3ahwii/2026-09-15_agentic-coding-einstieg/README.md`; **Schulübung**, HÜ-Rest **nur Gruppe X**
    (opencode installiert, Provider verbunden, `AGENTS.md` committet). Optional:
    `3ahwii/windows-debloat.md` (privat, von opencode gesteuert).
-2. [ ] **lehrplan-Skill in INFI anwenden / Novellen-Check** — Issue **#3** (großer Chunk).
+2. [x] **lehrplan-Skill in INFI anwenden / Novellen-Check** — Issue **#3** (großer Chunk).
+   **Erledigt 2026-09-29:** Aufgabe A (Konformitäts-Check) + Erläuterungs-Ebene (2026-09-14)
+   + Novellen-Check live (NOR-Kopf: „zuletzt geändert durch 235/2019", ident mit 2026-09-07).
+   Belegzeile in `lehrplan/METADATA.md` aktualisiert; keine Re-Extraktion nötig.
 
 ---
 

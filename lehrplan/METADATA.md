@@ -75,7 +75,7 @@ Quelle: https://www.spengergasse.at/?page_id=2085 (schulautonome Stundentafel �
 > Übrige Novellen (55/2017, 250/2021, 383/2021, 368/2022, 2/2023) berühren die Anlage 1.24
 > **nicht** — ausführliche Prüftabelle: [`RIS.md`](infi-hwii/RIS.md) §3. Nächster Re-Check: Sommer 2027.
 
-**RIS-Status abgefragt am 2026-09-07:** NOR-Dokument der Anlage 1.24 ([NOR40217058](https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40217058/NOR40217058.html)) meldet „BGBl. II Nr. 262/2015 **zuletzt geändert durch** BGBl. II Nr. 235/2019" — deckt sich exakt mit der Tabelle oben; **keine neue Novelle**.
+**RIS-Status abgefragt am 2026-09-29:** NOR-Dokument der Anlage 1.24 ([NOR40217058](https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40217058/NOR40217058.html)) meldet „BGBl. II Nr. 262/2015 **zuletzt geändert durch** BGBl. II Nr. 235/2019" — deckt sich exakt mit der Tabelle oben; **keine neue Novelle** (vorherige Abfrage 2026-09-07, identes Ergebnis).
 
 ## Klassen-Zuordnung
 

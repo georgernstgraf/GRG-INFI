@@ -3,11 +3,11 @@
 Kohorten-Ordner der **3AHWII** für das Fach **INFI** (HTL Spengergasse,
 WII–Betriebsinformatik), Schuljahr 2026/27.
 
-**Stack:** SQLite (`sqlite3`, `node:sqlite`) · Deno/TypeScript (`"nodeModulesDir": "none"`,
-kein Node, kein `npm:`) · PostgreSQL via Docker (nur DCL-Demo, UE 11).
-ORM-Evaluierung: Prisma 6-Setup aus Jg II ist deprecated (Adapter-Pflicht ab
-Prisma 7, RC auf npm-`latest`, kein Deno-nativer SQLite-Adapter) — Details siehe
-UE 2026-10-06.
+**Stack:** SQLite (`sqlite3`, `node:sqlite`) · Deno/TypeScript für den Unterrichts-Code
+· **Prisma 7 über Node.js/npm** für die DB-Werkzeugkette (Driver Adapter `better-sqlite3`,
+bewusst gepinnt auf `@7`; Entscheid 2026-09-29) · PostgreSQL via Docker (nur DCL-Demo, UE 11).
+Original der ORM-Einstiegsstunde: Prepared Lesson
+[`../unterricht/KM5-01-nodejs-prisma/`](../unterricht/KM5-01-nodejs-prisma/).
 
 > **Konkrete Kohorten-Fassung.** Die **allgemeine Planung** liegt unter
 > [`../unterricht/HWII-INFI/`](../unterricht/HWII-INFI/); die Klassen-Drehscheibe
