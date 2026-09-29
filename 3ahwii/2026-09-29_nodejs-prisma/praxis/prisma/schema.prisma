@@ -1,0 +1,30 @@
+// Prisma-Schema — Musik-Streaming-DB (Mini-Ausschnitt, UE 29.09.2026)
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Label {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  kuenstler Kuenstler[]
+}
+
+model Kuenstler {
+  id      Int    @id @default(autoincrement())
+  name    String
+  labelId Int?
+  label   Label? @relation(fields: [labelId], references: [id])
+  songs   Song[]
+}
+
+model Song {
+  id          Int       @id @default(autoincrement())
+  titel       String
+  dauerSek    Int
+  kuenstlerId Int
+  kuenstler   Kuenstler @relation(fields: [kuenstlerId], references: [id])
+}
