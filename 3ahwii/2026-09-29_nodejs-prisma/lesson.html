@@ -128,75 +128,75 @@ const mitLabel = await prisma.kuenstler.count({ where: { labelId: { not: null } 
 
 <h2>9. Quiz</h2>
 
-<div class="quiz" data-answer="b">
-<strong>1. Warum läuft Prisma 7 unter Node reibungsloser als unter Deno?</strong>
-<button data-opt="a">Weil Node von Prisma offiziell verboten wurde</button>
-<button data-opt="b">Weil Prisma 7 native Driver-Adapter voraussetzt</button>
-<button data-opt="c">Weil Deno keine SQLite-Dateien öffnen darf</button>
-<button data-opt="d">Weil Node die Rust-Engine wieder mitbringt</button>
+<div class="quiz" data-loesung="1">
+<p class="frage">1. Warum läuft Prisma 7 unter Node reibungsloser als unter Deno?</p>
+<label><input type="radio" name="q1" value="0" data-grund="Falsch, weil Node nicht verboten ist — der Lesson-Text nennt Node gerade das reibungslose Transportmittel für Prisma."> Weil Node von Prisma offiziell verboten wurde</label>
+<label><input type="radio" name="q1" value="1" data-grund="Richtig, weil Prisma 7 zwingend einen nativen Driver Adapter voraussetzt, der unter Node (better-sqlite3) ohne Sonderbehandlung läuft."> Weil Prisma 7 native Driver-Adapter voraussetzt</label>
+<label><input type="radio" name="q1" value="2" data-grund="Falsch, weil Deno nicht daran scheitert, SQLite zu öffnen — die Reibung waren npm:-Specifier und Berechtigungen."> Weil Deno keine SQLite-Dateien öffnen darf</label>
+<label><input type="radio" name="q1" value="3" data-grund="Falsch, weil Prisma 7 die frühere Rust-Query-Engine gerade entfernt hat; Node bringt sie nicht zurück."> Weil Node die Rust-Engine wieder mitbringt</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 
-<div class="quiz" data-answer="c">
-<strong>2. Welcher Befehl installiert die richtige Prisma-Version?</strong>
-<button data-opt="a">npm install prisma@latest ohne weitere Bindung</button>
-<button data-opt="b">npm install prisma@6 plus einen separaten Adapter</button>
-<button data-opt="c">npm install prisma@7 samt Adapter und Client</button>
-<button data-opt="d">npm install prisma@8 samt Adapter und Client</button>
+<div class="quiz" data-loesung="2">
+<p class="frage">2. Welcher Befehl installiert die richtige Prisma-Version?</p>
+<label><input type="radio" name="q2" value="0" data-grund="Falsch, weil ein ungepinnter Befehl derzeit die 8.0.0-RC zieht — genau das Chaos vom 22.09."> npm install prisma@latest ohne weitere Bindung</label>
+<label><input type="radio" name="q2" value="1" data-grund="Falsch, weil die Lesson Prisma 7 pinnen will, nicht Version 6."> npm install prisma@6 plus einen separaten Adapter</label>
+<label><input type="radio" name="q2" value="2" data-grund="Richtig, weil der Befehl prisma@7 mit @prisma/client@7 und dem Adapter @prisma/adapter-better-sqlite3@7 kombiniert."> npm install prisma@7 samt Adapter und Client</label>
+<label><input type="radio" name="q2" value="3" data-grund="Falsch, weil 8 die unfertige 8.0.0-RC ist und damit die falsche, nicht gepinnte Version."> npm install prisma@8 samt Adapter und Client</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 
-<div class="quiz" data-answer="a">
-<strong>3. Was bewirkt <code>npm approve-scripts --all</code>?</strong>
-<button data-opt="a">Es erlaubt die nötigen Install-Scripts der Pakete</button>
-<button data-opt="b">Es löscht alle vorhandenen node_modules wieder</button>
-<button data-opt="c">Es pinnt jede Abhängigkeit auf die Version sieben</button>
-<button data-opt="d">Es startet die Migration gegen die lokale Datei</button>
+<div class="quiz" data-loesung="0">
+<p class="frage">3. Was bewirkt <code>npm approve-scripts --all</code>?</p>
+<label><input type="radio" name="q3" value="0" data-grund="Richtig, weil Node ≥ 22.6 Install-Scripts standardmäßig blockt; ohne Freigabe bleibt better-sqlite3 ungebaut."> Es erlaubt die nötigen Install-Scripts der Pakete</label>
+<label><input type="radio" name="q3" value="1" data-grund="Falsch, weil approve-scripts nur Install-Scripts freigibt und nichts löscht."> Es löscht alle vorhandenen node_modules wieder</label>
+<label><input type="radio" name="q3" value="2" data-grund="Falsch, weil das Pinnen über das @7 im npm-i-Befehl passiert, nicht über approve-scripts."> Es pinnt jede Abhängigkeit auf die Version sieben</label>
+<label><input type="radio" name="q3" value="3" data-grund="Falsch, weil die Migration mit npx prisma migrate dev läuft, nicht über approve-scripts."> Es startet die Migration gegen die lokale Datei</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 
-<div class="quiz" data-answer="d">
-<strong>4. Wo steht die Datenbank-URL für die Prisma-CLI?</strong>
-<button data-opt="a">Fest im datasource-Block des Schemas</button>
-<button data-opt="b">Fest im generator-Block des Schemas</button>
-<button data-opt="c">In der Datei package.json unter scripts</button>
-<button data-opt="d">In der Datei .env über DATABASE_URL</button>
+<div class="quiz" data-loesung="3">
+<p class="frage">4. Wo steht die Datenbank-URL für die Prisma-CLI?</p>
+<label><input type="radio" name="q4" value="0" data-grund="Falsch, weil die URL gerade nicht im Schema steht — die Lesson betont, dass sie in die .env gehört."> Fest im datasource-Block des Schemas</label>
+<label><input type="radio" name="q4" value="1" data-grund="Falsch, weil der generator-Block nur den Client-Provider beschreibt, nicht die Verbindungs-URL."> Fest im generator-Block des Schemas</label>
+<label><input type="radio" name="q4" value="2" data-grund="Falsch, weil package.json nicht die Verbindungs-URL enthält; die steht in der .env."> In der Datei package.json unter scripts</label>
+<label><input type="radio" name="q4" value="3" data-grund="Richtig, weil DATABASE_URL=&quot;file:./dev.db&quot; in der .env steht und die CLI sie über prisma7.config.ts liest."> In der Datei .env über DATABASE_URL</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 
-<div class="quiz" data-answer="b">
-<strong>5. Was erzeugt <code>npx prisma migrate dev --name init</code>?</strong>
-<button data-opt="a">Eine reine JavaScript-Datei ohne SQL-Inhalt</button>
-<button data-opt="b">Eine SQL-Migration und den generierten Client</button>
-<button data-opt="c">Eine Sicherungskopie der bestehenden Datenbank</button>
-<button data-opt="d">Eine neue Tabelle ohne jegliche Beziehung</button>
+<div class="quiz" data-loesung="1">
+<p class="frage">5. Was erzeugt <code>npx prisma migrate dev --name init</code>?</p>
+<label><input type="radio" name="q5" value="0" data-grund="Falsch, weil die Migration echtes SQL in prisma/migrations/…_init/migration.sql enthält, keine reine JavaScript-Datei."> Eine reine JavaScript-Datei ohne SQL-Inhalt</label>
+<label><input type="radio" name="q5" value="1" data-grund="Richtig, weil migrate dev die SQL-Migration plus den Client anlegt (generate passiert dabei automatisch)."> Eine SQL-Migration und den generierten Client</label>
+<label><input type="radio" name="q5" value="2" data-grund="Falsch, weil migrate dev eine Migration erzeugt, keine Sicherungskopie der Datenbank."> Eine Sicherungskopie der bestehenden Datenbank</label>
+<label><input type="radio" name="q5" value="3" data-grund="Falsch, weil das Schema Beziehungen als Felder definiert und daraus Fremdschlüssel baut — nicht ohne Beziehung."> Eine neue Tabelle ohne jegliche Beziehung</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 
-<div class="quiz" data-answer="c">
-<strong>6. Wie bekommt der PrismaClient in Version 7 seine Verbindung?</strong>
-<button data-opt="a">Über die automatische Rust-Engine im Hintergrund</button>
-<button data-opt="b">Über eine globale Umgebungsvariable ohne Adapter</button>
-<button data-opt="c">Über einen übergebenen Driver Adapter im Konstruktor</button>
-<button data-opt="d">Über den Datasource-Block direkt aus dem Schema</button>
+<div class="quiz" data-loesung="2">
+<p class="frage">6. Wie bekommt der PrismaClient in Version 7 seine Verbindung?</p>
+<label><input type="radio" name="q6" value="0" data-grund="Falsch, weil Prisma 7 die Rust-Query-Engine entfernt hat; sie ist nicht mehr im Hintergrund aktiv."> Über die automatische Rust-Engine im Hintergrund</label>
+<label><input type="radio" name="q6" value="1" data-grund="Falsch, weil der Client ohne übergebenen Adapter unter Prisma 7 gar nicht startet."> Über eine globale Umgebungsvariable ohne Adapter</label>
+<label><input type="radio" name="q6" value="2" data-grund="Richtig, weil der Client mit new PrismaClient({ adapter }) einen übergebenen Driver Adapter bekommt."> Über einen übergebenen Driver Adapter im Konstruktor</label>
+<label><input type="radio" name="q6" value="3" data-grund="Falsch, weil der Client die Verbindung über den Adapter erhält, nicht direkt aus dem Datasource-Block."> Über den Datasource-Block direkt aus dem Schema</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 
-<div class="quiz" data-answer="a">
-<strong>7. Was zählt <code>prisma.kuenstler.count({ where: { labelId: { not: null } } })</code>?</strong>
-<button data-opt="a">Nur Künstler mit gesetztem Label</button>
-<button data-opt="b">Alle Künstler samt jenen ohne Label</button>
-<button data-opt="c">Nur Künstler mit doppeltem Label</button>
-<button data-opt="d">Nur Künstler ohne zugehörigen Song</button>
+<div class="quiz" data-loesung="0">
+<p class="frage">7. Was zählt <code>prisma.kuenstler.count({ where: { labelId: { not: null } } })</code>?</p>
+<label><input type="radio" name="q7" value="0" data-grund="Richtig, weil der Filter labelId: { not: null } genau die Künstler mit gesetztem Label zählt."> Nur Künstler mit gesetztem Label</label>
+<label><input type="radio" name="q7" value="1" data-grund="Falsch, weil labelId: { not: null } Künstler ohne Label gerade ausschließt; alle zählen wäre count() ohne Filter."> Alle Künstler samt jenen ohne Label</label>
+<label><input type="radio" name="q7" value="2" data-grund="Falsch, weil der Filter nur auf NULL prüft und nichts mit doppelten Labels zu tun hat."> Nur Künstler mit doppeltem Label</label>
+<label><input type="radio" name="q7" value="3" data-grund="Falsch, weil die Abfrage auf labelId filtert, nicht auf vorhandene Songs."> Nur Künstler ohne zugehörigen Song</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 
-<div class="quiz" data-answer="d">
-<strong>8. Was gilt für den Self-JOIN unter Prisma?</strong>
-<button data-opt="a">Er läuft automatisch über die include-Option</button>
-<button data-opt="b">Er läuft automatisch über die relation-Felder</button>
-<button data-opt="c">Er läuft nur mit aktivierter Vorschau-Funktion</button>
-<button data-opt="d">Er läuft nur über rohes SQL per $queryRaw</button>
+<div class="quiz" data-loesung="3">
+<p class="frage">8. Was gilt für den Self-JOIN unter Prisma?</p>
+<label><input type="radio" name="q8" value="0" data-grund="Falsch, weil die include-Option Beziehungen lädt, aber keinen Self-JOIN erzeugt."> Er läuft automatisch über die include-Option</label>
+<label><input type="radio" name="q8" value="1" data-grund="Falsch, weil relation-Felder Beziehungen beschreiben, Prisma daraus aber keinen Self-JOIN baut."> Er läuft automatisch über die relation-Felder</label>
+<label><input type="radio" name="q8" value="2" data-grund="Falsch, weil die Lesson keine Vorschau-Funktion nennt; der eigentliche Weg ist $queryRaw."> Er läuft nur mit aktivierter Vorschau-Funktion</label>
+<label><input type="radio" name="q8" value="3" data-grund="Richtig, weil Prisma keinen Self-JOIN direkt unterstützt und der Fluchtweg $queryRaw ist."> Er läuft nur über rohes SQL per $queryRaw</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 
