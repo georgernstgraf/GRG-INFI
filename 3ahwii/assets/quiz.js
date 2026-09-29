@@ -1,28 +1,40 @@
-/* Teach-Workspace 3AHWII — Quiz-Widget mit sofortigem Feedback.
-   Verwendung pro Frage:
-   <div class="quiz" data-answer="b">
-     <strong>Frage …</strong>
-     <button data-opt="a">…</button>
-     <button data-opt="b">…</button>
-     <p class="feedback" aria-live="polite"></p>
-   </div>
-*/
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".quiz").forEach((box) => {
-    const correct = box.getAttribute("data-answer");
-    const fb = box.querySelector(".feedback");
-    box.querySelectorAll("button[data-opt]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const hit = btn.getAttribute("data-opt") === correct;
-        box.querySelectorAll("button[data-opt]").forEach((b) => {
-          b.disabled = true;
-          b.style.opacity = b.getAttribute("data-opt") === correct ? "1" : "0.55";
-        });
-        if (fb) {
-          fb.textContent = hit ? "Richtig." : "Nicht ganz — lies den Abschnitt noch einmal.";
-          fb.className = "feedback " + (hit ? "ok" : "no");
-        }
-      });
-    });
+// Bewertet ein Quiz mit Radio-Antworten und Begründung pro Option.
+// Markup:
+//   <div class="quiz" data-loesung="N">
+//     <p class="frage">…</p>
+//     <label><input type="radio" name="qK" value="i" data-grund="…"> …</label>
+//     <p class="feedback" aria-live="polite"></p>
+//   </div>
+// value und data-loesung sind 0-basiert. Sofort bei Auswahl (change) zeigt
+// .feedback die Begründung (data-grund) der gewählten Option, gefärbt
+// richtig/falsch; erneutes Wählen aktualisiert die Rückmeldung.
+(function () {
+  "use strict";
+
+  function initialisieren(quiz) {
+    var loesung = parseInt(quiz.getAttribute("data-loesung"), 10);
+    var inputs = quiz.querySelectorAll("input[type=radio]");
+    var feedback = quiz.querySelector(".feedback");
+    if (!inputs.length || !feedback) { return; }
+
+    function bewerte() {
+      var gewaehlt = null;
+      for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].checked) { gewaehlt = inputs[i]; }
+      }
+      if (!gewaehlt) { return; }
+      var richtig = parseInt(gewaehlt.value, 10) === loesung;
+      feedback.textContent = gewaehlt.getAttribute("data-grund") || "";
+      feedback.className = "feedback " + (richtig ? "richtig" : "falsch");
+    }
+
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].addEventListener("change", bewerte);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var quizzes = document.querySelectorAll(".quiz");
+    for (var i = 0; i < quizzes.length; i++) { initialisieren(quizzes[i]); }
   });
-});
+})();

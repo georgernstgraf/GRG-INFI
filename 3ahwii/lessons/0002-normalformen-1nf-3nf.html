@@ -31,28 +31,28 @@ eine denormalisierte Tabelle bis <strong>3NF</strong>. Dein Win: die HÜ-Tabelle
 <em>bewusst</em> wieder zusammen — erst nach Messung, nie aus Bequemlichkeit.</div>
 
 <h2>3. Üben: Quiz</h2>
-<div class="quiz" data-answer="d">
-<strong>1. Was verletzt <code>tracks = "A,B,C"</code> in einer Zelle?</strong>
-<button data-opt="a">Die zweite Normalform direkt</button>
-<button data-opt="b">Die dritte Normalform direkt</button>
-<button data-opt="c">Nur die Schlüsselregel allein</button>
-<button data-opt="d">Die erste Normalform direkt</button>
+<div class="quiz" data-loesung="3">
+<p class="frage">1. Was verletzt <code>tracks = "A,B,C"</code> in einer Zelle?</p>
+<label><input type="radio" name="q1" value="0" data-grund="Falsch, weil die 2NF Abhängigkeiten von Schlüsselteilen betrifft und nicht mehrere Werte in einer Zelle."> Die zweite Normalform direkt</label>
+<label><input type="radio" name="q1" value="1" data-grund="Falsch, weil die 3NF transitive Abhängigkeiten von Nichtschlüsseln betrifft und nicht Listen in einer Zelle."> Die dritte Normalform direkt</label>
+<label><input type="radio" name="q1" value="2" data-grund="Falsch, weil nicht der Schlüssel das Problem ist, sondern die nicht-atomare Zelle."> Nur die Schlüsselregel allein</label>
+<label><input type="radio" name="q1" value="3" data-grund="Richtig, weil die 1NF verlangt, dass jede Zelle genau einen atomaren Wert enthält; &quot;A,B,C&quot; ist eine Liste."> Die erste Normalform direkt</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
-<div class="quiz" data-answer="a">
-<strong>2. Was ist eine Anomalie?</strong>
-<button data-opt="a">Schemafehler erzwingt Datenfehler</button>
-<button data-opt="b">Tippfehler erzeugt Abfragefehler</button>
-<button data-opt="c">Indexmangel bremst Lesezugriffe</button>
-<button data-opt="d">NULL-Wert blockiert Abfragen</button>
+<div class="quiz" data-loesung="0">
+<p class="frage">2. Was ist eine Anomalie?</p>
+<label><input type="radio" name="q2" value="0" data-grund="Richtig, weil die Lesson Anomalien als Schema-Fehler beschreibt, die Einfüge-, Änderungs- oder Löschfehler erzwingen."> Schemafehler erzwingt Datenfehler</label>
+<label><input type="radio" name="q2" value="1" data-grund="Falsch, weil ein Tippfehler ein Eingabefehler ist, kein Schema-Fehler der Normalisierung."> Tippfehler erzeugt Abfragefehler</label>
+<label><input type="radio" name="q2" value="2" data-grund="Falsch, weil ein fehlender Index die Performance betrifft, aber keine Einfüge-, Änderungs- oder Lösch-Anomalie verursacht."> Indexmangel bremst Lesezugriffe</label>
+<label><input type="radio" name="q2" value="3" data-grund="Falsch, weil NULL-Werte kein Schema-Fehler der Normalformen sind."> NULL-Wert blockiert Abfragen</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
-<div class="quiz" data-answer="b">
-<strong>3. Wann ist Denormalisierung richtig?</strong>
-<button data-opt="a">Immer bei vielen Tabellen</button>
-<button data-opt="b">Bewusst nach gemessener Leselast</button>
-<button data-opt="c">Immer bei jedem JOIN</button>
-<button data-opt="d">Bewusst bei jedem Schreibzugriff</button>
+<div class="quiz" data-loesung="1">
+<p class="frage">3. Wann ist Denormalisierung richtig?</p>
+<label><input type="radio" name="q3" value="0" data-grund="Falsch, weil die Zahl der Tabellen allein kein Grund ist; Denormalisierung erfolgt bewusst nach Messung."> Immer bei vielen Tabellen</label>
+<label><input type="radio" name="q3" value="1" data-grund="Richtig, weil die Lesson sagt: erst nach Messung, nie aus Bequemlichkeit — also bewusst und erst nach gemessener Leselast."> Bewusst nach gemessener Leselast</label>
+<label><input type="radio" name="q3" value="2" data-grund="Falsch, weil JOINs kein Anlass zum Zusammenlegen sind; erst die Messung entscheidet."> Immer bei jedem JOIN</label>
+<label><input type="radio" name="q3" value="3" data-grund="Falsch, weil Denormalisierung der Lese-Performance dient und nicht jedem Schreibzugriff folgt."> Bewusst bei jedem Schreibzugriff</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 

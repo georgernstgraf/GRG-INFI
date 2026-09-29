@@ -29,28 +29,28 @@ Begriffe: <a href="../reference/glossar.html#abfragen">Glossar</a>.</p>
 Merksatz: Kein Aggregat in <code>WHERE</code> — dafür ist <code>HAVING</code> da.</p>
 
 <h2>3. Üben: Diagnose-Quiz</h2>
-<div class="quiz" data-answer="c">
-<strong>1. Wohin gehört <code>COUNT(*) &gt; 5</code> als Filter?</strong>
-<button data-opt="a">Immer in die WHERE-Klausel</button>
-<button data-opt="b">Immer in die ORDER-Klausel</button>
-<button data-opt="c">Immer in die HAVING-Klausel</button>
-<button data-opt="d">Immer in die LIMIT-Klausel</button>
+<div class="quiz" data-loesung="2">
+<p class="frage">1. Wohin gehört <code>COUNT(*) &gt; 5</code> als Filter?</p>
+<label><input type="radio" name="q1" value="0" data-grund="Falsch, weil WHERE Zeilen vor der Gruppierung filtert und Aggregate wie COUNT(*) dort nicht erlaubt sind."> Immer in die WHERE-Klausel</label>
+<label><input type="radio" name="q1" value="1" data-grund="Falsch, weil ORDER BY die Ausgabe nur sortiert und nichts filtert."> Immer in die ORDER-Klausel</label>
+<label><input type="radio" name="q1" value="2" data-grund="Richtig, weil HAVING Gruppen nach der Gruppierung filtert und Aggregat-Bedingungen wie COUNT(*) &gt; 5 dorthin gehören."> Immer in die HAVING-Klausel</label>
+<label><input type="radio" name="q1" value="3" data-grund="Falsch, weil LIMIT nur die Zahl der Ergebniszeilen begrenzt, aber nicht nach einem Aggregat filtert."> Immer in die LIMIT-Klausel</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
-<div class="quiz" data-answer="b">
-<strong>2. Was zählt <code>COUNT(label_id)</code>?</strong>
-<button data-opt="a">Jede Zeile der Tabelle</button>
-<button data-opt="b">Nur Zeilen mit Wert</button>
-<button data-opt="c">Nur Zeilen mit Labelwert</button>
-<button data-opt="d">Nur Zeilen ohne Duplikat</button>
+<div class="quiz" data-loesung="1">
+<p class="frage">2. Was zählt <code>COUNT(label_id)</code>?</p>
+<label><input type="radio" name="q2" value="0" data-grund="Falsch, weil jede Zeile COUNT(*) zählt; COUNT(label_id) überspringt NULL-Werte."> Jede Zeile der Tabelle</label>
+<label><input type="radio" name="q2" value="1" data-grund="Richtig, weil COUNT(label_id) nur Zeilen mit einem Wert in dieser Spalte zählt (kein NULL)."> Nur Zeilen mit Wert</label>
+<label><input type="radio" name="q2" value="2" data-grund="Falsch, weil COUNT(label_id) nicht nach einem bestimmten Labelwert filtert, sondern nur NULL-Werte übergeht."> Nur Zeilen mit Labelwert</label>
+<label><input type="radio" name="q2" value="3" data-grund="Falsch, weil COUNT doppelte Werte mitzählt und Duplikate nicht entfernt."> Nur Zeilen ohne Duplikat</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
-<div class="quiz" data-answer="a">
-<strong>3. Wozu dient <code>x.id &lt; y.id</code> im Self-JOIN?</strong>
-<button data-opt="a">Doppelpaare sicher vermeiden</button>
-<button data-opt="b">NULL-Werte sicher vermeiden</button>
-<button data-opt="c">Gruppen exakt halbieren</button>
-<button data-opt="d">Spalten sauber benennen</button>
+<div class="quiz" data-loesung="0">
+<p class="frage">3. Wozu dient <code>x.id &lt; y.id</code> im Self-JOIN?</p>
+<label><input type="radio" name="q3" value="0" data-grund="Richtig, weil x.id &lt; y.id die gespiegelten Paare auf eine Reihenfolge reduziert und so Doppelpaare vermeidet."> Doppelpaare sicher vermeiden</label>
+<label><input type="radio" name="q3" value="1" data-grund="Falsch, weil die Bedingung nur die Paar-Reihenfolge festlegt und nichts mit NULL-Werten zu tun hat."> NULL-Werte sicher vermeiden</label>
+<label><input type="radio" name="q3" value="2" data-grund="Falsch, weil im Self-JOIN nicht gruppiert wird; die Bedingung wählt nur geordnete Paare."> Gruppen exakt halbieren</label>
+<label><input type="radio" name="q3" value="3" data-grund="Falsch, weil die Spalten über die Aliase x und y benannt werden, nicht über die Vergleichsbedingung."> Spalten sauber benennen</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 

@@ -37,28 +37,28 @@ GROUP BY label;</code></pre>
 Subquery in <code>FROM</code> braucht einen Alias. (Korreliert, <code>EXISTS</code>/<code>IN</code> + NULL-Falle folgen in UE 4.)</div>
 
 <h2>3. Üben: Quiz</h2>
-<div class="quiz" data-answer="b">
-<strong>1. Was liefert eine Skalar-Subquery?</strong>
-<button data-opt="a">Genau eine ganze Zeile</button>
-<button data-opt="b">Genau einen einzelnen Wert</button>
-<button data-opt="c">Genau eine sortierte Tabelle</button>
-<button data-opt="d">Genau einen benannten Alias</button>
+<div class="quiz" data-loesung="1">
+<p class="frage">1. Was liefert eine Skalar-Subquery?</p>
+<label><input type="radio" name="q1" value="0" data-grund="Falsch, weil eine ganze Zeile die Zeilen-Subquery liefert."> Genau eine ganze Zeile</label>
+<label><input type="radio" name="q1" value="1" data-grund="Richtig, weil eine Skalar-Subquery genau einen einzelnen Wert liefert, z. B. AVG als Vergleichswert."> Genau einen einzelnen Wert</label>
+<label><input type="radio" name="q1" value="2" data-grund="Falsch, weil eine Ergebnismenge die Tabellen-Subquery ist; sie muss nicht sortiert sein."> Genau eine sortierte Tabelle</label>
+<label><input type="radio" name="q1" value="3" data-grund="Falsch, weil ein Alias nur ein Name für eine Subquery ist und kein Rückgabewert."> Genau einen benannten Alias</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
-<div class="quiz" data-answer="c">
-<strong>2. Was braucht eine Subquery in FROM?</strong>
-<button data-opt="a">Einen Verweis auf die Außenzeilen</button>
-<button data-opt="b">Eine Bedingung mit einem Einzelwert</button>
-<button data-opt="c">Einen Alias hinter der Klammer</button>
-<button data-opt="d">Einen Index auf der Quelltabelle</button>
+<div class="quiz" data-loesung="2">
+<p class="frage">2. Was braucht eine Subquery in FROM?</p>
+<label><input type="radio" name="q2" value="0" data-grund="Falsch, weil ein Verweis auf Außenzeilen eine korrelierte Subquery kennzeichnet, nicht die FROM-Platzierung."> Einen Verweis auf die Außenzeilen</label>
+<label><input type="radio" name="q2" value="1" data-grund="Falsch, weil eine Bedingung mit einem Einzelwert eine Skalar-Bedingung beschreibt und keine FROM-Voraussetzung ist."> Eine Bedingung mit einem Einzelwert</label>
+<label><input type="radio" name="q2" value="2" data-grund="Richtig, weil FROM (SELECT …) AS x in SQLite zwingend einen Alias hinter der Klammer braucht."> Einen Alias hinter der Klammer</label>
+<label><input type="radio" name="q2" value="3" data-grund="Falsch, weil ein Index die Performance verbessern kann, aber keine Pflicht für eine FROM-Subquery ist."> Einen Index auf der Quelltabelle</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
-<div class="quiz" data-answer="a">
-<strong>3. Wohin gehört der Durchschnittsvergleich?</strong>
-<button data-opt="a">Skalar-Subquery in WHERE-Klausel</button>
-<button data-opt="b">Tabellen-Subquery in FROM-Klausel</button>
-<button data-opt="c">Zeilen-Subquery in GROUP-Klausel</button>
-<button data-opt="d">Spalten-Subquery in ORDER-Klausel</button>
+<div class="quiz" data-loesung="0">
+<p class="frage">3. Wohin gehört der Durchschnittsvergleich?</p>
+<label><input type="radio" name="q3" value="0" data-grund="Richtig, weil WHERE plays &gt; (SELECT AVG(plays) …) genau der Skalar-Vergleich in der WHERE-Klausel ist."> Skalar-Subquery in WHERE-Klausel</label>
+<label><input type="radio" name="q3" value="1" data-grund="Falsch, weil eine Tabellen-Subquery in FROM eine Ergebnismenge liefert, keinen Einzelwert zum Vergleich."> Tabellen-Subquery in FROM-Klausel</label>
+<label><input type="radio" name="q3" value="2" data-grund="Falsch, weil GROUP BY keine Subquery aufnimmt und Zeilen-Subqueries per Tupelvergleich in WHERE stehen."> Zeilen-Subquery in GROUP-Klausel</label>
+<label><input type="radio" name="q3" value="3" data-grund="Falsch, weil ORDER BY sortiert und keine eigene Subquery-Form in der ORDER-Klausel kennt."> Spalten-Subquery in ORDER-Klausel</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 
