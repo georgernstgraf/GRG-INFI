@@ -9,6 +9,8 @@ Current status as of 2026-10-05.
 repo-übergreifende Skill `create-lesson` (`opencode-helpers`) verbietet lauffähigen Code unter
 `unterricht/` und ermittelt die Beispielprojekt-Ablage per Repo-Konvention
 (opencode-helpers#101). Migration GRG-INFI#8; Tests grün (KM5-01 5/5, KM6-01 3/3, KM6-02 9/9).
+Alle drei Beispielprojekte nutzen jetzt denselben **TypeScript-Client** (`prisma-client` + `tsx`;
+KM5-01 angeglichen, Issue **#9**).
 
 Vorheriger Stand (2026-10-05): Lesson-Infrastruktur + **KM6-Vorbereitung** — repo-weites `assets/`
 (Loader/Theme/lesson.css/quiz/site/Badge) + `serve.sh`, **GitHub Pages** live
@@ -22,6 +24,7 @@ Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetze
 
 ## Completed (2026-10-05)
 
+- [x] **KM5-01-Beispielprojekt auf TypeScript-Client** (`prisma-client` + `tsx`) umgestellt: `src/prisma.js`→`src/db.ts`, `src/seed.js`→`src/seed.ts`, `src/queries.js`→`src/queries.ts`, `test/queries.test.js`→`.ts`; Schema-Generator + `package.json`-Scripts + Lesson/Hausaufgabe/README angeglichen — Issue **#9**, Commit `88d8064`; `run` + 5/5 Tests grün
 - [x] **Beispielprojekte ausgelagert**: Skill `create-lesson` verschärft (kein lauffähiger Code unter `unterricht/`; Ablage per Konvention, Default `Beispielprojekte/`) — opencode-helpers#101 **geschlossen**, Commit `fbcf08b`, `test_skill_links` grün
 - [x] Root-`Beispielprojekte/` angelegt; `praxis/` von `KM5-01-nodejs-prisma`, `KM6-01-prisma-werkzeuge`, `KM6-02-prisma-query-api` dorthin verschoben (git rename); Projekt-Verweise in den Tages-README-Vorlagen und die Repo-Doku (AGENTS/README/ARCHITECTURE) nachgezogen — GRG-INFI#8 **geschlossen**, Commit `68649e1`
 - [x] Verifikation nach dem Verschieben: `npm test` grün (KM5-01 5/5 frisch installiert, KM6-01 3/3, KM6-02 9/9); keine `praxis`-Referenzen mehr unter `unterricht/`
@@ -82,9 +85,6 @@ Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetze
 
 ## Pending
 
-- [ ] **KM5-01-Client angleichen:** `Beispielprojekte/km5-01-nodejs-prisma/` nutzt noch den
-      CJS-Client (`prisma-client-js`, `.js`-Quellen) → auf TypeScript-Client (`prisma-client` +
-      `tsx`) umstellen, wie KM6-01/KM6-02
 - [ ] **Kohorten-Nachzug 3ahwii:** Prepared Lesson `unterricht/KM5-01-nodejs-prisma/` in
       `3ahwii/2026-09-29_rep-ohne-node/` übernehmen (Ordner/Präambel „ohne Node" ersetzen) und
       Stack-Zeilen in `3ahwii/README.md`/`MISSION.md` auf „Prisma via Node" angleichen

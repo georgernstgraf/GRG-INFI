@@ -120,8 +120,9 @@ Superseded decisions are relocated to HISTORY.md.
   inkompatibel** (empirisch bestätigt) — stützt die Node-Entscheidung vom 29.09.
 - **Considered**: Deno als Runtime (SWP-Konvention `runtime = "deno"`, Prisma 6) — für
   Prisma 7 + SQLite nicht möglich; verworfen.
-- **Folgen**: `unterricht/KM6-01`/`KM6-02` sind die TypeScript-Client-Originale; die KM5-01-Lesson
-  (noch CJS-Client) ist bei Gelegenheit anzugleichen.
+- **Folgen**: `Beispielprojekte/km6-01-prisma-werkzeuge`/`km6-02-prisma-query-api` sind die
+  TypeScript-Client-Originale; `Beispielprojekte/km5-01-nodejs-prisma` wurde am 2026-10-05 ebenfalls
+  auf den TypeScript-Client umgestellt (`prisma-client` + `tsx`, Issue #9).
 - **Stolperstein (dokumentiert):** Prisma Studio v7 verlangt für SQLite die Doppel-Slash-URL
   `file://./dev.db` (die Konfig-URL `file:./dev.db` wird abgelehnt: „not supported for the file: protocol").
 

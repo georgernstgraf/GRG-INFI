@@ -20,9 +20,9 @@ vorbereitet (das WS bleibt KM5).
 **2026-10-05 (2) — Beispielprojekte ausgelagert:** `unterricht/` ist jetzt **codefrei**; die drei
 `praxis/`-Scaffolds liegen unter Root-`Beispielprojekte/` (KM5-01/KM6-01/KM6-02). Skill
 `create-lesson` repo-übergreifend verschärft (opencode-helpers#101); Migration GRG-INFI#8, Tests
-grün. **Offen (Folge):** `Beispielprojekte/km5-01-nodejs-prisma/` nutzt noch den CJS-Client
-(`prisma-client-js`) → auf TypeScript-Client angleichen. Künftige Lessons legen **keinen**
-lauffähigen Code mehr unter `unterricht/` an (siehe `docs/ai/CONVENTIONS.md`).
+grün. **2026-10-05 (3):** KM5-01 auf **TypeScript-Client** (`prisma-client` + `tsx`) angeglichen
+(Issue #9) — alle drei Beispielprojekte nutzen jetzt denselben Client. Künftige Lessons legen
+**keinen** lauffähigen Code mehr unter `unterricht/` an (siehe `docs/ai/CONVENTIONS.md`).
 
 ---
 
