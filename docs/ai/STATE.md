@@ -4,8 +4,17 @@ Current status as of 2026-10-05.
 
 ## Current Focus
 
-**Beispielprojekte ausgelagert (2026-10-05):** `unterricht/` ist jetzt **codefrei** — die drei
-`praxis/`-Scaffolds wanderten nach Root-`Beispielprojekte/` (KM5-01, KM6-01, KM6-02). Der
+**Struktur + KM5-Lektionen UE 1–3 (2026-10-05):** Skills `create-lesson`/`lehrplan` geschärft
+(opencode-helpers#103): `unterricht/` enthält **nur** Lesson-Ordner, Glossar = Root-`GLOSSAR.md`,
+Zweig-Ordner **ohne Fach-Präfix**. Repo migriert (`lehrplan/hwii`, `lehrplan/hwit`,
+`lehrplan/kompetenzmodule/`; Planungsdateien → `lehrplan/hwii/`) — Issue **#11**, Link-Check 0.
+Drei neue **KM5-Prepared-Lessons** (Sub-Issues von #7): `KM5-02-normalisierung` (#12, 1NF/2NF
+vertieft), `KM5-03-unterabfragen-eins` (#13), `KM5-04-wiederholung-diagnose` (#14);
+**`GLOSSAR.md`** im Root + Navigator-Referenz (#15). Beispielprojekte `km5-02-normalisierung`
+(4/4) und `km5-03-unterabfragen` (4/4) grün. **Offen:** Issue **#7** — UE 4–13 + Bonus.
+
+Vorheriger Stand (2026-10-05): **Beispielprojekte ausgelagert** — `unterricht/` ist **codefrei**;
+die `praxis/`-Scaffolds wanderten nach Root-`Beispielprojekte/` (KM5-01, KM6-01, KM6-02). Der
 repo-übergreifende Skill `create-lesson` (`opencode-helpers`) verbietet lauffähigen Code unter
 `unterricht/` und ermittelt die Beispielprojekt-Ablage per Repo-Konvention
 (opencode-helpers#101). Migration GRG-INFI#8; Tests grün (KM5-01 5/5, KM6-01 3/3, KM6-02 9/9).
@@ -24,6 +33,15 @@ Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetze
 
 ## Completed (2026-10-05)
 
+- [x] **Struktur + Skills (Issues #11, opencode-helpers#103)** — `create-lesson`/`lehrplan`
+      geschärft; Repo migriert: `lehrplan/hwii`, `lehrplan/hwit`, `lehrplan/kompetenzmodule/`,
+      Planung → `lehrplan/hwii/`; Commit `7c2ef0d`, Link-Check 0 gebrochen
+- [x] **KM5-02 Normalisierung** (Issue #12, Commit `9e3d33e`): 1NF/2NF vertieft, 15 Quizze;
+      Beispielprojekt `km5-02-normalisierung` (4/4 Tests grün)
+- [x] **KM5-03 Unterabfragen I** (Issue #13, Commit `24590eb`): 9 Quizze; geteiltes Musik-Projekt
+      `km5-03-unterabfragen` (4/4 Tests grün, auch KM5-04)
+- [x] **KM5-04 Wiederholung & Diagnose** (Issue #14, Commit `fc55dbc`): 9 Quizze
+- [x] **`GLOSSAR.md`** im Root + Navigator-Referenz + Lesson-Verweise (Issue #15, Commit `19e73d6`)
 - [x] **Issue #10 geschlossen** — GitHub Pages veröffentlicht nur noch die vorbereiteten
       Materialien aus `unterricht/` (+ repo-weites `assets/`, Navigator `index.html`);
       `3ahwii/` aus `pages.yml` entfernt, alle Navigator-Links nach `3ahwii/` gestrichen,

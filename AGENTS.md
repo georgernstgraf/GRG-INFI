@@ -22,7 +22,7 @@ Key technologies:
 - `Leetcodes/`: Algorithmic and SQL problems. Each problem has its own folder.
 - `sqlite-datenbanken/`: Common database files (`.db`, `.sqlite`) and seed scripts (`.sql`).
 - `_Experimente/`: Experimental projects and prototyping.
-- `Beispielprojekte/`: Lauffähige Referenzprojekte zu den Prepared Lessons (KM5-01, KM6-01, KM6-02), außerhalb des `unterricht/`-Ordners. `unterricht/` enthält ausschließlich Unterrichtsmaterial (HTML/Markdown + `assets/`), keinen lauffähigen Code (Skill `create-lesson`, Issue #8).
+- `Beispielprojekte/`: Lauffähige Referenzprojekte zu den Prepared Lessons (KM5-01, KM5-02, KM5-03, KM6-01, KM6-02), außerhalb des `unterricht/`-Ordners. `unterricht/` enthält ausschließlich Unterrichtsmaterial (HTML/Markdown + `assets/`), keinen lauffähigen Code (Skill `create-lesson`, Issue #8).
 
 ---
 

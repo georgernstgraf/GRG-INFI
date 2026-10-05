@@ -31,7 +31,7 @@ Lehrplan-Doku (① offiziell / ② Schuladaption / ③ Unterricht) + PMM-Stil-Ja
 | `lehrplan/hwii/` | **Allgemeine Planung/Gerüst**: `jg2/jg4/jg5-einheiten.md`, `jg3-semesterplan-{ws,ss}.md` (je 13 UE + 2 PLF) | im Zweig-Ordner; für Kohorten-Abweichungen **nicht** anfassen |
 | `3ahwii/` | **Kohorten-Ordner SJ 2026/27** (konkrete Klasse): Hub `README.md`, Kohorten-Semesterplan `semesterplan-ws.md` (Vollkopie des Gerüsts + Abweichungen), UE-Ordner `YYYY-MM-DD_thema/` | konkretisiert `lehrplan/hwii/jg3-semesterplan-ws.md` (ADR 2026-09-14) |
 | `ARCHIV/2025-26-2ahwii/` | Unterrichtsmaterial SJ 2025/26 | archiviert |
-| `Beispielprojekte/` | Lauffähige Referenzprojekte zu den Prepared Lessons (KM5-01/KM6-01/KM6-02) | seit 2026-10-05; `unterricht/` bleibt codefrei (Skill `create-lesson`, Issue #8) |
+| `Beispielprojekte/` | Lauffähige Referenzprojekte zu den Prepared Lessons (KM5-01/KM5-02/KM5-03/KM6-01/KM6-02) | seit 2026-10-05; `unterricht/` bleibt codefrei (Skill `create-lesson`, Issue #8) |
 | `Leetcodes/`, `sqlite-datenbanken/`, `Unterlagen/`, `_Experimente/` | Übungen, DBs, Material, Spielwiese | unverändert |
 
 ## Knowledge Files (`docs/ai/`)

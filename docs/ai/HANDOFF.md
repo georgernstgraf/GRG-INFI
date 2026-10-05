@@ -37,6 +37,22 @@ dev.to-Leseauftrag; `deno task test` 3/3 mit geladenem Seed) und
 2/2 grün). Die **Kohorten-Ordner `3ahwii/`** werden manuell gepflegt und sind **nicht** Teil
 des GitHub-Pages-Angebots (Pages liefert nur `unterricht/`).
 
+**2026-10-05 (6) — Skills geschärft, Struktur migriert, KM5-Lektionen UE 1–3 angelegt:**
+
+- **Skills** (`opencode-helpers#103`, geschlossen): `create-lesson` — `unterricht/` enthält
+  **nur** Lesson-Ordner, Glossar = Root-`GLOSSAR.md`, kein `reference/`; `lehrplan` —
+  Zweig-Ordner im Fach-Repo **ohne Fach-Präfix** (`lehrplan/<zweig>/`), `kompetenzmodule/`
+  auf `lehrplan/`-Ebene.
+- **Struktur** (GRG-INFI#11, geschlossen, Commit `7c2ef0d`): `lehrplan/infi-hwii` → `hwii`,
+  `infi-hwit` → `hwit`; `kompetenzmodule/` → `lehrplan/kompetenzmodule/`;
+  `unterricht/HWII-INFI/*` → `lehrplan/hwii/`; **Link-Check 0 gebrochen**.
+- **Prepared Lessons KM5** (Sub-Issues von #7): `KM5-02-normalisierung` (#12, 1NF/2NF vertieft +
+  Beispielprojekt), `KM5-03-unterabfragen-eins` (#13, + geteiltes Musik-Projekt),
+  `KM5-04-wiederholung-diagnose` (#14). **`GLOSSAR.md`** (Root) + Navigator-Referenz (#15).
+- **Offen:** Issue **#7** (alle KM5-UEs) — UE 4–13 + Bonus (Window Functions) stehen noch aus;
+  nächste Kandidaten: KM5-05 Unterabfragen II (korreliert/`EXISTS`/`IN`), CTEs, Views.
+  Kohorten-Nachzug in `3ahwii/` weiter offen (manuell durch die Lehrperson).
+
 ---
 
 ## Tasks ab 2026-09-14 (Agentic Coding / Kohorten-Ordner) — **offen**

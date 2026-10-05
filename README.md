@@ -69,7 +69,7 @@ Eine detaillierte Aufschlüsselung findet sich im [Semesterplan](ARCHIV/2025-26-
 | `lehrplan/kompetenzmodule/` | Didaktische KM-Steckbriefe (km5/km6 voll; km3/km4 rückgepflegt; km7–km9 Gerüste) |
 | `ARCHIV/2025-26-2ahwii/` | Unterricht SJ 2025/26 (wöchentliche Ordner, Aufgaben, Lösungen, Hausübungen) – archiviert |
 | `lehrplan/` | Lehrplan-Werk (Betriebsinformatik, Zweig HWII/Anlage 1.24): `hwii/LEHRPLAN.md` (①-Extrakt), `hwii/RIS.md`, `hwii/HWII_INFI.pdf` (②), METADATA, `kompetenzmodule/` (KM-Steckbriefe), Klassen-Extrakte `hwii/2HWII`–`5HWII` je mit `<KLASSE>.lehrplan.md`, Skelett `hwit/` (Anlage 1.28); Planungs-Ebene im Zweig-Ordner `lehrplan/hwii/` (Einheiten + Semesterpläne) |
-| `Beispielprojekte/` | Lauffähige Referenzprojekte zu den Prepared Lessons (KM5-01, KM6-01, KM6-02) — `unterricht/` selbst enthält nur Unterrichtsmaterial, keinen lauffähigen Code |
+| `Beispielprojekte/` | Lauffähige Referenzprojekte zu den Prepared Lessons (KM5-01, KM5-02, KM5-03, KM6-01, KM6-02) — `unterricht/` selbst enthält nur Unterrichtsmaterial, keinen lauffähigen Code |
 | `docs/ai/` | Session-Dokumentation (HANDOFF, STATE) |
 | `Leetcodes/` | SQL-LeetCode-Lösungen (EASY, z. B. Combine Two Tables, Duplicate Emails) |
 | `Unterlagen/` | Lehrmaterial: Datenbank-Buch, ERD-PDFs, SQL-Injection-Demo, MS-Access-Archiv, SQL-Referenz |
