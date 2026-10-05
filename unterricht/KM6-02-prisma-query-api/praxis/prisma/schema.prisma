@@ -1,0 +1,31 @@
+// Prisma-Schema — Mediensammlung (Sammlung 1:n Medium, Medium n:m Tag)
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Sammlung {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  medien Medium[]
+}
+
+model Medium {
+  id         Int      @id @default(autoincrement())
+  titel      String
+  jahr       Int?
+  bewertung  Int      @default(0) // 0–5, für Aggregate/Atomik-Demo
+  sammlungId Int
+  sammlung   Sammlung @relation(fields: [sammlungId], references: [id], onDelete: Cascade)
+  tags       Tag[] // n:m — Prisma legt die Zwischentabelle implizit an
+}
+
+model Tag {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  medien Medium[]
+}

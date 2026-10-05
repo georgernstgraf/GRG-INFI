@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion KM6-02 · Prisma 7 — Query API &amp; CRUD</title>
+<script>(function(){var s=location.pathname.split("/");s.pop();(function t(){if(!s.length)return;var r=s.join("/")+"/",e=document.createElement("script");e.src=r+"assets/loader.js";e.setAttribute("data-css","lesson.css");e.setAttribute("data-js","theme.js,quiz.js");e.onerror=function(){s.pop();t()};e.onload=function(){if(!window.__SITE_ROOT__){s.pop();t()}};document.head.appendChild(e)})()})();</script>
+</head>
+<body>
+<header class="meta">
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">Dunkel</button>
+  <span class="kicker">Lektion KM6-02 · Datenbankanwendung mit Prisma</span>
+  <h1>Prisma 7 — Query API &amp; CRUD</h1>
+  <p class="subtitle">Lesen, schreiben, verknüpfen, aggregieren — alles typisiert über den Prisma Client.</p>
+</header>
+
+<nav class="breadcrumb">Prepared Lesson KM6-02 · nach <a href="../KM6-01-prisma-werkzeuge/lesson.html">KM6-01 — Werkzeuge</a> · TypeScript-Client · Mediensammlung</nav>
+
+<div class="callout">
+  <span class="label">Pflichtlektüre (vor der Stunde)</span>
+  <ul>
+    <li>Prisma Client API (v7): <a href="https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference">…/reference/prisma-client-reference</a></li>
+    <li>CRUD-Guide (v7): <a href="https://www.prisma.io/docs/orm/v7/prisma-client/queries/crud">…/prisma-client/queries/crud</a></li>
+    <li>Transaktionen (v7): <a href="https://www.prisma.io/docs/orm/v7/prisma-client/queries/transactions">…/queries/transactions</a></li>
+  </ul>
+</div>
+
+<h2>1. Ziel dieser Lesson</h2>
+<p>Nach <em>KM6-01</em> steht das Fundament (Schema, Migration, TypeScript-Client). Jetzt holen
+wir die Daten: <strong>alle CRUD-Operationen</strong> über die Prisma Query API — <code>create</code>,
+<code>find*</code>, <code>update</code>, <code>upsert</code>, <code>delete</code>, plus Filter,
+<code>select</code>/<code>include</code>, Aggregate und <code>$transaction</code>.</p>
+<p>Grundmuster — immer gleich:</p>
+<pre><code>const ergebnis = await prisma.&lt;modell&gt;.&lt;methode&gt;({ ... });</code></pre>
+
+<h2>2. Der Aufbau</h2>
+<p>Wir arbeiten in <code>src/crud.ts</code> mit dem Client aus <code>src/db.ts</code> (Adapter +
+TypeScript-Client aus KM6-01) und der Domäne <strong>Mediensammlung</strong>.</p>
+<pre><code>import { prisma } from "./db.ts";
+
+model Sammlung  → prisma.sammlung
+model Medium    → prisma.medium
+model Tag       → prisma.tag</code></pre>
+<p>Jedes Modell bekommt automatisch seine Methoden aus dem Schema (Typsicherheit inklusive).</p>
+
+<h2>3. CREATE — anlegen</h2>
+<pre><code>// Ein Datensatz, verschachtelt mit Kindern (nested create):
+await prisma.sammlung.create({
+  data: {
+    name: "Hörspiele",
+    medien: { create: [ { titel: "Folge 1", jahr: 1979, bewertung: 5 } ] },
+  },
+  include: { medien: true },
+});</code></pre>
+<pre><code>// Viele auf einmal (gibt nur die Anzahl zurück):
+await prisma.medium.createMany({
+  data: [ { titel: "Folge 3", sammlungId: 9 }, { titel: "Folge 4", sammlungId: 9 } ],
+});</code></pre>
+<p>Relationen werden beim Anlegen über <code>connect</code> (bestehend verknüpfen),
+<code>create</code> (neu anlegen) oder <code>connectOrCreate</code> (eins von beidem) gesetzt.</p>
+
+<h2>4. READ — lesen</h2>
+<table>
+  <tr><th>Methode</th><th>Liefert</th></tr>
+  <tr><td><code>findUnique</code></td><td>genau einen Treffer über ein <strong>eindeutiges</strong> Feld — sonst <code>null</code></td></tr>
+  <tr><td><code>findUniqueOrThrow</code></td><td>wie oben, wirft aber statt <code>null</code></td></tr>
+  <tr><td><code>findFirst</code></td><td>den ersten Treffer einer Filtermenge</td></tr>
+  <tr><td><code>findMany</code></td><td>eine Liste</td></tr>
+</table>
+<pre><code>await prisma.medium.findUnique({ where: { id: 3 } });
+await prisma.sammlung.findUniqueOrThrow({ where: { name: "Jazz" } });
+await prisma.medium.findMany({
+  where: { bewertung: { gte: 4 }, tags: { some: { name: "Highlight" } } },
+  orderBy: [{ bewertung: "desc" }, { titel: "asc" }],
+  take: 5,
+});</code></pre>
+<p><strong>Filteroperatoren</strong> in <code>where</code>: <code>equals</code>, <code>contains</code>,
+<code>startsWith</code>, <code>gt</code>/<code>gte</code>/<code>lt</code>/<code>lte</code>,
+<code>in</code>, <code>not</code>, <code>null</code>; verknüpft mit <code>AND</code>,
+<code>OR</code>, <code>NOT</code> (Standard ist UND).</p>
+<pre><code>await prisma.medium.findMany({
+  where: { OR: [ { jahr: { lt: 1960 } }, { titel: { contains: "Never" } } ] },
+});</code></pre>
+
+<h3>select vs. include — und Blättern</h3>
+<pre><code>// select = Projektion: nur diese Felder (Relation als Teilprojektion)
+await prisma.medium.findMany({
+  select: { titel: true, jahr: true, sammlung: { select: { name: true } } },
+});
+
+// include = ganze Relationen mitladen
+await prisma.sammlung.findMany({
+  include: { medien: { include: { tags: true } } },
+});</code></pre>
+<pre><code>// Blättern: skip + take
+await prisma.medium.findMany({ orderBy: { id: "asc" }, skip: 1, take: 2 });</code></pre>
+<p><strong>select und include nie mischen</strong> — für alles, was nicht in <code>select</code>
+steht, gibt es keine Garantie.</p>
+
+<h2>5. UPDATE — ändern</h2>
+<pre><code>// Teil-Update eines Datensatzes
+await prisma.medium.update({ where: { id: 3 }, data: { jahr: 1960 } });
+
+// Atomar hochzählen (statt lesen+schreiben): gegen Race-Conditions
+await prisma.medium.update({ where: { id: 3 }, data: { bewertung: { increment: 1 } } });
+
+// Mehrere auf einmal (gibt die Anzahl zurück)
+await prisma.medium.updateMany({ where: { jahr: null }, data: { jahr: 2000 } });</code></pre>
+<p><strong>upsert</strong> = Update <em>oder</em> Create in einem Aufruf (idempotent):</p>
+<pre><code>await prisma.tag.upsert({
+  where: { name: "Neu" },
+  update: {},                    // existiert -> nichts ändern
+  create: { name: "Neu" },       // fehlt -> anlegen
+});</code></pre>
+
+<h2>6. DELETE — löschen</h2>
+<pre><code>await prisma.medium.delete({ where: { id: 3 } });                 // genau einer
+await prisma.medium.deleteMany({ where: { tags: { none: {} } } }); // alle ohne Tag</code></pre>
+<p>Das Löschverhalten von Beziehungen steuert das Schema (<code>onDelete: Cascade</code>
+löscht Kinder mit) — aus KM6-01.</p>
+
+<h2>7. Aggregate — zählen, rechnen, gruppieren</h2>
+<pre><code>await prisma.medium.count();
+await prisma.medium.aggregate({ _avg: { bewertung: true }, _max: { jahr: true }, _count: { _all: true } });
+await prisma.medium.groupBy({ by: ["sammlungId"], _avg: { bewertung: true }, _count: { _all: true } });</code></pre>
+
+<h2>8. Transaktionen — alles oder nichts</h2>
+<pre><code>await prisma.$transaction(async (tx) =&gt; {
+  const s = await tx.sammlung.create({ data: { name: "Transaktions-Test" } });
+  await tx.medium.create({ data: { titel: "Atomar", sammlungId: s.id } });
+  return tx.sammlung.findUnique({ where: { id: s.id }, include: { medien: true } });
+});</code></pre>
+<p>Das ist die Prisma-Entsprechung zu <code>BEGIN</code>/<code>COMMIT</code>/<code>ROLLBACK</code>
+aus KM5: Schlägt ein Schritt fehl, wird alles zurückgerollt (<strong>ACID</strong>).</p>
+
+<h2>9. Fehler kennen</h2>
+<table>
+  <tr><th>Code</th><th>Bedeutung</th></tr>
+  <tr><td><code>P2025</code></td><td>Datensatz nicht gefunden (<code>update</code>/<code>delete</code>/<code>…OrThrow</code>)</td></tr>
+  <tr><td><code>P2002</code></td><td>Verletzung eines Unique-Constraints (z.&nbsp;B. doppelter Tag-Name)</td></tr>
+</table>
+<p>Prisma-Client baut <strong>parametrisierte</strong> Queries — SQL-Injection ist strukturell
+ausgeschlossen (der Kontrast zu Raw SQL kommt in KM6 UE 5).</p>
+
+<h2>10. Der Fluchtweg: <code>$queryRaw</code></h2>
+<pre><code>// SQL ohne API-Entsprechung, typisiert zurückgegeben
+const rows = await prisma.$queryRaw`
+  SELECT s.name AS name, COUNT(m.id) AS anzahl
+  FROM Sammlung s LEFT JOIN Medium m ON m.sammlungId = s.id
+  GROUP BY s.id ORDER BY anzahl DESC`;
+// Achtung: SQLite liefert COUNT als BigInt -> 4n statt 4</code></pre>
+
+<h2>11. Typische Fehler</h2>
+<ul>
+  <li><strong>Nicht-eindeutiges <code>where</code> bei <code>findUnique</code>:</strong> dort sind nur <code>@unique</code>/<code>@id</code>-Felder erlaubt — sonst <code>findFirst</code>.</li>
+  <li><strong>select + include gemischt:</strong> ergibt undefinierte Felder — nur eines von beiden.</li>
+  <li><strong>Bewertung mit <code>set</code> statt <code>increment</code>:</strong> Race-Condition — atomar hochzählen.</li>
+  <li><strong>BigInt unterschätzt:</strong> <code>COUNT()</code> aus <code>$queryRaw</code> ist <code>4n</code>, nicht <code>4</code>.</li>
+  <li><strong>Fehlender <code>where</code> bei <code>update</code>/<code>delete</code>:</strong> die Einzel-Methoden verlangen immer eine eindeutige Angabe.</li>
+</ul>
+
+<h2>12. Quiz — Query Language</h2>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">1. Du suchst genau ein Medium über den eindeutigen Titel. Welche Methode?</p>
+<label><input type="radio" name="q1" value="0" data-grund="Richtig, weil findUnique genau einen Treffer über ein eindeutiges Feld liefert (sonst null)."> findUnique</label>
+<label><input type="radio" name="q1" value="1" data-grund="Falsch, weil findMany eine Liste liefert, auch wenn nur ein Treffer existiert."> findMany</label>
+<label><input type="radio" name="q1" value="2" data-grund="Falsch, weil create einen Datensatz anlegt, statt zu lesen."> create</label>
+<label><input type="radio" name="q1" value="3" data-grund="Falsch, weil count nur zählt und den Datensatz nicht zurückgibt."> count</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">2. Wie unterscheidet sich <code>findUniqueOrThrow</code> von <code>findUnique</code>?</p>
+<label><input type="radio" name="q2" value="0" data-grund="Falsch, weil beide auf eindeutige Felder filtern; der Unterschied ist das Fehlerverhalten."> Er erlaubt Filter auf beliebige Felder</label>
+<label><input type="radio" name="q2" value="1" data-grund="Richtig, weil findUniqueOrThrow statt null einen Fehler wirft, wenn nichts gefunden wird."> Er wirft einen Fehler statt null zu liefern</label>
+<label><input type="radio" name="q2" value="2" data-grund="Falsch, weil beide nur einen Datensatz liefern, keine Liste."> Er liefert eine Liste aller Treffer</label>
+<label><input type="radio" name="q2" value="3" data-grund="Falsch, weil das Löschen delete erledigt, nicht findUniqueOrThrow."> Er löscht den gefundenen Datensatz</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">3. Du willst nur <code>titel</code> und <code>jahr</code> zurückbekommen. Was nutzt du?</p>
+<label><input type="radio" name="q3" value="0" data-grund="Falsch, weil include komplette Relationen lädt, nicht die Felder einschränkt."> include</label>
+<label><input type="radio" name="q3" value="1" data-grund="Falsch, weil orderBy die Reihenfolge festlegt, nicht die Feldauswahl."> orderBy</label>
+<label><input type="radio" name="q3" value="2" data-grund="Richtig, weil select eine Projektion angibt: nur die genannten Felder kommen zurück."> select</label>
+<label><input type="radio" name="q3" value="3" data-grund="Falsch, weil where filtert, aber nicht die Ausgabefelder beschränkt."> where</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="3">
+<p class="frage">4. Wofür steht <code>include</code>?</p>
+<label><input type="radio" name="q4" value="0" data-grund="Falsch, weil include nichts filtert; das macht where."> Es filtert die Ergebnismenge</label>
+<label><input type="radio" name="q4" value="1" data-grund="Falsch, weil include die Reihenfolge nicht verändert; das macht orderBy."> Es sortiert die Ergebnisse</label>
+<label><input type="radio" name="q4" value="2" data-grund="Falsch, weil include nur liest und keine Datensätze anlegt."> Es legt verknüpfte Datensätze an</label>
+<label><input type="radio" name="q4" value="3" data-grund="Richtig, weil include ganze Relationen mitlädt (im Gegensatz zur Projektion select)."> Es lädt verknüpfte Relationen mit</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">5. Wie erhöht man eine Bewertung sicher um 1?</p>
+<label><input type="radio" name="q5" value="0" data-grund="Richtig, weil increment atomar in der Datenbank rechnet und Race-Conditions vermeidet."> data: { bewertung: { increment: 1 } }</label>
+<label><input type="radio" name="q5" value="1" data-grund="Falsch, weil set einen festen Wert schreibt; nebenläufige Änderungen gingen verloren."> data: { bewertung: { set: 1 } }</label>
+<label><input type="radio" name="q5" value="2" data-grund="Falsch, weil where filtert, aber den Wert nicht erhöht."> where: { bewertung: { gt: 1 } }</label>
+<label><input type="radio" name="q5" value="3" data-grund="Falsch, weil groupBy gruppiert, aber nichts aktualisiert."> groupBy: [ "bewertung" ]</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">6. Was macht <code>upsert</code>?</p>
+<label><input type="radio" name="q6" value="0" data-grund="Falsch, weil upsert auch anlegt, nicht nur aktualisiert."> Er aktualisiert nur vorhandene Datensätze</label>
+<label><input type="radio" name="q6" value="1" data-grund="Richtig, weil upsert je nach Treffer aktualisiert oder neu anlegt — idempotent."> Er aktualisiert oder legt neu an</label>
+<label><input type="radio" name="q6" value="2" data-grund="Falsch, weil upsert nicht löscht, sondern schreibt."> Er löscht doppelte Datensätze</label>
+<label><input type="radio" name="q6" value="3" data-grund="Falsch, weil upsert genau einen Datensatz betrifft, nicht zählt."> Er zählt die vorhandenen Datensätze</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">7. Welche Methode entspricht einem SQL <code>GROUP BY</code>?</p>
+<label><input type="radio" name="q7" value="0" data-grund="Falsch, weil aggregate über alle Datensätze rechnet, nicht gruppiert."> aggregate</label>
+<label><input type="radio" name="q7" value="1" data-grund="Falsch, weil count nur zählt, ohne nach Feldern zu gruppieren."> count</label>
+<label><input type="radio" name="q7" value="2" data-grund="Richtig, weil groupBy nach Feldern gruppiert und je Gruppe Aggregate berechnet."> groupBy</label>
+<label><input type="radio" name="q7" value="3" data-grund="Falsch, weil findMany eine Liste liefert, aber nicht gruppiert."> findMany</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="3">
+<p class="frage">8. Wozu dient <code>prisma.$transaction(async (tx) =&gt; …)</code>?</p>
+<label><input type="radio" name="q8" value="0" data-grund="Falsch, weil eine Transaktion nicht beschleunigt, sondern absichert."> Um Abfragen zu beschleunigen</label>
+<label><input type="radio" name="q8" value="1" data-grund="Falsch, weil das Schema und die Client-Erzeugung nichts mit Transaktionen zu tun haben."> Um das Schema zu erzeugen</label>
+<label><input type="radio" name="q8" value="2" data-grund="Falsch, weil Berechtigungen nicht über Transaktionen vergeben werden."> Um Berechtigungen zu setzen</label>
+<label><input type="radio" name="q8" value="3" data-grund="Richtig, weil mehrere Schreibzugriffe atomar ausgeführt werden — alles oder nichts (ACID)."> Um mehrere Schreibzugriffe atomar zu bündeln</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">9. Du legst ein Tag mit bereits vergebenem Namen an. Welcher Fehlercode?</p>
+<label><input type="radio" name="q9" value="0" data-grund="Richtig, weil P2002 eine Verletzung eines Unique-Constraints meldet."> P2002 — Unique-Constraint verletzt</label>
+<label><input type="radio" name="q9" value="1" data-grund="Falsch, weil P2025 für nicht gefundene Datensätze steht."> P2025 — Datensatz nicht gefunden</label>
+<label><input type="radio" name="q9" value="2" data-grund="Falsch, weil P1001 die Datenbankverbindung betrifft, nicht ein Feld."> P1001 — Datenbank nicht erreichbar</label>
+<label><input type="radio" name="q9" value="3" data-grund="Falsch, weil P1012 ein Schema-Validierungsfehler ist."> P1012 — ungültiges Schema</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">10. Wofür ist <code>$queryRaw</code> da?</p>
+<label><input type="radio" name="q10" value="0" data-grund="Falsch, weil $queryRaw rohes SQL ist und nicht typsicher wie die API."> Als typsicherer Ersatz für findMany</label>
+<label><input type="radio" name="q10" value="1" data-grund="Richtig, weil $queryRaw rohes SQL für Fälle ohne API-Entsprechung ausführt (Result als BigInt bei COUNT)."> Als Fluchtweg für rohes SQL</label>
+<label><input type="radio" name="q10" value="2" data-grund="Falsch, weil Migrationen migrate erledigt, nicht $queryRaw."> Zum Erzeugen neuer Migrationen</label>
+<label><input type="radio" name="q10" value="3" data-grund="Falsch, weil $queryRaw nichts mit der Konfiguration zu tun hat."> Zum Konfigurieren der Datenbank-URL</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<hr>
+
+<h2>13. Zusammenfassung</h2>
+<table>
+  <tr><th>Zweck</th><th>Methode(n)</th></tr>
+  <tr><td>Anlegen</td><td><code>create</code>, <code>createMany</code> (nested <code>connect</code>/<code>create</code>)</td></tr>
+  <tr><td>Lesen</td><td><code>findUnique(OrThrow)</code>, <code>findFirst</code>, <code>findMany</code></td></tr>
+  <tr><td>Formen</td><td><code>where</code>, <code>select</code>/<code>include</code>, <code>orderBy</code>, <code>take</code>/<code>skip</code></td></tr>
+  <tr><td>Ändern</td><td><code>update</code>, <code>updateMany</code>, <code>upsert</code>, atomic <code>increment</code></td></tr>
+  <tr><td>Löschen</td><td><code>delete</code>, <code>deleteMany</code></td></tr>
+  <tr><td>Auswerten</td><td><code>count</code>, <code>aggregate</code>, <code>groupBy</code></td></tr>
+  <tr><td>Absichern</td><td><code>$transaction</code></td></tr>
+  <tr><td>Fluchtweg</td><td><code>$queryRaw</code></td></tr>
+</table>
+<p><strong>Ausblick:</strong> Wie aus diesen Abfragen eine <em>sichere</em> und <em>genormte</em>
+Schnittstelle wird — Prepared Statements/SQL-Injection und eine REST-API — folgt in KM6
+weiter.</p>
+
+<hr>
+
+<h2>Aufgabe</h2>
+<ol>
+  <li><strong>Vorhersage:</strong> Notiere <em>vor</em> dem Ausführen, was
+  <code>groupBy({ by: ["sammlungId"], _avg: { bewertung: true } })</code> liefert — und wie viele
+  Zeilen bei fünf Medien in drei Sammlungen zu erwarten sind.</li>
+  <li><strong>CRUD schreiben:</strong> Ergänze in <code>src/crud.ts</code> eine Funktion
+  <code>findeMedienNachTag(tag: string)</code>, die alle Medien zu einem Tag sortiert nach
+  Bewertung liefert (nur <code>titel</code> und <code>bewertung</code>).</li>
+  <li><strong>Atomik:</strong> Schreibe eine <code>$transaction</code>, die ein neues Medium
+  anlegt <em>und</em> dessen Tag verknüpft — brich die Transaktion absichtlich ab und zeige,
+  dass nichts gespeichert wurde.</li>
+  <li><strong>Vergleichen:</strong> Stelle eine Frage einmal mit der API und einmal mit
+  <code>$queryRaw</code>; notiere die Unterschiede (Rückgabetyp, Lesbarkeit, BigInt).</li>
+</ol>
+<p>Abgabe nach Vorgabe deiner Lehrperson (Projekt-Commit + kurze Markdown-Notiz).</p>
+
+<footer class="lesson-foot">
+  <p>Zurück zu <a href="../KM6-01-prisma-werkzeuge/lesson.html">KM6-01 — Werkzeuge &amp; Migrations</a>.</p>
+</footer>
+</body>
+</html>
