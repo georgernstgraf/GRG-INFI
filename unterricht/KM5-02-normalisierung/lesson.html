@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion KM5-02 · Normalisierung 1NF–3NF</title>
+<script>(function(){var s=location.pathname.split("/");s.pop();(function t(){if(!s.length)return;var r=s.join("/")+"/",e=document.createElement("script");e.src=r+"assets/loader.js";e.setAttribute("data-css","lesson.css");e.setAttribute("data-js","theme.js,quiz.js");e.onerror=function(){s.pop();t()};e.onload=function(){if(!window.__SITE_ROOT__){s.pop();t()}};document.head.appendChild(e)})();</script>
+</head>
+<body>
+<header class="meta">
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">Dunkel</button>
+  <span class="kicker">Lektion KM5-02 · Datenbankentwurf · Normalformen (KM3-Lückenschluss)</span>
+  <h1>Normalisierung 1NF–3NF</h1>
+  <p class="subtitle">Eine „schlechte" Tabelle schrittweise heilen — mit vollem Fokus auf <strong>1NF</strong> und <strong>2NF</strong>.</p>
+</header>
+
+<nav class="breadcrumb">Prepared Lesson KM5-02 · Musik-Streaming &amp; Bestellung · SQLite</nav>
+
+<div class="callout">
+  <span class="label">Pflichtlektüre (vor der Stunde)</span>
+  <ul>
+    <li>Schulbuch: <a href="../../Unterlagen/Buch_Datenbanken_2HWII/03_Normalisierung_Design.pdf">Datenbanken 2HWII — Kapitel 03 „Normalisierung &amp; Design"</a> (Relationenmodell, Normalformen)</li>
+    <li>Referenzbegriffe: <a href="../../GLOSSAR.md">GLOSSAR.md</a> (Anomalie, 1NF/2NF/3NF, partielle/transitive Abhängigkeit)</li>
+    <li>KM-Bezug: <a href="../../lehrplan/kompetenzmodule/km5.md">KM5-Steckbrief</a> (Normalformen als Lückenschluss aus KM3)</li>
+  </ul>
+</div>
+
+<h2>1. Die Einstiegsfrage</h2>
+<p>Diese Tabelle speichert Bestellungen. „Wien" steht bei jeder Bestellung derselben
+Postleitzahl erneut:</p>
+<pre><code>bestellung(bestell_nr, kunde, plz, ort)
+  101 | Auer  | 1020 | Wien
+  102 | Beck  | 1020 | Wien   <span class="cmt">-- Ort zum 2. Mal</span>
+  103 | Cevik | 4020 | Linz</code></pre>
+<p>Frage: <strong>Was kostet es, wenn die Stadt „Wien" plötzlich anders heißt?</strong> Man
+muss <em>jede</em> betroffene Zeile anfassen — und vergisst garantiert eine. Solche
+Probleme sind keine Datenfehler, sondern <strong>Schema-Fehler</strong>. Normalisierung
+behebt sie an der Wurzel. Heute schauen wir uns zuerst 1NF und 2NF ganz genau an.</p>
+
+<h2>2. Die drei Anomalien</h2>
+<p>Ein Schema ohne Normalisierung erzeugt drei klassische <strong>Anomalien</strong>:</p>
+<table>
+  <tr><th>Anomalie</th><th>Was passiert?</th><th>Beispiel</th></tr>
+  <tr><td>Änderungs-Anomalie</td><td>Ein Fakt muss an vielen Stellen geändert werden</td><td>PLZ 1020 bekommt einen neuen Ortsnamen → 2+ Zeilen anfassen</td></tr>
+  <tr><td>Einfüge-Anomalie</td><td>Ein Fakt lässt sich ohne Dummy-Zeile nicht speichern</td><td>Neue PLZ 8010 „Graz" ohne Bestellung → keine Zeile möglich</td></tr>
+  <tr><td>Lösch-Anomalie</td><td>Löschen vernichtet mehr Wissen als beabsichtigt</td><td>Letzte 4020-Bestellung löschen → „4020 = Linz" ist weg</td></tr>
+</table>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">1. Was ist eine Anomalie im Sinne der Normalisierung?</p>
+<label><input type="radio" name="q1" value="0" data-grund="Falsch, weil ein Tippfehler ein Eingabefehler ist — die Anomalie sitzt im Schema, nicht in einer einzelnen Zelle."> Ein Tippfehler in einer Zelle</label>
+<label><input type="radio" name="q1" value="1" data-grund="Richtig, weil eine Anomalie ein Schema-Fehler ist, der Einfüge-, Änderungs- oder Löschfehler geradezu erzwingt."> Ein Schema-Fehler, der Datenfehler erzwingt</label>
+<label><input type="radio" name="q1" value="2" data-grund="Falsch, weil ein fehlender Index nur die Abfrage bremst, aber keine Einfüge/Änderungs/Lösch-Anomalie verursacht."> Ein fehlender Index auf einer Spalte</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>3. 1NF — Atomarität (gründlich)</h2>
+<p>Die erste Normalform verlangt: <strong>Jede Zelle enthält genau einen unteilbaren
+Wert.</strong> Es gibt zwei Verletzungsformen, die man beide kennen muss.</p>
+
+<h3>Verletzung A: eine Liste in einer Zelle</h3>
+<pre><code>kunde(kunde_id, name, hobbys)
+  1 | Auer | "Lesen, Schwimmen"   <span class="cmt">-- zwei Werte in einer Zelle</span>
+  2 | Beck | "Schach"</code></pre>
+<p>Das tut weh, weil man einzelne Werte nicht mehr sauber abfragen kann:</p>
+<pre><code>SELECT * FROM kunde WHERE hobbys = 'Schwimmen';
+<span class="out">-- 0 Zeilen!  Die Zelle heißt "Lesen, Schwimmen", nicht "Schwimmen".</span></code></pre>
+<p>Reparatur: <strong>eine Zeile pro Wert</strong> — eine eigene Kindtabelle:</p>
+<pre><code>hobby(kunde_id, hobby)          <span class="cmt">-- PK: (kunde_id, hobby)</span>
+  1 | Lesen
+  1 | Schwimmen
+  2 | Schach
+
+SELECT * FROM hobby WHERE hobby = 'Schwimmen';   <span class="out">-- 1 Treffer</span></code></pre>
+
+<h3>Verletzung B: eine Wiederholgruppe als Spalten</h3>
+<pre><code>bestellung(bestell_nr, kunde, track1, track2, track3)
+  101 | Auer | 1 | 2 | NULL
+  102 | Beck | 3 | NULL | NULL</code></pre>
+<p>Gleichartige Spalten (`track1, track2, track3`) sind eine Liste, nur quer gelegt.
+Probleme: Wie viele Tracks passen maximal? Was fragt man ab — `WHERE track1 = 2 OR
+track2 = 2 OR …`? Und die vielen `NULL`-Zellen verschenken Platz.</p>
+<p>Reparatur: <strong>eine Zeile pro Vorkommen</strong>, mit einer Positionsnummer:</p>
+<pre><code>bestellposition(bestell_nr, position, track_id)   <span class="cmt">-- PK: (bestell_nr, position)</span>
+  101 | 1 | 1
+  101 | 2 | 2
+  102 | 1 | 3</code></pre>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">2. Welche Zelle verletzt die 1NF?</p>
+<label><input type="radio" name="q2" value="0" data-grund="Falsch, weil eine Postleitzahl genau ein unteilbarer Wert ist — 1NF-konform."> plz = '1020'</label>
+<label><input type="radio" name="q2" value="1" data-grund="Falsch, weil eine Dauer in Sekunden ein einzelner Zahlenwert ist — 1NF-konform."> dauer = 215</label>
+<label><input type="radio" name="q2" value="2" data-grund="Richtig, weil die Zelle mit 'Lesen, Schwimmen' zwei Werte in einer Spalte enthält — eine Liste, keine atomare Zelle."> hobbys = 'Lesen, Schwimmen'</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">3. Wie repariert man die Wiederholgruppe `track1, track2, track3`?</p>
+<label><input type="radio" name="q3" value="0" data-grund="Richtig, weil man pro Vorkommen eine eigene Zeile anlegt (Kindtabelle mit Positionsnummer) statt gleichartige Spalten zu wiederholen."> Eine Kindtabelle mit einer Zeile pro Track</label>
+<label><input type="radio" name="q3" value="1" data-grund="Falsch, weil mehr Spalten (bis track10) das Problem nur verschieben — die Anzahl bleibt fix und die NULL-Zellen wachsen."> Die Spalten auf track4 bis track10 erweitern</label>
+<label><input type="radio" name="q3" value="2" data-grund="Falsch, weil eine Liste in einer Zelle genau die 1NF-Verletzung wäre, die wir gerade beheben wollen."> Die drei Spalten in eine Liste schreiben</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">4. Wie sucht man nach dem 1NF-Fix einen einzelnen Wert korrekt?</p>
+<label><input type="radio" name="q4" value="0" data-grund="Falsch, weil LIKE mit Platzhaltern auf einer Sammelzelle nur ein Notbehelf ist und Teiltreffer liefert — genau das Problem der Liste in einer Zelle."> Mit LIKE '%Wert%' auf der Sammelzelle</label>
+<label><input type="radio" name="q4" value="1" data-grund="Richtig, weil nach dem Fix jeder Wert in einer eigenen Spalte steht und ein einfacher Gleichheitsvergleich exakt trifft."> Mit Gleichheit auf der eigenen Spalte</label>
+<label><input type="radio" name="q4" value="2" data-grund="Falsch, weil GROUP BY gruppiert, aber keine atomare Suche nach einem Einzelwert ersetzt."> Mit GROUP BY auf der Sammelzelle</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">5. Hält die Tabelle `song(song_id PK, titel, dauer_sek)` die 1NF?</p>
+<label><input type="radio" name="q5" value="0" data-grund="Falsch, weil dauer_sek ein einzelner Zahlenwert ist und keine Liste."> Verletzt: dauer_sek ist eine Liste</label>
+<label><input type="radio" name="q5" value="1" data-grund="Falsch, weil Leerzeichen im Titel kein Kriterium der 1NF sind — der Titel bleibt ein einzelner Textwert."> Verletzt: titel enthält Leerzeichen</label>
+<label><input type="radio" name="q5" value="2" data-grund="Richtig, weil jede Zelle genau einen unteilbaren Wert enthält und keine Wiederholgruppe existiert."> Hält: jede Zelle ist atomar</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>4. 2NF — volle funktionale Abhängigkeit (gründlich)</h2>
+<p>Die zweite Normalform ist die am häufigsten <em>falsch verstandene</em> Stufe.
+Deshalb zuerst die wichtigste Vorbedingung:</p>
+<div class="callout">
+  <span class="label">Merke</span>
+  Die 2NF ist <strong>nur bei einem zusammengesetzten Schlüssel</strong> relevant
+  (mehrere Spalten im PK). Bei einem Schlüssel aus <em>einer</em> Spalte gibt es keinen
+  „Schlüsselteil" — 2NF ist dann <strong>automatisch erfüllt</strong>.
+</div>
+<p>Regel: <strong>Kein Nichtschlüssel-Attribut darf nur von einem Teil des
+zusammengesetzten Schlüssels abhängen.</strong> Eine solche Abhängigkeit heißt
+<strong>partielle Abhängigkeit</strong>.</p>
+
+<h3>Beispiel: Song in Playlists</h3>
+<pre><code>song_playlist(song_id, playlist_id, song_titel)   <span class="cmt">-- PK: (song_id, playlist_id)</span>
+  1 | 10 | "Silent Lines"
+  1 | 20 | "Silent Lines"   <span class="cmt">-- Titel zum 2. Mal</span>
+  2 | 20 | "Night Ferry"</code></pre>
+<p>Der Schlüssel ist `(song_id, playlist_id)` — also „welcher Song in welcher Playlist".
+Doch `song_titel` beschreibt nur den <strong>Song</strong> (`song_id`). Es hängt nur an
+<em>einem Teil</em> des Schlüssels → <strong>partielle Abhängigkeit → 2NF verletzt</strong>.
+Die Folge ist eine Änderungs-Anomalie: Ein Song-Titel muss in jeder Playlist-Zeile
+mitgeändert werden.</p>
+<p>Reparatur: Die Tatsache „Titel" gehört zur Entität <strong>Song</strong>; die
+Zwischentabelle hält nur noch die Beziehung:</p>
+<pre><code>song(song_id, titel)                 <span class="cmt">-- Tatsache über den Song</span>
+song_playlist(song_id, playlist_id)  <span class="cmt">-- nur die Beziehung (PK aus beiden)</span></code></pre>
+
+<h3>Zweites Beispiel: Bestellposition mit Produktname</h3>
+<pre><code>bestellposition(bestell_nr, produkt_nr, menge, produkt_name)
+  101 | 1 | 2 | "Kabel"
+  101 | 2 | 1 | "Stecker"
+  102 | 1 | 5 | "Kabel"   <span class="cmt">-- produkt_name nur an produkt_nr</span></code></pre>
+<p>`produkt_name` hängt nur an `produkt_nr`, nicht an der ganzen Position →
+2NF-Verletzung. Reparatur: `produkt(produkt_nr, name)` auslagern, in
+`bestellposition` bleibt nur `(bestell_nr, produkt_nr, menge)`.</p>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">6. Wann ist die 2NF überhaupt relevant?</p>
+<label><input type="radio" name="q6" value="0" data-grund="Richtig, weil es „Schlüsselteile" nur gibt, wenn der Primärschlüssel aus mehreren Spalten besteht."> Nur bei einem zusammengesetzten Schlüssel</label>
+<label><input type="radio" name="q6" value="1" data-grund="Falsch, weil eine Tabelle mit zwei Spalten und Einzel-Schlüssel keine Teilabhängigkeit haben kann — 2NF ist dort automatisch erfüllt."> Immer ab zwei Spalten in der Tabelle</label>
+<label><input type="radio" name="q6" value="2" data-grund="Falsch, weil Fremdschlüssel nichts mit der 2NF zu tun haben; es geht um Teile des eigenen Primärschlüssels."> Nur bei vorhandenen Fremdschlüsseln</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">7. `song_playlist(song_id, playlist_id, song_titel)`, PK `(song_id, playlist_id)` — welche Stufe ist verletzt?</p>
+<label><input type="radio" name="q7" value="0" data-grund="Falsch, weil der Titel ein einzelner Textwert ist — die 1NF ist nicht das Problem."> 1NF, weil song_titel nicht atomar ist</label>
+<label><input type="radio" name="q7" value="1" data-grund="Richtig, weil song_titel nur vom Schlüsselteil song_id abhängt — das ist genau die partielle Abhängigkeit der 2NF."> 2NF, weil song_titel nur an song_id hängt</label>
+<label><input type="radio" name="q7" value="2" data-grund="Falsch, weil es keine Kette über einen Nichtschlüssel gibt; song_id ist Teil des Schlüssels."> 3NF, weil song_id → playlist_id → song_titel</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">8. `bestellposition(bestell_nr, produkt_nr, menge, produkt_name)`, PK `(bestell_nr, produkt_nr)` — wo steckt der Fehler?</p>
+<label><input type="radio" name="q8" value="0" data-grund="Falsch, weil produkt_name gerade nicht am ganzen Schlüssel hängt, sondern nur an produkt_nr."> Hält 2NF: alles hängt am ganzen Schlüssel</label>
+<label><input type="radio" name="q8" value="1" data-grund="Falsch, weil produkt_name ein einzelner Wert ist und keine Liste — die 1NF ist nicht betroffen."> 1NF: produkt_name ist eine Liste</label>
+<label><input type="radio" name="q8" value="2" data-grund="Richtig, weil produkt_name nur vom Schlüsselteil produkt_nr abhängt — partielle Abhängigkeit, also 2NF-Verletzung."> 2NF: produkt_name hängt nur an produkt_nr</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">9. `pruefung(matr_nr, lv_nr, note)`, PK `(matr_nr, lv_nr)` — hält diese Tabelle die 2NF?</p>
+<label><input type="radio" name="q9" value="0" data-grund="Richtig, weil die Note sowohl die Person als auch die Lehrveranstaltung braucht — sie hängt am ganzen Schlüssel."> Hält: note braucht beide Schlüsselteile</label>
+<label><input type="radio" name="q9" value="1" data-grund="Falsch, weil die Note nicht allein von der Person abhängt; dieselbe Person hat in verschiedenen LVs verschiedene Noten."> Verletzt: note hängt nur an matr_nr</label>
+<label><input type="radio" name="q9" value="2" data-grund="Falsch, weil dieselbe LV bei verschiedenen Personen verschiedene Noten hat — note hängt nicht nur an lv_nr."> Verletzt: note hängt nur an lv_nr</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">10. `song(song_id PK, titel, dauer_sek)` — kann diese Tabelle die 2NF verletzen?</p>
+<label><input type="radio" name="q10" value="0" data-grund="Falsch, weil eine Abhängigkeit vom Schlüssel selbst gerade die erlaubte (volle) Abhängigkeit ist, nicht eine Teilabhängigkeit."> Ja, dauer_sek hängt nur an song_id</label>
+<label><input type="radio" name="q10" value="1" data-grund="Richtig, weil es bei einem Einzel-Schlüssel keinen Schlüsselteil gibt und damit keine partielle Abhängigkeit entstehen kann."> Nein, ohne zusammengesetzten Schlüssel gibt es keine Teilabhängigkeit</label>
+<label><input type="radio" name="q10" value="2" data-grund="Falsch, weil titel und dauer_sek beide am selben (einzigen) Schlüssel hängen, nicht an verschiedenen Teilen."> Ja, titel und dauer_sek hängen an verschiedenen Teilen</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>5. 3NF — transitive Abhängigkeit</h2>
+<p>Die dritte Normalform verbietet Umwege über einen <strong>Nichtschlüssel</strong>:</p>
+<pre><code>BestellNr  →  PLZ  →  Ort
+<span class="cmt">(Schlüssel)   (Nichtschlüssel)   (hängt an einem Nichtschlüssel)</span></code></pre>
+<p>`Ort` hängt nicht direkt an `BestellNr`, sondern über `PLZ`. Diese Kette
+<code>A → B → C</code> ist die <strong>transitive Abhängigkeit</strong>. Reparatur:
+die Tatsache `PLZ → Ort` in eine eigene Tabelle auslagern und per Fremdschlüssel
+verweisen.</p>
+<pre><code>bestellung(bestell_nr, kunde, plz)   <span class="cmt">-- plz ist FK</span>
+plz(plz, ort)                        <span class="cmt">-- "1020 = Wien" genau 1×</span></code></pre>
+<p>Dieselbe Struktur kennt ihr aus SWP: `konto(iban, inhaber, blz, bankname)` —
+`bankname` hängt an `blz`, nicht an `iban`. Und `person(svnr, name, plz, ort)` —
+`ort` hängt an `plz`.</p>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">11. Was ist eine transitive Abhängigkeit?</p>
+<label><input type="radio" name="q11" value="0" data-grund="Falsch, weil eine Abhängigkeit von zwei Schlüsselteilen die 2NF betrifft, nicht den Umweg über einen Nichtschlüssel."> Ein Attribut hängt von zwei Schlüsselteilen ab</label>
+<label><input type="radio" name="q11" value="1" data-grund="Falsch, weil doppelte Datenhaltung eine Folge fehlender Normalisierung ist, aber nicht die Definition."> Derselbe Wert steht in zwei Tabellen</label>
+<label><input type="radio" name="q11" value="2" data-grund="Richtig, weil der Schlüssel einen Nichtschlüssel bestimmt und dieser wiederum ein weiteres Attribut — die Kette K → B → C."> Der Schlüssel bestimmt B, und B bestimmt ein weiteres Attribut</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">12. `bestellung(bestell_nr PK, kunde, plz, ort)` — hält diese Tabelle die 3NF?</p>
+<label><input type="radio" name="q12" value="0" data-grund="Richtig, weil ort über den Nichtschlüssel plz transitiv an bestell_nr hängt (bestell_nr → plz → ort)."> Verletzt: ort hängt über plz</label>
+<label><input type="radio" name="q12" value="1" data-grund="Falsch, weil ort nicht direkt an bestell_nr hängt, sondern den Umweg über plz nimmt."> Hält: ort hängt direkt an bestell_nr</label>
+<label><input type="radio" name="q12" value="2" data-grund="Falsch, weil kunde nichts mit ort zu tun hat; die Kette läuft über plz."> Verletzt: kunde hängt über ort</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">13. `konto(iban PK, inhaber, blz, bankname)` — wo ist die transitive Kette?</p>
+<label><input type="radio" name="q13" value="0" data-grund="Falsch, weil der Inhaber die Bank nicht bestimmt; die Verkettung läuft über die Bankleitzahl."> iban → inhaber → bankname</label>
+<label><input type="radio" name="q13" value="1" data-grund="Richtig, weil bankname über den Nichtschlüssel blz transitiv an iban hängt (iban → blz → bankname)."> iban → blz → bankname</label>
+<label><input type="radio" name="q13" value="2" data-grund="Falsch, weil bankname nicht direkt an iban hängt, sondern am Umweg blz."> Kein Fehler: bankname hängt an iban</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">14. Hält die Tabelle `album(album_id PK, titel, jahr)` die 3NF?</p>
+<label><input type="radio" name="q14" value="0" data-grund="Falsch, weil der Titel das Jahr nicht bestimmt — beide beschreiben unabhängig das Album."> Verletzt: titel → jahr</label>
+<label><input type="radio" name="q14" value="1" data-grund="Falsch, weil titel und jahr beide direkt am Schlüssel hängen und keine Kette über einen Nichtschlüssel bilden."> Verletzt: album_id → titel → jahr</label>
+<label><input type="radio" name="q14" value="2" data-grund="Richtig, weil titel und jahr direkt am Schlüssel album_id hängen und kein Umweg über einen Nichtschlüssel existiert."> Hält: beide hängen direkt am Schlüssel</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">15. `bestellposition(bestell_nr, produkt_nr, menge)`, PK `(bestell_nr, produkt_nr)` — wie steht es um 1NF/2NF/3NF?</p>
+<label><input type="radio" name="q15" value="0" data-grund="Richtig, weil jede Zelle atomar ist und menge den ganzen Schlüssel braucht — keine Teil- und keine transitive Abhängigkeit."> Hält alle drei Stufen</label>
+<label><input type="radio" name="q15" value="1" data-grund="Falsch, weil menge nicht nur von produkt_nr abhängt; dieselbe Bestellung braucht produkt_nr und bestell_nr."> Verletzt 2NF: menge hängt nur an produkt_nr</label>
+<label><input type="radio" name="q15" value="2" data-grund="Falsch, weil produkt_nr Teil des Schlüssels ist und menge gerade keine Tatsache über das Produkt allein ist."> Verletzt 3NF: produkt_nr → menge</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>6. Das Rezept</h2>
+<ol>
+  <li><strong>Schlüssel bestimmen</strong> (was identifiziert die Zeile?).</li>
+  <li><strong>1NF:</strong> Gibt es Listen in Zellen oder Wiederholgruppen? → atomar machen, eine Zeile pro Wert.</li>
+  <li><strong>2NF:</strong> Ist der Schlüssel zusammengesetzt, und hängt ein Nichtschlüssel an nur einem Teil? → Entität auslagern.</li>
+  <li><strong>3NF:</strong> Hängt ein Nichtschlüssel über einen anderen Nichtschlüssel? → Faktentabelle auslagern, FK verweisen.</li>
+  <li><strong>Anomalien-Probe:</strong> Einfügen/Ändern/Löschen ohne Müll möglich?</li>
+</ol>
+<pre><code><span class="cmt">-- Prüffragen an jeder Tabelle (laut aufsagen):</span>
+<span class="cmt">-- 1) Atomar?   2) Ganzer Schlüssel?   3) Nur der Schlüssel?</span></code></pre>
+
+<h2>7. Typische Fehler</h2>
+<ul>
+  <li><strong>1NF und 2NF verwechseln:</strong> Eine Liste in einer Zelle ist immer 1NF. 2NF dreht sich um Schlüssel-<em>Teile</em>.</li>
+  <li><strong>2NF bei Einzel-Schlüssel anwenden:</strong> Ohne zusammengesetzten PK gibt es keine Teilabhängigkeit.</li>
+  <li><strong>Auf Verdacht spalten:</strong> Erst die Abhängigkeit nachweisen (Pfeil), dann zerlegen — nicht jede Vier-Spalten-Tabelle ist kaputt.</li>
+  <li><strong>Liste per <code>LIKE</code> filtern:</strong> `WHERE hobbys LIKE '%Schw%'` ist ein Notbehelf und liefert Teiltreffer — reparieren statt tricksten.</li>
+  <li><strong>Positionsnummer vergessen:</strong> Ohne `position` kann die Kindtabelle zwei Tracks nicht auseinanderhalten.</li>
+</ul>
+
+<hr>
+
+<h2>8. Jetzt du!</h2>
+<ol>
+  <li><strong>Vorhersage (zuerst notieren!):</strong> Betrachte
+  <code>bestellung(bestell_nr PK, kunde, tracks, plz, ort)</code>. Welche Spalte verletzt
+  welche Normalform? Ist die 2NF hier überhaupt ein Thema?</li>
+  <li><strong>Zerlegen bis 3NF:</strong> Notiere die neuen Tabellen mit Schlüsseln und
+  markiere die Fremdschlüssel. Begründe jede Stufe in einem Satz.</li>
+  <li><strong>Zurück zur Abfrage (Interleaving):</strong> Schreibe eine Abfrage, die nach
+  der Zerlegung die ursprüngliche Bestellung inklusive ihrer Track-Titel wieder ausgibt
+  (JOIN auf die Kindtabelle).</li>
+</ol>
+<div class="callout">
+  <span class="label">Anfassen</span>
+  Das Beispielprojekt <a href="../../Beispielprojekte/km5-02-normalisierung/">Beispielprojekte/km5-02-normalisierung/</a>
+  zeigt alle drei Anomalien live: <code>deno task demo</code> und <code>deno task test</code>.
+</div>
+
+<hr>
+
+<h2>9. Zusammenfassung</h2>
+<table>
+  <tr><th>Stufe</th><th>Frage</th><th>Fix</th></tr>
+  <tr><td><strong>1NF</strong></td><td>Steht in einer Zelle mehr als ein Wert — oder ist eine Spalte eine Wiederholgruppe?</td><td>Eine Zeile pro Wert / Kindtabelle</td></tr>
+  <tr><td><strong>2NF</strong></td><td>Hängt ein Nichtschlüssel an <em>einem Teil</em> eines zusammengesetzten Schlüssels?</td><td>Entität auslagern (nur bei zusammengesetztem PK relevant)</td></tr>
+  <tr><td><strong>3NF</strong></td><td>Hängt ein Nichtschlüssel über einen anderen Nichtschlüssel?</td><td>Faktentabelle auslagern, FK verweisen</td></tr>
+</table>
+<p><strong>Eselsbrücke (Codd):</strong> „Jedes Attribut hängt vom Schlüssel ab, vom
+<em>ganzen</em> Schlüssel (2NF) und von <em>nichts als</em> dem Schlüssel (3NF)."</p>
+<p><strong>Ausblick:</strong> Als Nächstes zerlegen wir schwierige Fragen in
+<em>Unterabfragen</em> (KM5-03). Und wann Zusammenlegen doch sinnvoll ist, klärt die
+<em>Denormalisierung</em> — bewusst, erst nach Messung.</p>
+
+<hr>
+
+<h2>Aufgabe</h2>
+<ol>
+  <li><strong>Vorhersage:</strong> Notiere <em>vor</em> dem Zerlegen, welche Spalte von
+  <code>bestellung_denorm</code> (aus <a href="../../Beispielprojekte/km5-02-normalisierung/seed-normalisierung.sql">seed-normalisierung.sql</a>)
+  welche Normalform verletzt und warum.</li>
+  <li><strong>Zerlegen bis 3NF:</strong> Zerlege <code>bestellung_denorm</code> schriftlich
+  bis 3NF; begründe jede Stufe mit einem Abhängigkeitspfeil.</li>
+  <li><strong>Zwei eigene Tabellen:</strong> Wähle zwei Quiz-Tabellen dieser Lesson und
+  zerlege sie (SQL-<code>CREATE</code>s + je 3 Beispielzeilen).</li>
+  <li><strong>Demo laufen lassen:</strong> <code>deno task demo</code> im Beispielprojekt,
+  Nachweis der vier Konsolenzeilen (Screenshot).</li>
+</ol>
+<p>Abgabe nach Vorgabe deiner Lehrperson (Markdown + optional SQL-Datei).</p>
+
+<footer class="lesson-foot">
+  <p>Referenz: <a href="../../GLOSSAR.md">Glossar</a> · Beispielprojekt:
+  <a href="../../Beispielprojekte/km5-02-normalisierung/">km5-02-normalisierung</a>.</p>
+</footer>
+</body>
+</html>
