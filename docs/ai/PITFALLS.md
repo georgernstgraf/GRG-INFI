@@ -21,3 +21,11 @@ Read this file carefully before making changes in affected areas.
 - **KM5/KM6-Lehrstoff ist fast reiner DB-Kern:** ein Split „Nicht-SQL-Anteile" (Kollegen-Stunde)
   lässt sich nur aus Applikationsentwurf-Methodik, Benutzerführung, Reportgenerierung und
   Import/Export gewinnen — nicht aus den Abfrage-Themen.
+- **Inline-Bootstrap in jeder `lesson.html` muss korrekt geschlossen sein:** die äußere IIFE endet
+  auf `document.head.appendChild(e)})()})();</script>`. Fehlt das äußere `})()`, wirft das
+  `<script>` einen `SyntaxError: Unexpected end of input`, `loader.js` lädt nie und die ganze Seite
+  bleibt ohne Assets (3 KM5-Lessons betroffen, behoben in #16).
+- Vom `assets/loader.js` injizierte Skripte (`quiz.js`, `theme.js`) laufen **async** —
+  `DOMContentLoaded` ist dann oft vorbei; Init-Code muss bei
+  `document.readyState !== "loading"` sofort starten (Muster wie in `theme.js`), sonst bleiben
+  Quiz/Toggle auf GitHub Pages ohne Funktion (#16).

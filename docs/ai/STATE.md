@@ -60,6 +60,9 @@ Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetze
 - [x] Prepared Lesson **KM6-01** (`prisma-werkzeuge`): CLI, `prisma7.config.ts`, `migrate`-Optionen, `db pull`/`db push`, Studio; Praxis mit **TypeScript-Client** (Node + tsx); Quiz „Setup & Tooling" (8)
 - [x] Prepared Lesson **KM6-02** (`prisma-query-api`): alle CRUD-Operationen, `where`/`select`/`include`, Aggregate, `$transaction`, `$queryRaw`; Praxis mit **9 grünen Tests**; Quiz „Query Language" (10)
 - [x] Befunde dokumentiert: Prisma 7 + SQLite **inkompatibel mit Deno** → Node + `prisma-client` (TS); Studio braucht `file://./dev.db`; Issue **#6** geschlossen
+- [x] **#16 geschlossen** — GitHub-Pages-Assets repariert: `assets/quiz.js` (+ `3ahwii/assets/quiz.js`)
+      mit `document.readyState`-Guard (async Injektion durch `loader.js`); defekter Inline-Bootstrap
+      (fehlende äußere IIFE) in `KM5-02/03/04` korrigiert; Quizze lokal verifiziert
 
 ## Completed (2026-09-29)
 
