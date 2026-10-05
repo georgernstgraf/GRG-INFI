@@ -64,8 +64,16 @@ console.log(
 db.exec(
   `CREATE TABLE bestellung_denorm(bestell_nr INTEGER PRIMARY KEY, plz TEXT, ort TEXT)`,
 );
-db.prepare(`INSERT INTO bestellung_denorm VALUES (?, ?, ?)`).run(101, "1020", "Wien");
-db.prepare(`INSERT INTO bestellung_denorm VALUES (?, ?, ?)`).run(102, "1020", "Wien");
+db.prepare(`INSERT INTO bestellung_denorm VALUES (?, ?, ?)`).run(
+  101,
+  "1020",
+  "Wien",
+);
+db.prepare(`INSERT INTO bestellung_denorm VALUES (?, ?, ?)`).run(
+  102,
+  "1020",
+  "Wien",
+);
 db.prepare(
   `UPDATE bestellung_denorm SET ort = ? WHERE bestell_nr = 101`,
 ).run("Wien (neu)");

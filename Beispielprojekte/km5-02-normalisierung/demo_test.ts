@@ -23,7 +23,11 @@ Deno.test("2NF: partielle Abhängigkeit erlaubt widersprüchliche Titel", () => 
     `CREATE TABLE sp(song_id INTEGER, playlist_id INTEGER, song_titel TEXT, PRIMARY KEY(song_id, playlist_id))`,
   );
   db.prepare(`INSERT INTO sp VALUES (?, ?, ?)`).run(1, 10, "Silent Lines");
-  db.prepare(`INSERT INTO sp VALUES (?, ?, ?)`).run(1, 20, "Silent Lines (neu)");
+  db.prepare(`INSERT INTO sp VALUES (?, ?, ?)`).run(
+    1,
+    20,
+    "Silent Lines (neu)",
+  );
   const row = db.prepare(
     `SELECT COUNT(DISTINCT song_titel) AS n FROM sp WHERE song_id = 1`,
   ).get() as { n: number };
