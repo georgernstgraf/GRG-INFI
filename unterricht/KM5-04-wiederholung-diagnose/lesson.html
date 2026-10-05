@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion KM5-04 · Wiederholung Jg II &amp; Diagnose</title>
+<script>(function(){var s=location.pathname.split("/");s.pop();(function t(){if(!s.length)return;var r=s.join("/")+"/",e=document.createElement("script");e.src=r+"assets/loader.js";e.setAttribute("data-css","lesson.css");e.setAttribute("data-js","theme.js,quiz.js");e.onerror=function(){s.pop();t()};e.onload=function(){if(!window.__SITE_ROOT__){s.pop();t()}};document.head.appendChild(e)})();</script>
+</head>
+<body>
+<header class="meta">
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">Dunkel</button>
+  <span class="kicker">Lektion KM5-04 · Wiederholung Jg II · Diagnose</span>
+  <h1>Wiederholung Jg II &amp; Diagnose</h1>
+  <p class="subtitle">Zurück auf KM4-Niveau: SELECT, JOIN, GROUP BY, HAVING — und die drei bekannten Stolpersteine.</p>
+</header>
+
+<nav class="breadcrumb">Prepared Lesson KM5-04 · Musik-Streaming-DB · SQLite</nav>
+
+<div class="callout">
+  <span class="label">Pflichtlektüre (vor der Stunde)</span>
+  <ul>
+    <li>SQLite-Doku: <a href="https://www.sqlite.org/lang_select.html">SELECT</a> (Abschnitte JOIN, GROUP BY, HAVING).</li>
+    <li>Referenzbegriffe: <a href="../../GLOSSAR.md">GLOSSAR.md</a> (Self-JOIN, Gruppierung, `COUNT`).</li>
+  </ul>
+</div>
+
+<h2>1. Die Einstiegsfrage</h2>
+<p>Das SQL-Handwerk aus der 2. Klasse ist da: `SELECT`, `JOIN`, `GROUP BY`. Aber drei
+Stellen brechen erfahrungsgemäß am häufigsten — und genau die schauen wir heute an.
+Ziel: Du schreibst <strong>ohne Nachschlagen</strong> einen JOIN mit Gruppierung und
+Filter. Das ist der Anker für alles in KM5.</p>
+
+<h2>2. Diagnose-Stelle 1 — Self-JOIN</h2>
+<p>Ein <strong>Self-JOIN</strong> verbindet eine Tabelle mit sich selbst — über zwei
+Aliase. Typfrage: <em>„Welche Künstler teilen sich ein Label?"</em></p>
+<pre><code>SELECT x.name AS a, y.name AS b
+FROM kuenstler x
+JOIN kuenstler y ON x.label_id = y.label_id
+WHERE x.id &lt; y.id;</code></pre>
+<p>Warum `x.id &lt; y.id`? Ohne diese Bedingung bekäme man jedes Paar zweimal (A–B und
+B–A) und zusätzlich jedes Element mit sich selbst (A–A). Die `<`-Bedingung reduziert auf
+<strong>eine</strong> Reihenfolge und vermeidet die Doppelpaare.</p>
+
+<h2>3. Diagnose-Stelle 2 — <code>COUNT(*)</code> vs. <code>COUNT(spalte)</code></h2>
+<p>`COUNT(*)` zählt <strong>Zeilen</strong>. `COUNT(spalte)` zählt nur Zeilen, in denen
+die Spalte einen Wert hat — <strong>NULL-Werte werden übersprungen</strong>:</p>
+<pre><code>SELECT COUNT(*) AS alle, COUNT(label_id) AS mit_label
+FROM kuenstler;
+<span class="out">-- alle = 6, mit_label = 5   (Frei hat kein Label: NULL)</span></code></pre>
+
+<h2>4. Diagnose-Stelle 3 — <code>WHERE</code> vs. <code>HAVING</code></h2>
+<p>`WHERE` filtert <strong>Zeilen</strong> <em>vor</em> der Gruppierung. `HAVING` filtert
+<strong>Gruppen</strong> <em>nach</em> der Gruppierung. Merksatz: <strong>Kein Aggregat in
+`WHERE`</strong> — dafür ist `HAVING` da.</p>
+<pre><code>SELECT k.name, COUNT(*) AS n
+FROM kuenstler k JOIN song s ON s.kuenstler_id = k.id
+WHERE s.dauer_sek &gt; 200     <span class="cmt">-- Zeilenfilter (vorher)</span>
+GROUP BY k.id
+HAVING COUNT(*) &gt;= 2;        <span class="cmt">-- Gruppenfilter (nachher)</span></code></pre>
+
+<h2>5. Diagnose-Quiz</h2>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">1. Wohin gehört der Filter <code>COUNT(*) &gt; 5</code>?</p>
+<label><input type="radio" name="q1" value="0" data-grund="Richtig, weil HAVING Gruppen nach der Gruppierung filtert und Aggregat-Bedingungen wie COUNT(*) dort hingehören."> In die HAVING-Klausel</label>
+<label><input type="radio" name="q1" value="1" data-grund="Falsch, weil WHERE Zeilen vor der Gruppierung filtert und Aggregate dort nicht erlaubt sind."> In die WHERE-Klausel</label>
+<label><input type="radio" name="q1" value="2" data-grund="Falsch, weil ORDER BY die Ausgabe nur sortiert und nichts filtert."> In die ORDER-Klausel</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">2. Was zählt <code>COUNT(label_id)</code>?</p>
+<label><input type="radio" name="q2" value="0" data-grund="Falsch, weil jede Zeile COUNT(*) zählt; COUNT(label_id) überspringt NULL-Werte."> Jede Zeile der Tabelle</label>
+<label><input type="radio" name="q2" value="1" data-grund="Richtig, weil COUNT(label_id) nur Zeilen mit einem Wert in dieser Spalte zählt und NULL-Werte übergeht."> Nur Zeilen mit einem Wert</label>
+<label><input type="radio" name="q2" value="2" data-grund="Falsch, weil COUNT nicht nach einem bestimmten Labelwert filtert, sondern nur NULL übergeht."> Nur Zeilen mit Labelwert Nord</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">3. Wozu dient <code>x.id &lt; y.id</code> im Self-JOIN?</p>
+<label><input type="radio" name="q3" value="0" data-grund="Falsch, weil die Bedingung nur die Paar-Reihenfolge festlegt und nichts mit NULL-Werten zu tun hat."> NULL-Werte sicher zu vermeiden</label>
+<label><input type="radio" name="q3" value="1" data-grund="Falsch, weil im Self-JOIN nicht gruppiert wird; die Bedingung wählt nur geordnete Paare."> Gruppen exakt zu halbieren</label>
+<label><input type="radio" name="q3" value="2" data-grund="Richtig, weil die Bedingung die gespiegelten Paare auf eine Reihenfolge reduziert und so Doppelpaare vermeidet."> Doppelpaare sicher zu vermeiden</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">4. Was filtert <code>WHERE</code>?</p>
+<label><input type="radio" name="q4" value="0" data-grund="Richtig, weil WHERE einzelne Zeilen vor der Gruppierung auswählt."> Einzelne Zeilen vor der Gruppierung</label>
+<label><input type="radio" name="q4" value="1" data-grund="Falsch, weil ganze Gruppen erst nach der Gruppierung von HAVING gefiltert werden."> Ganze Gruppen nach der Gruppierung</label>
+<label><input type="radio" name="q4" value="2" data-grund="Falsch, weil WHERE die Ausgabe nicht sortiert; das macht ORDER BY."> Die Ausgabereihenfolge der Zeilen</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">5. Was filtert <code>HAVING</code>?</p>
+<label><input type="radio" name="q5" value="0" data-grund="Falsch, weil einzelne Zeilen vor der Gruppierung WHERE filtert."> Einzelne Zeilen vor der Gruppierung</label>
+<label><input type="radio" name="q5" value="1" data-grund="Richtig, weil HAVING die fertigen Gruppen nach einer Aggregat-Bedingung filtert."> Ganze Gruppen nach der Gruppierung</label>
+<label><input type="radio" name="q5" value="2" data-grund="Falsch, weil HAVING nicht sortiert und nicht limitiert, sondern Gruppen filtert."> Die Anzahl der Ergebniszeilen</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">6. Warum kann <code>COUNT(*)</code> größer sein als <code>COUNT(spalte)</code>?</p>
+<label><input type="radio" name="q6" value="0" data-grund="Falsch, weil COUNT(*) gerade alle Zeilen zählt, auch die mit fehlendem Wert."> Weil COUNT(*) nur eindeutige Werte zählt</label>
+<label><input type="radio" name="q6" value="1" data-grund="Falsch, weil die Sortierung die Zählung nicht verändert."> Weil COUNT(spalte) sortiert zählt</label>
+<label><input type="radio" name="q6" value="2" data-grund="Richtig, weil COUNT(spalte) Zeilen mit NULL in der Spalte überspringt, COUNT(*) dagegen jede Zeile zählt."> Weil NULL-Werte in der Spalte übersprungen werden</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">7. Was braucht ein Self-JOIN zwingend?</p>
+<label><input type="radio" name="q7" value="0" data-grund="Richtig, weil dieselbe Tabelle unter zwei verschiedenen Aliasen auftreten muss, um Spalten zu unterscheiden."> Zwei Aliase derselben Tabelle</label>
+<label><input type="radio" name="q7" value="1" data-grund="Falsch, weil ein Self-JOIN keine Fremdschlüssel benötigt; er verbindet die Tabelle mit sich selbst."> Einen passenden Fremdschlüssel</label>
+<label><input type="radio" name="q7" value="2" data-grund="Falsch, weil Gruppierung optional ist; der Self-JOIN selbst braucht nur zwei Aliase."> Eine GROUP-BY-Klausel</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">8. Darf ein Aggregat wie <code>COUNT(*)</code> in <code>WHERE</code> stehen?</p>
+<label><input type="radio" name="q8" value="0" data-grund="Falsch, weil Aggregate erst nach der Gruppierung berechnet werden — WHERE sieht sie noch nicht."> Ja, aber nur bei GROUP BY</label>
+<label><input type="radio" name="q8" value="1" data-grund="Richtig, weil Aggregate in WHERE nicht erlaubt sind; Aggregat-Bedingungen gehören in HAVING."> Nein, dafür ist HAVING da</label>
+<label><input type="radio" name="q8" value="2" data-grund="Falsch, weil Aggregate nicht in WHERE erlaubt sind, unabhängig von der Sortierung."> Ja, wenn man danach sortiert</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">9. Wann gilt <code>COUNT(spalte) = COUNT(*)</code>?</p>
+<label><input type="radio" name="q9" value="0" data-grund="Falsch, weil ein Index die Zählweise nicht ändert."> Sobald ein Index auf der Spalte liegt</label>
+<label><input type="radio" name="q9" value="1" data-grund="Falsch, weil die Sortierung die Zählung nicht beeinflusst."> Wenn die Tabelle sortiert ist</label>
+<label><input type="radio" name="q9" value="2" data-grund="Richtig, weil dann kein NULL in der Spalte übersprungen wird und beide dieselbe Anzahl zählen."> Wenn die Spalte keine NULL-Werte hat</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>6. Typische Fehler</h2>
+<ul>
+  <li><strong>Aggregat in <code>WHERE</code>:</strong> <code>WHERE COUNT(*) &gt; 5</code> bricht — nach <code>HAVING</code>.</li>
+  <li><strong><code>COUNT(*)</code> mit <code>COUNT(spalte)</code> verwechselt:</strong> NULL-Werte unterschlagen.</li>
+  <li><strong>Self-JOIN ohne <code>&lt;</code>:</strong> jedes Paar doppelt, plus Selbstpaare.</li>
+  <li><strong>Aliase verwechselt:</strong> im Self-JOIN beide Seiten ohne <code>x.</code>/<code>y.</code> ansprechen.</li>
+</ul>
+
+<hr>
+
+<h2>7. Jetzt du!</h2>
+<ol>
+  <li><strong>Vorhersage (zuerst notieren!):</strong> Wie viele Zeilen liefert
+  <code>SELECT COUNT(*) FROM kuenstler</code>, wie viele <code>COUNT(label_id)</code> —
+  und warum unterscheiden sie sich?</li>
+  <li><strong>Top-5:</strong> die fünf Künstler mit den meisten Songs
+  (<code>JOIN</code> + <code>GROUP BY</code> + <code>ORDER BY … DESC LIMIT 5</code>).</li>
+  <li><strong>Self-JOIN:</strong> Künstlerpaare desselben Labels (mit <code>&lt;</code>).</li>
+  <li><strong>HAVING:</strong> Labels mit mehr als einem Künstler.</li>
+  <li><strong>WHERE + HAVING:</strong> Künstler mit mindestens zwei Songs über 200 s.</li>
+</ol>
+<div class="callout">
+  <span class="label">Anfassen</span>
+  Die Mini-Musik-DB liegt lauffähig in <a href="../../Beispielprojekte/km5-03-unterabfragen/">Beispielprojekte/km5-03-unterabfragen/</a>
+  (geteilt mit KM5-03). Dort findest du den Seed und Beispielabfragen.
+</div>
+
+<hr>
+
+<h2>8. Zusammenfassung</h2>
+<table>
+  <tr><th>Stelle</th><th>Kern</th></tr>
+  <tr><td>Self-JOIN</td><td>zwei Aliase derselben Tabelle; <code>x.id &lt; y.id</code> gegen Doppelpaare</td></tr>
+  <tr><td><code>COUNT(*)</code> vs. <code>COUNT(spalte)</code></td><td>Zeilen vs. Zeilen mit Wert (NULL wird übersprungen)</td></tr>
+  <tr><td><code>WHERE</code> vs. <code>HAVING</code></td><td>Zeilen vor der Gruppierung vs. Gruppen danach; kein Aggregat in <code>WHERE</code></td></tr>
+</table>
+<p><strong>Ausblick:</strong> KM5-02 schließt die Normalformen-Lücke, KM5-03 steigt in
+<em>Unterabfragen</em> ein.</p>
+
+<hr>
+
+<h2>Aufgabe</h2>
+<ol>
+  <li><strong>Vorhersage:</strong> Notiere <em>vor</em> dem Ausführen die erwarteten
+  Zahlen für <code>COUNT(*)</code> und <code>COUNT(label_id)</code> und begründe die Differenz.</li>
+  <li><strong>Fünf Queries:</strong> Schreibe die fünf Auffrischungs-Queries aus
+  „Jetzt du!" auf der Musik-DB — je mit einem Kommentar, was sie beantwortet.</li>
+  <li><strong>Eine eigene:</strong> Eine Abfrage deiner Wahl mit <code>WHERE</code>
+  <em>und</em> <code>HAVING</code> kombiniert.</li>
+</ol>
+<p>Abgabe nach Vorgabe deiner Lehrperson (SQL-Datei mit Kommentaren).</p>
+
+<footer class="lesson-foot">
+  <p>Weiter: <a href="../KM5-01-nodejs-prisma/lesson.html">KM5-01 — Node.js + Prisma 7</a> ·
+  Referenz: <a href="../../GLOSSAR.md">Glossar</a>.</p>
+</footer>
+</body>
+</html>
