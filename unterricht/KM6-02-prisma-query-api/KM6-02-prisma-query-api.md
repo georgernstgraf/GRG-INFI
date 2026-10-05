@@ -3,7 +3,7 @@
 Lesson: `lesson.html` im selben Ordner — alle CRUD-Operationen des Prisma Client
 (`create`, `find*`, `update`, `upsert`, `delete`), `where`-Filter, `select`/`include`,
 Aggregate, `$transaction` und `$queryRaw`.
-- Verifiziertes Praxisprojekt: `praxis/` (`npm run db:seed`, `npm run demo`, `npm test` — 9 Tests)
+- Verifiziertes Praxisprojekt: [`Beispielprojekte/km6-02-prisma-query-api/`](../../Beispielprojekte/km6-02-prisma-query-api/) (`npm run db:seed`, `npm run demo`, `npm test` — 9 Tests)
 - Quiz „Query Language" am Lesson-Ende
 
 ## Aufgabe

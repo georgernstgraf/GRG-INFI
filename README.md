@@ -69,6 +69,7 @@ Eine detaillierte Aufschlüsselung findet sich im [Semesterplan](ARCHIV/2025-26-
 | `lehrplan/infi-hwii/kompetenzmodule/` | Didaktische KM-Steckbriefe (km5/km6 voll; km3/km4 rückgepflegt; km7–km9 Gerüste) |
 | `ARCHIV/2025-26-2ahwii/` | Unterricht SJ 2025/26 (wöchentliche Ordner, Aufgaben, Lösungen, Hausübungen) – archiviert |
 | `lehrplan/` | Lehrplan-Werk (Betriebsinformatik, Zweig HWII/Anlage 1.24): `infi-hwii/LEHRPLAN.md` (①-Extrakt), `infi-hwii/RIS.md`, `infi-hwii/HWII_INFI.pdf` (②), METADATA, Klassen-Extrakte `infi-hwii/2HWII`–`5HWII` je mit `<KLASSE>.lehrplan.md`, Skelett `infi-hwit/` (Anlage 1.28); Unterrichts-Ebene `unterricht/HWII-INFI/` (Einheiten + Semesterpläne) |
+| `Beispielprojekte/` | Lauffähige Referenzprojekte zu den Prepared Lessons (KM5-01, KM6-01, KM6-02) — `unterricht/` selbst enthält nur Unterrichtsmaterial, keinen lauffähigen Code |
 | `docs/ai/` | Session-Dokumentation (HANDOFF, STATE) |
 | `Leetcodes/` | SQL-LeetCode-Lösungen (EASY, z. B. Combine Two Tables, Duplicate Emails) |
 | `Unterlagen/` | Lehrmaterial: Datenbank-Buch, ERD-PDFs, SQL-Injection-Demo, MS-Access-Archiv, SQL-Referenz |

@@ -2,7 +2,7 @@
 
 Lesson: `lesson.html` im selben Ordner — CLI-Konfiguration (`prisma7.config.ts`),
 TypeScript-Client, `migrate`-Optionen, `db push`/`db pull` und Prisma Studio.
-- Verifiziertes Praxisprojekt: `praxis/` (`npm run db:seed`, `npm test`, `npm run studio`)
+- Verifiziertes Praxisprojekt: [`Beispielprojekte/km6-01-prisma-werkzeuge/`](../../Beispielprojekte/km6-01-prisma-werkzeuge/) (`npm run db:seed`, `npm test`, `npm run studio`)
 - Quiz „Setup &amp; Tooling" am Lesson-Ende
 
 ## Aufgabe

@@ -3,7 +3,7 @@
 Lesson: `lesson.html` im selben Ordner — Node/Prisma-7-Einstieg für die DB-Werkzeugkette
 (Schema, Migration, Driver Adapter) und die fünf Diagnose-Queries als Prisma-API.
 - Erklärung · Vergleichstabelle SQL↔Prisma · 8 Quizze · Aufgabe am Lesson-Ende
-- Lauffähiges Referenzprojekt: `praxis/` (`npm run run`, `npm test`)
+- Lauffähiges Referenzprojekt: [`Beispielprojekte/km5-01-nodejs-prisma/`](../../Beispielprojekte/km5-01-nodejs-prisma/) (`npm run run`, `npm test`)
 
 ## Aufgabe
 
