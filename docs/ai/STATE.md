@@ -22,8 +22,8 @@ Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetze
 
 ## Completed (2026-10-05)
 
-- [x] **Beispielprojekte ausgelagert**: Skill `create-lesson` verschärft (kein lauffähiger Code unter `unterricht/`; Ablage per Konvention, Default `Beispielprojekte/`) — opencode-helpers#101, Commit `fbcf08b`, `test_skill_links` grün
-- [x] Root-`Beispielprojekte/` angelegt; `praxis/` von `KM5-01-nodejs-prisma`, `KM6-01-prisma-werkzeuge`, `KM6-02-prisma-query-api` dorthin verschoben (git rename); Projekt-Verweise in den Tages-README-Vorlagen und die Repo-Doku (AGENTS/README/ARCHITECTURE) nachgezogen — GRG-INFI#8, Commit `68649e1`
+- [x] **Beispielprojekte ausgelagert**: Skill `create-lesson` verschärft (kein lauffähiger Code unter `unterricht/`; Ablage per Konvention, Default `Beispielprojekte/`) — opencode-helpers#101 **geschlossen**, Commit `fbcf08b`, `test_skill_links` grün
+- [x] Root-`Beispielprojekte/` angelegt; `praxis/` von `KM5-01-nodejs-prisma`, `KM6-01-prisma-werkzeuge`, `KM6-02-prisma-query-api` dorthin verschoben (git rename); Projekt-Verweise in den Tages-README-Vorlagen und die Repo-Doku (AGENTS/README/ARCHITECTURE) nachgezogen — GRG-INFI#8 **geschlossen**, Commit `68649e1`
 - [x] Verifikation nach dem Verschieben: `npm test` grün (KM5-01 5/5 frisch installiert, KM6-01 3/3, KM6-02 9/9); keine `praxis`-Referenzen mehr unter `unterricht/`
 - [x] Lesson-Infrastruktur: `assets/` (loader.js, theme.js, lesson.css, quiz.js, site.js, github-pages-link.js) + `serve.sh`
 - [x] GitHub Pages: Workflow `.github/workflows/pages.yml`, `build_type=workflow`, `index.html` als Lektions-Navigator, Pages-Link oben in `README.md`
