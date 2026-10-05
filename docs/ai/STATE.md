@@ -56,7 +56,7 @@ Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetze
 
 - [x] Kohorten-Ordner `3ahwii/`: Hub `README.md` + `semesterplan-ws.md` (Vollkopie des Gerüsts + Sondereinheit vor UE 1)
 - [x] Agentic-Coding-Sondereinheit `3ahwii/2026-09-15_agentic-coding-einstieg/` (INFI-angepasst) + `3ahwii/windows-debloat.md`
-- [x] veraltete Pfad-Referenzen in `unterricht/HWII-INFI/jg3-semesterplan-{ws,ss}.md` korrigiert (keine inhaltliche Änderung)
+- [x] veraltete Pfad-Referenzen in `lehrplan/hwii/jg3-semesterplan-{ws,ss}.md` korrigiert (keine inhaltliche Änderung)
 - [x] `docs/ai/` (ARCHITECTURE/DECISIONS-ADR/STATE/HANDOFF) + `README.md`-Strukturzeile
 - [x] lehrplan-Skill Aufgabe A (Konformitäts-Check) + Aufgabe 2 (Erläuterungs-Ebene) —
       `LEHRPLAN.md` (8 Überblicke, 46 Erläuterungen) + `2HWII`/`3HWII`/`4HWII`/`5HWII`
@@ -82,9 +82,9 @@ Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetze
 ## Completed (previous cycle, 2026-07-26)
 
 - [x] Schichten-Vergleich ①↔②↔③ (Befund: ② ≡ ①; ③-Redaktion LEHRPLAN.md korrigiert)
-- [x] `lehrplan/infi-hwii/RIS.md` (INFI-Sicht) + `HWII_INFI.pdf` ins Repo kopiert
-- [x] `lehrplan/infi-hwii/kompetenzmodule/` (Matrix, km5/km6 voll, km3/km4 Gerüst+, km7/8/9 Gerüste)
-- [x] `lehrplan/infi-hwii/3HWII/` (Drehscheibe inkl. SWP-Verbund, Kollegen-Soll, Offene Punkte; Semesterpläne
+- [x] `lehrplan/hwii/RIS.md` (INFI-Sicht) + `HWII_INFI.pdf` ins Repo kopiert
+- [x] `lehrplan/kompetenzmodule/` (Matrix, km5/km6 voll, km3/km4 Gerüst+, km7/8/9 Gerüste)
+- [x] `lehrplan/hwii/3HWII/` (Drehscheibe inkl. SWP-Verbund, Kollegen-Soll, Offene Punkte; Semesterpläne
       WS/SS je 13 UE + 2 PLF, Sync mit GRG-SWP)
 - [x] `jg3-einheiten.md` verlustfrei migriert + gelöscht; LEHRPLAN/METADATA/README/AGENTS
       aktualisiert
@@ -98,9 +98,9 @@ Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetze
       `3ahwii/2026-09-29_rep-ohne-node/` übernehmen (Ordner/Präambel „ohne Node" ersetzen) und
       Stack-Zeilen in `3ahwii/README.md`/`MISSION.md` auf „Prisma via Node" angleichen
 - [x] lehrplan-Skill regulär in INFI anwenden / Novellen-Check — Issue **#3** (erledigt 2026-09-29)
-- [ ] Kollegen-Thema abstimmen (Vorschlag: `lehrplan/infi-hwii/3HWII/README.md` → Kollegen-Soll) — **menschlich**,
+- [ ] Kollegen-Thema abstimmen (Vorschlag: `lehrplan/hwii/3HWII/README.md` → Kollegen-Soll) — **menschlich**,
       vor WS-Start
-- [ ] PLF-Termine nach Schulkalender in `unterricht/HWII-INFI/jg3-semesterplan-*.md` eintragen
+- [ ] PLF-Termine nach Schulkalender in `lehrplan/hwii/jg3-semesterplan-*.md` eintragen
 - [ ] PostgreSQL-Docker-Demo (WS UE 11) vorbereiten/testen; Fallback: Konzeptlehre
 - [ ] Musik-Streaming-DB (Dauerbeispiel) Seed-Stand prüfen/versionieren
 - [ ] Domänenwahl mit der Klasse (SS ~UE 9, gemeinsam mit SWP)
@@ -111,5 +111,5 @@ None. (Offene Punkte sind organisatorisch, nicht technisch.)
 
 ## Next Session Suggestion
 
-PLF-Termine + Kollegen-Absprache-Ergebnis in `lehrplan/infi-hwii/3HWII/` nachpflegen; PG-Docker-Demo bauen.
+PLF-Termine + Kollegen-Absprache-Ergebnis in `lehrplan/hwii/3HWII/` nachpflegen; PG-Docker-Demo bauen.
 Re-Check RIS: Sommer 2027.

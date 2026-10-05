@@ -76,9 +76,9 @@ Superseded decisions are relocated to HISTORY.md.
   angepasst (SR 2026-09-07). Novellen-Check am 2026-09-07 live bestätigt (262/2015
   „zuletzt geändert durch“ 235/2019); Skill-Mapping-Tabelle um Zeile INFI→HWII ergänzt.
 
-## 2026-09-14: Kohorten-Ordner konkretisiert, `unterricht/` bleibt allgemeines Gerüst
+## 2026-09-14: Kohorten-Ordner konkretisiert, allgemeines Gerüst bleibt getrennt
 
-- **Choice**: `unterricht/HWII-INFI/` ist die **allgemeine Planung** (Gerüst) und wird für
+- **Choice**: `lehrplan/hwii/` ist die **allgemeine Planung** (Gerüst) und wird für
   Kohorten-Abweichungen **nicht** angefasst. Die laufende Kohorte SJ 2026/27 erhält den
   eigenen Ordner `3ahwii/` mit Hub (`README.md`), Kohorten-Semesterplan
   (`semesterplan-ws.md`, Vollkopie des Gerüsts) und UE-Ordnern; Abweichungen (z. B. die
@@ -86,7 +86,7 @@ Superseded decisions are relocated to HISTORY.md.
 - **Reason**: Trennung von allgemeiner, kohortenübergreifender Planung und dem tatsächlich
   gehaltenen Plan der Klasse; verhindert, dass Einzelklassen-Änderungen das Gerüst verändern.
   Spiegel des gleichnamigen SWP-ADR (`GRG-SWP/docs/ai/DECISIONS.md`).
-- **Considered**: Abweichungen direkt im Gerüst `unterricht/HWII-INFI/`; nur ein
+- **Considered**: Abweichungen direkt im Gerüst `lehrplan/hwii/`; nur ein
   Delta-Dokument statt Vollkopie.
 - **Tradeoff**: Zweite Plan-Datei pro Kohorte (Duplikat), bewusst als lebende Kohorten-Fassung.
 
@@ -144,3 +144,25 @@ Superseded decisions are relocated to HISTORY.md.
 - **Tradeoff**: Beispielprojekt und Lesson liegen getrennt (relativer Verweis
   `../../Beispielprojekte/<slug>/`); zwei Orte, aber klare Zuständigkeit. Übernahme in die Kohorte
   bleibt manuell durch die Lehrperson.
+
+## 2026-10-05: Layout-Migration — `unterricht/` nur Lektionen, Zweig-Ordner ohne Fach-Präfix, `GLOSSAR.md` ins Root
+
+- **Choice**: Nachgeschärfte Skill-Konventionen (`create-lesson` + `lehrplan`, opencode-helpers#103)
+  aufs Repo angewandt (GRG-INFI#11):
+  - `unterricht/` enthält **ausschließlich** Prepared Lessons (`<PREFIX>-<NN>-<slug>/`) — keine
+    weiteren Ordner;
+  - der Zweig-Ordner heißt **ohne Fach-Präfix**: `lehrplan/hwii/` (statt `infi-hwii/`), `lehrplan/hwit/`
+    — das Fach steckt bereits im Repo-Namen;
+  - `kompetenzmodule/` liegt auf der **Fach-Ebene** `lehrplan/kompetenzmodule/`;
+  - die Planungsdateien (`jgN-einheiten.md`, `jgN-semesterplan-{ws,ss}.md`) liegen im Zweig-Ordner
+    `lehrplan/hwii/` (vormals `unterricht/HWII-INFI/`);
+  - die repo-weite Referenz (Glossar) ist `GLOSSAR.md` im **Repo-Root**, nicht unter `unterricht/`.
+- **Reason**: `unterricht/` ist der Lernplattform-Materialordner (nur Lessons, kein Hilfsbaum); der
+  Zweig (HWII/HWIT) ist die Ebene, auf der Lehrplan **und** Semesterplan abweichen können; die
+  Namens-Wiederholung des Faches (`infi-` im Repo `GRG-INFI`) entfällt.
+- **Considered**: Planungsdateien weiterhin unter `unterricht/` belassen; `kompetenzmodule/` im
+  Zweig-Ordner belassen — beides verworfen zugunsten des Skill-Ziel-Layouts.
+- **Folgen**: Alle Pfad-Referenzen in `AGENTS.md`, `README.md`, `docs/ai/*`, `lehrplan/**`,
+  `3ahwii/**`, `unterricht/**` nachgezogen; Link-Check 0 gebrochen. Die generische `lehrplan`-Regel
+  macht andere Fach-Repos (z. B. GRG-SWP mit `lehrplan/swp-hwii/`) zu Befunden — Folge-Migration
+  **pro Repo**, nicht Teil dieses ADR.

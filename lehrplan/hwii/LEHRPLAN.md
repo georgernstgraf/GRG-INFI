@@ -3,7 +3,7 @@
 > **Quelle:** Anlage 1.24 zu BGBl. II Nr. 262/2015 idF BGBl. II Nr. 235/2019 (Höhere Lehranstalt für Wirtschaftsingenieure – Betriebsinformatik).
 > Rechtliche Grundlagen und Quellenverweise siehe [`METADATA.md`](../METADATA.md); Rechtsstand und Schichten-Vergleich siehe [`RIS.md`](RIS.md).
 > Diese Datei ist der **getreue Extrakt des offiziellen Lehrstoffs (①)** für alle Jahrgänge (I–V) — am **2026-07-26 gegen die konsolidierte Fassung (NOR40217058) verifiziert und korrigiert** (Abweichungen der Vorversion: [`RIS.md`](RIS.md) §6). Eine spätere Session kann nur anhand dieser Datei weitere Jahrgangs-Pläne generieren (siehe Anleitung am Ende).
-> **Erläuterungs-Ebene:** Alle `> **Überblick:**`- und `> **Erläuterung:**`-Blockquotes sind didaktische Annotationen (was der Inhalt inhaltlich IST, mit Anwendungs- und Berufsbezug) — klar getrennt vom wortwörtlichen Gesetzestext. Substanz: KM-Steckbriefe [`kompetenzmodule/`](kompetenzmodule/) + [`RIS.md`](RIS.md).
+> **Erläuterungs-Ebene:** Alle `> **Überblick:**`- und `> **Erläuterung:**`-Blockquotes sind didaktische Annotationen (was der Inhalt inhaltlich IST, mit Anwendungs- und Berufsbezug) — klar getrennt vom wortwörtlichen Gesetzestext. Substanz: KM-Steckbriefe [`lehrplan/kompetenzmodule/`](../kompetenzmodule/) + [`RIS.md`](RIS.md).
 
 ---
 
@@ -108,7 +108,7 @@ Hardwarekomponenten, Betriebssysteme, Datensicherheit, Textverarbeitung und Prä
 > der Anlage der Tabellen in einem konkreten Datenbanksystem (**DDL**). Im Unterricht (SJ 2025/26,
 > rückgepflegt) wurde KM3 mit KM4 verzahnt und mit bigER/Crowsfoot-Notation, SQLite und Deno
 > (`node:sqlite`) umgesetzt; Normalformen wurden systematisch erst in KM5 nachgeholt.
-> Details: [`kompetenzmodule/km3.md`](kompetenzmodule/km3.md).
+> Details: [`lehrplan/kompetenzmodule/km3.md`](../kompetenzmodule/km3.md).
 
 **Bildungs- und Lehraufgabe:**
 - Aufgabenstellungen modellieren und in einem Entity-Relationship (ER)-Modell abbilden;
@@ -177,7 +177,7 @@ Datenmodellierung (konzeptioneller Datenbankentwurf, Notation, Entities, Attribu
 > aus mehreren Tabellen zusammenzuführen, dazu DML (Daten schreiben) und DCL (Rechte verwalten).
 > Zweiter Strang: die **einfache Datenbankanwendung** — laut Lehrstoff Entwurf von Formularen und
 > Berichten; in der Schulumsetzung SJ 2025/26 als ORM-Pfad mit Prisma realisiert (Formulare-/Berichte-
-> Anteil wurde konzeptionell in KM5/KM6 nachgeformt). Details: [`kompetenzmodule/km4.md`](kompetenzmodule/km4.md).
+> Anteil wurde konzeptionell in KM5/KM6 nachgeformt). Details: [`lehrplan/kompetenzmodule/km4.md`](../kompetenzmodule/km4.md).
 
 **Bildungs- und Lehraufgabe:**
 - Abfragen in SQL erstellen und durchführen;
@@ -235,8 +235,8 @@ Abfragesprachen (Projektion, Selektion, Gruppierung, Aggregatfunktionen, Verbund
 > Transaktionen/ACID, Benutzerverwaltung, Datenimport/-export, Archivierung. Das Semester ist
 > **aktiv unterrichtet (SJ 2026/27)**, SQL-nah (SQLite, `sqlite3`-CLI, Skripte); ab ~Dez
 > angedeuteter Verbund mit SWP (gemeinsame Beispieldomäne). Details:
-> [`kompetenzmodule/km5.md`](kompetenzmodule/km5.md) · Semesterplan:
-> `unterricht/HWII-INFI/jg3-semesterplan-ws.md`.
+> [`lehrplan/kompetenzmodule/km5.md`](../kompetenzmodule/km5.md) · Semesterplan:
+> `lehrplan/hwii/jg3-semesterplan-ws.md`.
 
 **Bildungs- und Lehraufgabe:**
 - komplexe Abfragen in SQL erstellen und durchführen.
@@ -277,7 +277,7 @@ Abfragesprachen (Unterabfragen, Datendefinitionssprache, Abfrageoptimierung, Ben
 > Reportgenerierung (CSV/Markdown-Export). Das Semester (SS 2027) mündet im **Verbundprojekt mit
 > SWP** („eine App, zwei Noten": INFI implementiert das von SWP definierte
 > Repository-Interface); der individuelle Verbund-Beitrag gilt als PLF-Äquivalent. Details:
-> [`kompetenzmodule/km6.md`](kompetenzmodule/km6.md) · Verbund-Doku: [`3HWII/README.md`](3HWII/README.md).
+> [`lehrplan/kompetenzmodule/km6.md`](../kompetenzmodule/km6.md) · Verbund-Doku: [`3HWII/README.md`](3HWII/README.md).
 
 **Bildungs- und Lehraufgabe:**
 - die Vorgehensweise zur Erstellung einer Datenbankanwendung für einen bestimmten Einsatzzweck erläutern;
@@ -327,7 +327,7 @@ Anwendungsfälle (Applikationsentwurf); Praktische Datenbankanwendungen (Entwick
 
 ## IV. Jahrgang — Bereich Enterprise Resource Planning (ERP)
 
-> **Domänenwechsel:** Ab Jg IV wechselt das Fach von der Datenbank-Domäne in die ERP-Domäne (SAP, Finanzbuchhaltung, Materialwirtschaft). Der offizielle Lehrstoff (KM7+KM8) ist hier dokumentiert; eine detaillierte Einheitenplanung liegt in `unterricht/HWII-INFI/jg4-einheiten.md` als Stub.
+> **Domänenwechsel:** Ab Jg IV wechselt das Fach von der Datenbank-Domäne in die ERP-Domäne (SAP, Finanzbuchhaltung, Materialwirtschaft). Der offizielle Lehrstoff (KM7+KM8) ist hier dokumentiert; eine detaillierte Einheitenplanung liegt in `lehrplan/hwii/jg4-einheiten.md` als Stub.
 
 ### 7. Semester – Kompetenzmodul 7
 
@@ -338,8 +338,8 @@ Anwendungsfälle (Applikationsentwurf); Praktische Datenbankanwendungen (Entwick
 > der doppelten Buchhaltung, Konten, Bilanz und GuV, Reports). Konzeptionell knüpfen
 > Stammdaten-/Prozess-/Transaktionsdenken aus KM3–KM6 an; die Werkzeuge wechseln auf ein
 > ERP-System (an der HTL Spengergasse: SAP-ähnliche Übungsumgebung — bei Konkretisierung zu
-> klären, siehe [`kompetenzmodule/km7.md`](kompetenzmodule/km7.md)). Einheitenplanung:
-> `unterricht/HWII-INFI/jg4-einheiten.md` (Stub).
+> klären, siehe [`lehrplan/kompetenzmodule/km7.md`](../kompetenzmodule/km7.md)). Einheitenplanung:
+> `lehrplan/hwii/jg4-einheiten.md` (Stub).
 
 **Bildungs- und Lehraufgabe (Bereich ERP):**
 - den Aufbau und die Einsatzgebiete gängiger ERP-Systeme in Unternehmen erläutern;
@@ -401,8 +401,8 @@ ERP-Systeme (Systeme und Anbieter, Module, Organisationseinheiten, Benutzeroberf
 > Betriebsdatenerfassung). Das Lernziel ist ein einziges, aber großes: Stammdaten anlegen und die
 > Prozessketten im System *abbilden* — also die ERP-Logik selbst durchlaufen. Damit ist die
 > Grundlage für Jg V gelegt (Vertrieb und Kostenrechnung schließen die Wertschöpfungskette ab).
-> Details: [`kompetenzmodule/km8.md`](kompetenzmodule/km8.md) · Einheitenplanung:
-> `unterricht/HWII-INFI/jg4-einheiten.md` (Stub).
+> Details: [`lehrplan/kompetenzmodule/km8.md`](../kompetenzmodule/km8.md) · Einheitenplanung:
+> `lehrplan/hwii/jg4-einheiten.md` (Stub).
 
 **Bildungs- und Lehraufgabe (Bereich ERP):**
 - Stammdaten in einem ERP-System anlegen und die entsprechenden Beschaffungs-, Produktions- und Vertriebsprozesse abbilden.
@@ -462,9 +462,9 @@ Materialwirtschaft (Beschaffungsprozess, Materialstammdaten, Lieferantenstammdat
 > DB-Anwendung als Web-/GUI-Applikation (direkter Anschluss an KM6 und den SWP-Verbund); **ERP**
 > — Vertrieb (9. Semester) und Kostenrechnung/Controlling samt Auftragssimulation (10. Semester).
 > Das Maturajahr integriert also alle drei Domänen des Faches und ist natürlicher Anker für
-> Diplomarbeit und Matura. Details: [`kompetenzmodule/km9.md`](kompetenzmodule/km9.md).
+> Diplomarbeit und Matura. Details: [`lehrplan/kompetenzmodule/km9.md`](../kompetenzmodule/km9.md).
 
-> **Domäne:** Informationssysteme (Datawarehouse, Datamining, KI, Geschäftsprozessmodellierung), **Datenbanken** (Datenbankanwendung implementieren; Web- und GUI-Applikationen) und ERP (Vertrieb, Kostenrechnung). Einheitenplanung in `unterricht/HWII-INFI/jg5-einheiten.md` als Stub.
+> **Domäne:** Informationssysteme (Datawarehouse, Datamining, KI, Geschäftsprozessmodellierung), **Datenbanken** (Datenbankanwendung implementieren; Web- und GUI-Applikationen) und ERP (Vertrieb, Kostenrechnung). Einheitenplanung in `lehrplan/hwii/jg5-einheiten.md` als Stub.
 
 ### 9. Semester
 
@@ -588,7 +588,7 @@ Praktische Datenbankanwendungen, Web- und GUI-Applikationen.
 > Browser-Frontend über HTTP/JSON — ausbaubar aus dem KM6-REST-Server — und die Desktop-Applikation
 > mit grafischer Oberfläche, Fenstern und Event-Handling). Beide knüpfen an die Schulumsetzung
 > an (Deno/TypeScript; die 3HWII-Verbund-App als Weiterführungs-Kandidatin, siehe
-> [`kompetenzmodule/km9.md`](kompetenzmodule/km9.md)) und sind die realistische Basis für die
+> [`lehrplan/kompetenzmodule/km9.md`](../kompetenzmodule/km9.md)) und sind die realistische Basis für die
 > Diplomarbeit: kaum ein DA-Projekt kommt ohne Datenbank und Benutzeroberfläche aus.
 
 **Lehrstoff (Bereich ERP):**
@@ -696,20 +696,20 @@ Kostenrechnung und Controlling (Kostenarten, Kostenstellen, innerbetriebliche Le
 unterrichtet, gibt es einen **Klassenordner** `lehrplan/<KLASSE>/` (z. B. [`3HWII/`](3HWII/))
 mit [`<KLASSE>.lehrplan.md`](3HWII/3HWII.lehrplan.md) (klassenrelevanter ①-Extrakt) — der
 aktuelle Ordner zusätzlich mit `README.md` (Klassen-Drehscheibe) und
-`unterricht/HWII-INFI/jgN-semesterplan-{ws,ss}.md` (**13 echte UE + 2 PLF-DS** pro Semester, Tabellenformat).
-Didaktische **KM-Steckbriefe** liegen in [`kompetenzmodule/`](kompetenzmodule/). Die
-`jgN-einheiten.md` stehen unter `unterricht/HWII-INFI/` als Gerüste für nicht konkret
+`lehrplan/hwii/jgN-semesterplan-{ws,ss}.md` (**13 echte UE + 2 PLF-DS** pro Semester, Tabellenformat).
+Didaktische **KM-Steckbriefe** liegen in [`lehrplan/kompetenzmodule/`](../kompetenzmodule/). Die
+`jgN-einheiten.md` stehen unter `lehrplan/hwii/` als Gerüste für nicht konkret
 geplante Jahrgänge (derzeit Jg IV/V) bzw. als historische Ist-Doku (Jg II).
 
-Um z. B. `unterricht/HWII-INFI/jg4-einheiten.md` oder `unterricht/HWII-INFI/jg5-einheiten.md` zu befüllen, genügt diese Datei plus `METADATA.md`:
+Um z. B. `lehrplan/hwii/jg4-einheiten.md` oder `lehrplan/hwii/jg5-einheiten.md` zu befüllen, genügt diese Datei plus `METADATA.md`:
 
 1. **Offiziellen Lehrstoff übernehmen:** Kopiere den Lehrstoff des jeweiligen Semesters (KM) aus dieser Datei in den Kopf des Jahrgangs-Dokuments als „Soll".
-2. **Steckbrief + Semesterplan anlegen:** KM-Steckbrief in `kompetenzmodule/` (Struktur wie `kompetenzmodule/km5.md`), Semesterplan unter `unterricht/HWII-INFI/` (Format wie `jg3-semesterplan-ws.md`, 13 UE + 2 PLF).
-3. **Vorwissen verankern:** Verweise auf den jeweils vorherigen Jahrgang (z. B. baut Jg III beim DB-Track auf `unterricht/HWII-INFI/jg2-einheiten.md` auf).
+2. **Steckbrief + Semesterplan anlegen:** KM-Steckbrief in `lehrplan/kompetenzmodule/` (Struktur wie `lehrplan/kompetenzmodule/km5.md`), Semesterplan unter `lehrplan/hwii/` (Format wie `jg3-semesterplan-ws.md`, 13 UE + 2 PLF).
+3. **Vorwissen verankern:** Verweise auf den jeweils vorherigen Jahrgang (z. B. baut Jg III beim DB-Track auf `lehrplan/hwii/jg2-einheiten.md` auf).
 4. **Bewertungsrahmen:** Halte dich an die Abgabe-/Beurteilungsregeln aus dem Wurzel-`README.md` des Repos (PLF/HÜ/Mitarbeit je 1/3); konkrete PLF-Termine sind schulspezifisch.
 5. **Bei Domänenwechsel (Jg IV ERP, Jg V IS):** explizit kennzeichnen, dass andere Expertise/Werkzeuge (SAP-System, ERP-Software) nötig sind; ggf. nur Gerüst belassen.
 6. **Sprache & Stil:** deutsche Kommentare, SQL in GROSSBUCHSTABEN, 2/4 Leerzeichen Einrückung (siehe `AGENTS.md`).
-7. **Nach Erstellung nicht vergessen:** Links in `METADATA.md` (Tabelle „Dateien in diesem Verzeichnis") und `kompetenzmodule/README.md` (Steckbrief-Status) aktualisieren.
+7. **Nach Erstellung nicht vergessen:** Links in `METADATA.md` (Tabelle „Dateien in diesem Verzeichnis") und `lehrplan/kompetenzmodule/README.md` (Steckbrief-Status) aktualisieren.
 
 ### Konventionen für eine Einheit
 
@@ -728,10 +728,10 @@ Um z. B. `unterricht/HWII-INFI/jg4-einheiten.md` oder `unterricht/HWII-INFI/jg5-
 | Jahrgang | Status | Datei |
 |----------|--------|-------|
 | I. | *(nicht geplant – Jg I ist rawData/Office, kein DB)* | — |
-| II. (KM3+KM4) | **Rückgepflegt aus Unterricht SJ 2025/26** (erledigt, Referenz) | [`2HWII/2HWII.lehrplan.md`](2HWII/2HWII.lehrplan.md) + `unterricht/HWII-INFI/jg2-einheiten.md` + [`kompetenzmodule/km3.md`](kompetenzmodule/km3.md), [`km4.md`](kompetenzmodule/km4.md) |
-| III. (KM5+KM6) | **Aktiv unterrichtet (SJ 2026/27)**; seit 2026-07-26 Steckbriefe + Klassenordner | [`3HWII/3HWII.lehrplan.md`](3HWII/3HWII.lehrplan.md) + [`kompetenzmodule/km5.md`](kompetenzmodule/km5.md), [`km6.md`](kompetenzmodule/km6.md), [`3HWII/`](3HWII/) |
-| IV. (KM7+KM8) | Stub (ERP) | [`4HWII/4HWII.lehrplan.md`](4HWII/4HWII.lehrplan.md) + `unterricht/HWII-INFI/jg4-einheiten.md` + [`kompetenzmodule/km7.md`](kompetenzmodule/km7.md), [`km8.md`](kompetenzmodule/km8.md) |
-| V. (KM9) | Stub (IS + DB + ERP) | [`5HWII/5HWII.lehrplan.md`](5HWII/5HWII.lehrplan.md) + `unterricht/HWII-INFI/jg5-einheiten.md` + [`kompetenzmodule/km9.md`](kompetenzmodule/km9.md) |
+| II. (KM3+KM4) | **Rückgepflegt aus Unterricht SJ 2025/26** (erledigt, Referenz) | [`2HWII/2HWII.lehrplan.md`](2HWII/2HWII.lehrplan.md) + `lehrplan/hwii/jg2-einheiten.md` + [`lehrplan/kompetenzmodule/km3.md`](../kompetenzmodule/km3.md), [`km4.md`](../kompetenzmodule/km4.md) |
+| III. (KM5+KM6) | **Aktiv unterrichtet (SJ 2026/27)**; seit 2026-07-26 Steckbriefe + Klassenordner | [`3HWII/3HWII.lehrplan.md`](3HWII/3HWII.lehrplan.md) + [`lehrplan/kompetenzmodule/km5.md`](../kompetenzmodule/km5.md), [`km6.md`](../kompetenzmodule/km6.md), [`3HWII/`](3HWII/) |
+| IV. (KM7+KM8) | Stub (ERP) | [`4HWII/4HWII.lehrplan.md`](4HWII/4HWII.lehrplan.md) + `lehrplan/hwii/jg4-einheiten.md` + [`lehrplan/kompetenzmodule/km7.md`](../kompetenzmodule/km7.md), [`km8.md`](../kompetenzmodule/km8.md) |
+| V. (KM9) | Stub (IS + DB + ERP) | [`5HWII/5HWII.lehrplan.md`](5HWII/5HWII.lehrplan.md) + `lehrplan/hwii/jg5-einheiten.md` + [`lehrplan/kompetenzmodule/km9.md`](../kompetenzmodule/km9.md) |
 
 > **Layout-Migration 2026-09-07:** Der Lehrplan-Bereich liegt im Skill-Standard-Layout —
 > zuvor: `docs/lehrplan/LEHRPLAN.md` + Klassenordner im Root. Die Klassen-Extrakte
@@ -741,5 +741,5 @@ Um z. B. `unterricht/HWII-INFI/jg4-einheiten.md` oder `unterricht/HWII-INFI/jg5-
 > verifiziert und an mehreren Stellen an den offiziellen Text (①) angeglichen — u. a.
 > Normalformen zurück nach KM3, DCL nach KM4, Jg V um den Bereich Datenbanken ergänzt.
 > Die Abweichungen der Vorversion sind in [`RIS.md`](RIS.md) §6 dokumentiert. Die
-> Abdeckungstabelle in `unterricht/HWII-INFI/jg2-einheiten.md` (historische Ist-Doku) bezieht sich noch auf die
+> Abdeckungstabelle in `lehrplan/hwii/jg2-einheiten.md` (historische Ist-Doku) bezieht sich noch auf die
 > Vorversion dieser Redaktion — inhaltlich bleibt die dortige Ist-Abdeckung unberührt.

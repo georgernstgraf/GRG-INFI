@@ -24,7 +24,7 @@ Lehrstoff-Extrakt: `../LEHRPLAN.md`).
 ¹ **2+1-Split ab Jg III:** Von den 3 Wochenstunden (schulautonom; offiziell 2(2), siehe
 `../RIS.md` §4) unterrichtet **Georg 2 h** (1 DS/Woche: SQL/Datenbank-Kern) und ein
 **Kollege 1 h** (Nicht-SQL-Anteile — Extraktionsvorschlag in `km5.md`/`km6.md` bzw.
-`../3HWII/README.md`; finale Absprache **TBD**).
+`../hwii/3HWII/README.md`; finale Absprache **TBD**).
 
 ## Zeitmodell (ab Jg III, Georgs Anteil)
 
@@ -54,6 +54,6 @@ betreffende Semester konkret plant.
 - `../LEHRPLAN.md` — offizieller Lehrstoff (①-Extrakt, verifiziert 2026-07-26)
 - `../RIS.md` — Rechtsstand, Stundentafel, Schichten-Vergleich
 - `../METADATA.md` — Stundentafel, Planungskonvention
-- `../3HWII/README.md`, `../../unterricht/HWII-INFI/jg3-semesterplan-ws.md`, `../../unterricht/HWII-INFI/jg3-semesterplan-ss.md` — konkrete
+- `../hwii/3HWII/README.md`, `../hwii/jg3-semesterplan-ws.md`, `../hwii/jg3-semesterplan-ss.md` — konkrete
   Semesterpläne (KM5/KM6) inkl. SWP-Verbund
-- `../../unterricht/HWII-INFI/jg2-einheiten.md` — rückgepflegter Unterricht KM3/KM4 (SJ 2025/26)
+- `../hwii/jg2-einheiten.md` — rückgepflegter Unterricht KM3/KM4 (SJ 2025/26)

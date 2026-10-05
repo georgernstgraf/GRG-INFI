@@ -8,8 +8,8 @@ Overwritten when structural changes occur during a session.
 GRG-INFI ist ein Unterrichts-Repo (HTL Spengergasse, WII–Betriebsinformatik, Fach INFI).
 Kein Software-System — die „Architektur" ist die **Doku-Landschaft**: dreischichtige
 Lehrplan-Doku (① offiziell / ② Schuladaption / ③ Unterricht) + PMM-Stil-Jahrgangsplanung
-(KM-Steckbriefe + Klassenordner unter `lehrplan/`) + Unterrichts-Ebene (allgemeines Gerüst
-`unterricht/HWII-INFI/`, konkrete Kohorten-Ordner wie `3ahwii/`) + Session-Wissen (`docs/ai/`).
+(KM-Steckbriefe + Klassenordner unter `lehrplan/`) + Planungs-Ebene im Zweig-Ordner
+(`lehrplan/hwii/`, konkrete Kohorten-Ordner wie `3ahwii/`) + Session-Wissen (`docs/ai/`).
 
 > **2026-09-07 — Standard-Layout-Migration:** Das Lehrplan-Werk liegt seit 2026-09-07 im
 > Skill-Standard-Layout unter `lehrplan/` (zuvor: `docs/lehrplan/`, Root-`3HWII/`,
@@ -19,17 +19,17 @@ Lehrplan-Doku (① offiziell / ② Schuladaption / ③ Unterricht) + PMM-Stil-Ja
 
 | Ort | Zweck | Bemerkung |
 |-----|-------|-----------|
-| `lehrplan/infi-hwii/LEHRPLAN.md` | **①** getreuer Extrakt Anlage 1.24 (alle Jg) | QUELLE, 2026-07-26 gegen RIS verifiziert |
-| `lehrplan/infi-hwii/RIS.md` | Rechtsstand, Novellen, Stundentafel, Schichten-Vergleich | verweist auf GRG-SWP-RIS.md |
-| `lehrplan/infi-hwii/HWII_INFI.pdf` | **②** Schuladaption (≡ ①) | `pdftotext -layout` |
+| `lehrplan/hwii/LEHRPLAN.md` | **①** getreuer Extrakt Anlage 1.24 (alle Jg) | QUELLE, 2026-07-26 gegen RIS verifiziert |
+| `lehrplan/hwii/RIS.md` | Rechtsstand, Novellen, Stundentafel, Schichten-Vergleich | verweist auf GRG-SWP-RIS.md |
+| `lehrplan/hwii/HWII_INFI.pdf` | **②** Schuladaption (≡ ①) | `pdftotext -layout` |
 | `lehrplan/METADATA.md` | Rechtsgrundlage, Stundentafel, Planungskonvention | — |
-| `lehrplan/infi-hwit/` | Skelett (Anlage 1.28, HWIT) | Extraktion Task 2 ausstehend; primär im Fachgruppen-Repo |
-| `lehrplan/infi-hwii/2HWII/` | **③** Ist SJ 2025/26: `2HWII.lehrplan.md` (①-Extrakt KM3/KM4) | nicht anfassen |
-| `lehrplan/infi-hwii/4HWII/`, `lehrplan/infi-hwii/5HWII/` | Klassen-Extrakte (① KM7/KM8 bzw. KM9) | Befüll-Anleitung in LEHRPLAN.md |
-| `lehrplan/infi-hwii/kompetenzmodule/` | KM-Steckbriefe (km5/km6 voll; km3/km4 Gerüst+; km7/8/9 Gerüst) + Matrix-README | PMM-Stil |
-| `lehrplan/infi-hwii/3HWII/` | Klassen-Drehscheibe SJ 2026/27 | enthält SWP-Verbund-Doku |
-| `unterricht/HWII-INFI/` | **Allgemeine Planung/Gerüst** (Retrofit 2026-09-10): `jg2/jg4/jg5-einheiten.md`, `jg3-semesterplan-{ws,ss}.md` (je 13 UE + 2 PLF) | am Repo-Root; für Kohorten-Abweichungen **nicht** anfassen |
-| `3ahwii/` | **Kohorten-Ordner SJ 2026/27** (konkrete Klasse): Hub `README.md`, Kohorten-Semesterplan `semesterplan-ws.md` (Vollkopie des Gerüsts + Abweichungen), UE-Ordner `YYYY-MM-DD_thema/` | konkretisiert `unterricht/HWII-INFI/` (ADR 2026-09-14) |
+| `lehrplan/hwit/` | Skelett (Anlage 1.28, HWIT) | Extraktion Task 2 ausstehend; primär im Fachgruppen-Repo |
+| `lehrplan/hwii/2HWII/` | **③** Ist SJ 2025/26: `2HWII.lehrplan.md` (①-Extrakt KM3/KM4) | nicht anfassen |
+| `lehrplan/hwii/4HWII/`, `lehrplan/hwii/5HWII/` | Klassen-Extrakte (① KM7/KM8 bzw. KM9) | Befüll-Anleitung in LEHRPLAN.md |
+| `lehrplan/kompetenzmodule/` | KM-Steckbriefe (km5/km6 voll; km3/km4 Gerüst+; km7/8/9 Gerüst) + Matrix-README | PMM-Stil |
+| `lehrplan/hwii/3HWII/` | Klassen-Drehscheibe SJ 2026/27 | enthält SWP-Verbund-Doku |
+| `lehrplan/hwii/` | **Allgemeine Planung/Gerüst**: `jg2/jg4/jg5-einheiten.md`, `jg3-semesterplan-{ws,ss}.md` (je 13 UE + 2 PLF) | im Zweig-Ordner; für Kohorten-Abweichungen **nicht** anfassen |
+| `3ahwii/` | **Kohorten-Ordner SJ 2026/27** (konkrete Klasse): Hub `README.md`, Kohorten-Semesterplan `semesterplan-ws.md` (Vollkopie des Gerüsts + Abweichungen), UE-Ordner `YYYY-MM-DD_thema/` | konkretisiert `lehrplan/hwii/jg3-semesterplan-ws.md` (ADR 2026-09-14) |
 | `ARCHIV/2025-26-2ahwii/` | Unterrichtsmaterial SJ 2025/26 | archiviert |
 | `Beispielprojekte/` | Lauffähige Referenzprojekte zu den Prepared Lessons (KM5-01/KM6-01/KM6-02) | seit 2026-10-05; `unterricht/` bleibt codefrei (Skill `create-lesson`, Issue #8) |
 | `Leetcodes/`, `sqlite-datenbanken/`, `Unterlagen/`, `_Experimente/` | Übungen, DBs, Material, Spielwiese | unverändert |
@@ -49,9 +49,9 @@ Lehrplan-Doku (① offiziell / ② Schuladaption / ③ Unterricht) + PMM-Stil-Ja
 
 ## Data Flows (Doku)
 
-- RIS (NOR40217058) → `lehrplan/infi-hwii/LEHRPLAN.md` (①-Extrakt) → Klassen-Extrakte `<KLASSE>/<KLASSE>.lehrplan.md` → Steckbriefe/Semesterpläne (KM-Bezug ①).
+- RIS (NOR40217058) → `lehrplan/hwii/LEHRPLAN.md` (①-Extrakt) → Klassen-Extrakte `<KLASSE>/<KLASSE>.lehrplan.md` → Steckbriefe/Semesterpläne (KM-Bezug ①).
 - `HWII_INFI.pdf` (②) → Vergleich in `RIS.md` §6 (Befund: ≡ ①).
-- `unterricht/HWII-INFI/jg2-einheiten.md` (③ Ist) → km3/km4 (rückgepflegt) → Vorwissen in km5 + `lehrplan/infi-hwii/3HWII/`.
-- `unterricht/HWII-INFI/jg3-semesterplan-*.md` ↔ `GRG-SWP/unterricht/HWII-SWP/` (Sequenz-Sync des Verbunds; Cross-Repo-Links via GitHub-URL).
-- `3ahwii/semesterplan-ws.md` → **Vollkopie/Konkretisierung** von `unterricht/HWII-INFI/jg3-semesterplan-ws.md`; Kohorten-Abweichungen (z. B. Sondereinheit Agentic Coding) nur hier.
+- `lehrplan/hwii/jg2-einheiten.md` (③ Ist) → km3/km4 (rückgepflegt) → Vorwissen in km5 + `lehrplan/hwii/3HWII/`.
+- `lehrplan/hwii/jg3-semesterplan-*.md` ↔ `GRG-SWP/unterricht/HWII-SWP/` (Sequenz-Sync des Verbunds; Cross-Repo-Links via GitHub-URL).
+- `3ahwii/semesterplan-ws.md` → **Vollkopie/Konkretisierung** von `lehrplan/hwii/jg3-semesterplan-ws.md`; Kohorten-Abweichungen (z. B. Sondereinheit Agentic Coding) nur hier.
 - `3ahwii/README.md` → Kohorten-Hub: UE-Übersicht, Kohorten-Semesterplan, Log; Schwester-Hub `GRG-SWP/3ahwii/`.

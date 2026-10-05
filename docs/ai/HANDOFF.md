@@ -7,7 +7,7 @@ SQLite) — Original für die UE „Rep & ORM-Einstieg"; ORM-Entscheid „Prisma
 Node" als ADR dokumentiert (DECISIONS.md). Kohorten-Kopie `3ahwii/2026-09-29_rep-ohne-node/`
 bleibt (noch) die alte Fassung → bei Übernahme durch die Node-Variante ersetzen.
 Organisatorische Follow-ups (Kollegen-Absprache, PLF-Termine, PG-Docker-Demo,
-Domänenwahl): `lehrplan/infi-hwii/3HWII/README.md` → Offene Punkte bzw. `STATE.md` → Pending.
+Domänenwahl): `lehrplan/hwii/3HWII/README.md` → Offene Punkte bzw. `STATE.md` → Pending.
 
 **2026-10-05:** Lesson-Infrastruktur für GRG-INFI aufgebaut (repo-weites `assets/` aus PMM-Vorbild
 + `serve.sh`), **GitHub Pages** aktiviert (Lektions-Navigator `index.html`, Pages-Link oben in
@@ -86,7 +86,7 @@ Das ist der Kern des neuen Auftrags (siehe Aufgabe 2).
 
 ### Aufgabe 2: Erläuterungs-Ebene ergänzen (Skill-Aufgabe 2)
 
-In `lehrplan/infi-hwii/LEHRPLAN.md` (Jg I–V) und allen Klassenextrakten
+In `lehrplan/hwii/LEHRPLAN.md` (Jg I–V) und allen Klassenextrakten
 (`2HWII/…lehrplan.md` usw.):
 
 - `> **Überblick:**` direkt unter jeder `### <Semester> – Kompetenzmodul <N>`-Überschrift
@@ -98,7 +98,7 @@ In `lehrplan/infi-hwii/LEHRPLAN.md` (Jg I–V) und allen Klassenextrakten
 
 ### Aufgabe 3: HWII_INFI.pdf — erledigt, Restklärung
 
-Die Schuladaption ② liegt bereits korrekt unter `lehrplan/infi-hwii/HWII_INFI.pdf`
+Die Schuladaption ② liegt bereits korrekt unter `lehrplan/hwii/HWII_INFI.pdf`
 (duplikatfrei im Zweig-Ordner). **Restauftrag:** die zweite Kopie im Schwester-Repo
 (`GRG-SWP/lehrplan/swp-hwii/HWII_INFI.pdf`) entfernen — Abstimmung mit Georg, danach dort
 löschen (SWP-HANDOFF vermerkt das).
@@ -129,12 +129,12 @@ löschen (SWP-HANDOFF vermerkt das).
 - [x] **lehrplan-Skill Aufgabe A ausgeführt** (2026-09-14): Konformitäts-Check — Layout
       konform; Hauptbefund **Erläuterungs-Ebene fehlte komplett** (0× `**Überblick:**`/
       `**Erläuterung:**`); Zusatzbefund **11 gebrochene Relativ-Links** aus dem Retrofit 2026-09-10
-- [x] **Erläuterungs-Ebene in `lehrplan/infi-hwii/LEHRPLAN.md` (Jg I–V)** — 8 KM-Überblicke,
+- [x] **Erläuterungs-Ebene in `lehrplan/hwii/LEHRPLAN.md` (Jg I–V)** — 8 KM-Überblicke,
       46 Erläuterungen (25 Lernziel + 21 Lehrstoff), rein additiv; Kopf-Legende ergänzt
 - [x] **Erläuterungs-Ebene in den Klassenextrakten** `2HWII` (2+10), `3HWII` (2+6),
-      `4HWII` (2+7), `5HWII` (2+14); `infi-hwit` ist Skelett-README → nichts zu annotieren
+      `4HWII` (2+7), `5HWII` (2+14); `hwit` ist Skelett-README → nichts zu annotieren
 - [x] **11 gebrochene Links repariert** (METADATA/LEHRPLAN/RIS/Klassenextrakte →
-      `../METADATA.md`, `infi-hwii/RIS.md`, `unterricht/HWII-INFI/…`); Link-Check = 0 gebrochen
+      `../METADATA.md`, `hwii/RIS.md`, `lehrplan/hwii/…`); Link-Check = 0 gebrochen
 - [x] **`HWII_INFI.pdf`-Duplikat in GRG-SWP entfernt** (byte-identisch, `git rm`;
       SWP-`METADATA.md` „Duplikat bereinigt 2026-09-14")
 - [x] **Rückmeldung an GRG-SWP** (dortiger HANDOFF Task 1 abgehakt)

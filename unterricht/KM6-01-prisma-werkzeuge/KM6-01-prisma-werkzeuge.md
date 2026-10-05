@@ -13,6 +13,6 @@ Vorhersage → Projekt aufsetzen und `init`-Migration → `db pull` in beide Ric
 
 ## Housekeeping
 
-- Lehrplan: `lehrplan/infi-hwii/LEHRPLAN.md` (KM6, Bereich Datenbanken) · Steckbrief `lehrplan/infi-hwii/kompetenzmodule/km6.md`
+- Lehrplan: `lehrplan/hwii/LEHRPLAN.md` (KM6, Bereich Datenbanken) · Steckbrief `lehrplan/kompetenzmodule/km6.md`
 - KM-Bezug: KM6 „Entwicklung von DB-Programmen" (Werkzeuge/Schema/Migrations); thematischer Anschluss: KM6-02 (Client-API)
 - Runtime: **Node.js + tsx**, **TypeScript-Client** (`prisma-client`), Prisma 7 · SQLite via `@prisma/adapter-better-sqlite3`

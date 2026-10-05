@@ -5,7 +5,7 @@
 > **Quelle (①):** konsolidierte Fassung [NOR40217058](https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40217058/NOR40217058.html) — getreu extrahiert aus [`../LEHRPLAN.md`](../LEHRPLAN.md) (verifiziert 2026-07-26).
 > **Extraktion:** 2026-09-07 · Rechtsstand ①: unverändert seit 2015 ([`../RIS.md`](../RIS.md)).
 
-> **Unterrichtsstand:** V. Jahrgang ist **noch nicht geplant** (Stub). Einheiten-Gerüst: [`jg5-einheiten.md`](../../../unterricht/HWII-INFI/jg5-einheiten.md); didaktischer Steckbrief: [`../kompetenzmodule/km9.md`](../kompetenzmodule/km9.md).
+> **Unterrichtsstand:** V. Jahrgang ist **noch nicht geplant** (Stub). Einheiten-Gerüst: [`jg5-einheiten.md`](../jg5-einheiten.md); didaktischer Steckbrief: [`../../kompetenzmodule/km9.md`](../../kompetenzmodule/km9.md).
 
 > **Domäne:** Informationssysteme (Datawarehouse, Datamining, KI, Geschäftsprozessmodellierung), **Datenbanken** (Datenbankanwendung implementieren; Web- und GUI-Applikationen) und ERP (Vertrieb, Kostenrechnung) — offizielle Annotation des ①-Extrakts.
 
@@ -13,7 +13,7 @@
 
 ## 9. Semester — Kompetenzmodul 9
 
-> **Überblick:** KM9 (9.+10. Semester, höchste Stundung im Fach) ist das Abschlussmodul des Gegenstands und bündelt drei Bereiche: **Informationssysteme** — entscheidungsunterstützende Systeme (Datawarehouse, Datamining, KI-Systeme), Betriebsdatenerfassung, Datenmodelle/Workflows und elektronischen Zahlungsverkehr; **Datenbanken** — die Implementierung einer vollständigen Datenbankanwendung als Krönung des DB-Spiralcurriculums (ER/Relationen KM3 → SQL KM4/KM5 → DB-Anwendung KM6/KM9); **ERP** — der Vertriebsprozess von der Kundenanfrage bis zum Zahlungseingang (Order-to-Cash). Didaktischer Steckbrief: [`../kompetenzmodule/km9.md`](../kompetenzmodule/km9.md).
+> **Überblick:** KM9 (9.+10. Semester, höchste Stundung im Fach) ist das Abschlussmodul des Gegenstands und bündelt drei Bereiche: **Informationssysteme** — entscheidungsunterstützende Systeme (Datawarehouse, Datamining, KI-Systeme), Betriebsdatenerfassung, Datenmodelle/Workflows und elektronischen Zahlungsverkehr; **Datenbanken** — die Implementierung einer vollständigen Datenbankanwendung als Krönung des DB-Spiralcurriculums (ER/Relationen KM3 → SQL KM4/KM5 → DB-Anwendung KM6/KM9); **ERP** — der Vertriebsprozess von der Kundenanfrage bis zum Zahlungseingang (Order-to-Cash). Didaktischer Steckbrief: [`../../kompetenzmodule/km9.md`](../../kompetenzmodule/km9.md).
 
 **Bildungs- und Lehraufgabe (Bereich Informationssysteme):**
 - Informationssysteme zur Entscheidungsunterstützung beschreiben und über ihre Einsatzbereiche Bescheid wissen;

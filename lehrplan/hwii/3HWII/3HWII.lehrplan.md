@@ -5,7 +5,7 @@
 > **Quelle (①):** konsolidierte Fassung [NOR40217058](https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40217058/NOR40217058.html) — getreu extrahiert aus [`../LEHRPLAN.md`](../LEHRPLAN.md) (verifiziert 2026-07-26).
 > **Extraktion:** 2026-09-07 · Rechtsstand ①: unverändert seit 2015 ([`../RIS.md`](../RIS.md)).
 
-> **Unterrichtsstand:** III. Jahrgang läuft im **SJ 2026/27** (aktuelle Klasse 3AHWII). Konkrete Semesterpläne: [`jg3-semesterplan-ws.md`](../../../unterricht/HWII-INFI/jg3-semesterplan-ws.md) und [`jg3-semesterplan-ss.md`](../../../unterricht/HWII-INFI/jg3-semesterplan-ss.md) (PMM-Stil: 13 UE + 2 PLF-DS); Klassen-Drehscheibe inkl. SWP-Verbund-Doku: [`README.md`](README.md); didaktische Steckbriefe: [`../kompetenzmodule/km5.md`](../kompetenzmodule/km5.md) und [`../kompetenzmodule/km6.md`](../kompetenzmodule/km6.md).
+> **Unterrichtsstand:** III. Jahrgang läuft im **SJ 2026/27** (aktuelle Klasse 3AHWII). Konkrete Semesterpläne: [`jg3-semesterplan-ws.md`](../jg3-semesterplan-ws.md) und [`jg3-semesterplan-ss.md`](../jg3-semesterplan-ss.md) (PMM-Stil: 13 UE + 2 PLF-DS); Klassen-Drehscheibe inkl. SWP-Verbund-Doku: [`README.md`](README.md); didaktische Steckbriefe: [`../../kompetenzmodule/km5.md`](../../kompetenzmodule/km5.md) und [`../../kompetenzmodule/km6.md`](../../kompetenzmodule/km6.md).
 
 ---
 
@@ -20,7 +20,7 @@
 > die Betriebssicht mit Datenimport/-export und Archivierung; als didaktischer
 > Lückenschluss werden die in Jg II nur gestreiften Normalformen nachgeholt. Das
 > Semester bleibt SQL-nah (SQLite) — die Einbettung in eine Applikation folgt in KM6.
-> Details: [`../kompetenzmodule/km5.md`](../kompetenzmodule/km5.md).
+> Details: [`../../kompetenzmodule/km5.md`](../../kompetenzmodule/km5.md).
 
 **Bildungs- und Lehraufgabe:**
 - komplexe Abfragen in SQL erstellen und durchführen.
@@ -63,7 +63,7 @@ Abfragesprachen (Unterabfragen, Datendefinitionssprache, Abfrageoptimierung, Ben
 > und zu genormten DB-Schnittstellen (REST über HTTP/JSON). Das Semester mündet im
 > Verbundprojekt mit SWP („eine App, zwei Noten"): INFI liefert die Persistenz- und
 > Schnittstellenschicht, SWP Domänenklassen und GUI. Details:
-> [`../kompetenzmodule/km6.md`](../kompetenzmodule/km6.md).
+> [`../../kompetenzmodule/km6.md`](../../kompetenzmodule/km6.md).
 
 **Bildungs- und Lehraufgabe:**
 - die Vorgehensweise zur Erstellung einer Datenbankanwendung für einen bestimmten Einsatzzweck erläutern;
@@ -122,4 +122,4 @@ Anwendungsfälle (Applikationsentwurf); Praktische Datenbankanwendungen (Entwick
 
 ---
 
-> **Annotation:** Der Komplett-Extrakt verzeichnet hier das **Spiralcurriculum** des DB-Tracks: ER/Relationen (KM3) → SQL-Grundlagen (KM4) → **komplexe Abfragen (KM5)** → DB-Applikation (KM6); Jg II liefert das Vorwissen ([`jg2-einheiten.md`](../../../unterricht/HWII-INFI/jg2-einheiten.md), inkl. gestreifter Normalformen, die in KM5 nachgeholt werden).
+> **Annotation:** Der Komplett-Extrakt verzeichnet hier das **Spiralcurriculum** des DB-Tracks: ER/Relationen (KM3) → SQL-Grundlagen (KM4) → **komplexe Abfragen (KM5)** → DB-Applikation (KM6); Jg II liefert das Vorwissen ([`jg2-einheiten.md`](../jg2-einheiten.md), inkl. gestreifter Normalformen, die in KM5 nachgeholt werden).

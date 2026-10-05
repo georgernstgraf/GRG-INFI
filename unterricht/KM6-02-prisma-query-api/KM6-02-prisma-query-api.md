@@ -14,6 +14,6 @@ Abbruch → API vs. `$queryRaw` vergleichen — Abgabe nach Vorgabe der Lehrpers
 
 ## Housekeeping
 
-- Lehrplan: `lehrplan/infi-hwii/LEHRPLAN.md` (KM6, Bereich Datenbanken) · Steckbrief `lehrplan/infi-hwii/kompetenzmodule/km6.md`
+- Lehrplan: `lehrplan/hwii/LEHRPLAN.md` (KM6, Bereich Datenbanken) · Steckbrief `lehrplan/kompetenzmodule/km6.md`
 - KM-Bezug: KM6 „Entwicklung von DB-Programmen" (Client-API); baut auf KM6-01 (Werkzeuge/Schema) auf, nutzt KM5 (Transaktionen/ACID)
 - Runtime: **Node.js + tsx**, **TypeScript-Client** (`prisma-client`), Prisma 7 · SQLite via `@prisma/adapter-better-sqlite3`

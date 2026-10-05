@@ -98,7 +98,7 @@ Technisches Management übernommen):
 
 > **Didaktische Einordnung:** Die Korrektur ändert die Planung kaum — ① erwartet Normalformen
 > bereits in KM3 (Jg II); die tatsächliche Lücke aus dem Unterricht SJ 2025/26 (nur gestreift)
-> wird weiterhin in KM5 geschlossen (siehe [`kompetenzmodule/km5.md`](kompetenzmodule/km5.md)).
+> wird weiterhin in KM5 geschlossen (siehe [`lehrplan/kompetenzmodule/km5.md`](../kompetenzmodule/km5.md)).
 > DCL/Benutzerverwaltung wird in KM5 unterrichtet — ① deckt das über den KM5-Lehrstoffpunkt
 > „Benutzerverwaltung" (DCL selbst steht in ① bei KM4).
 

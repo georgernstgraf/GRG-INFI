@@ -3,7 +3,7 @@
 **Klasse/Semester:** 4HWII, 8. Semester (SS, voraussichtlich ab 2028)
 **Wochenstunden:** 2 (schulautonom; offiziell 2(2))
 **Bereich:** **Enterprise Resource Planning (ERP)**
-**Einheiten-Gerüst:** `../../unterricht/HWII-INFI/jg4-einheiten.md`
+**Einheiten-Gerüst:** `../hwii/jg4-einheiten.md`
 
 ## Worum geht es? (Skizze)
 

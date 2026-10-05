@@ -14,7 +14,7 @@
   Neutrale Übungsdaten (Kunden/Bestellungen) aus Jg II. Use for: UE-1-Rep und UE-2-Bestelltabellen-Beispiel.
 - [Buch: Datenbanken 2HWII (`Unterlagen/Buch_Datenbanken_2HWII/`)](../Unterlagen/Buch_Datenbanken_2HWII/)
   Schulbuch-Grundlagen (ER, Relationenmodell, Normalformen-Überblick). Use for: UE 2 (Normalformen-Begriffe).
-- [KM5-Steckbrief (`lehrplan/infi-hwii/kompetenzmodule/km5.md`)](../lehrplan/infi-hwii/kompetenzmodule/km5.md)
+- [KM5-Steckbrief (`lehrplan/kompetenzmodule/km5.md`)](../lehrplan/kompetenzmodule/km5.md)
   Didaktische Quelle: Worum geht es, Schwachstellen-Watchlist, Können-Ziele. Use for: alle Lessons (KM-Bezug ①).
 
 ## Wisdom (Communities)

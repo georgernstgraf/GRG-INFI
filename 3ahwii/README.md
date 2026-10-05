@@ -10,8 +10,8 @@ Original der ORM-Einstiegsstunde: Prepared Lesson
 [`../unterricht/KM5-01-nodejs-prisma/`](../unterricht/KM5-01-nodejs-prisma/).
 
 > **Konkrete Kohorten-Fassung.** Die **allgemeine Planung** liegt unter
-> [`../unterricht/HWII-INFI/`](../unterricht/HWII-INFI/); die Klassen-Drehscheibe
-> unter [`../lehrplan/infi-hwii/3HWII/`](../lehrplan/infi-hwii/3HWII/).
+> [`../lehrplan/hwii/`](../lehrplan/hwii/); die Klassen-Drehscheibe
+> unter [`../lehrplan/hwii/3HWII/`](../lehrplan/hwii/3HWII/).
 > Konkretisierungen und Abweichungen dieser Kohorte werden **hier** gepflegt –
 > `unterricht/` bleibt unangetastet.
 
@@ -19,7 +19,7 @@ Original der ORM-Einstiegsstunde: Prepared Lesson
 
 - **Wintersemester 2026/27:** [`semesterplan-ws.md`](semesterplan-ws.md) –
   Kohorten-Fassung, konkretisiert aus
-  [`../unterricht/HWII-INFI/jg3-semesterplan-ws.md`](../unterricht/HWII-INFI/jg3-semesterplan-ws.md).
+  [`../lehrplan/hwii/jg3-semesterplan-ws.md`](../lehrplan/hwii/jg3-semesterplan-ws.md).
 
 ## Lessons (teach-Skill, UE 1–3)
 

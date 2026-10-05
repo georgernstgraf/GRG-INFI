@@ -5,7 +5,7 @@
 > **Quelle (①):** konsolidierte Fassung [NOR40217058](https://www.ris.bka.gv.at/Dokumente/Bundesnormen/NOR40217058/NOR40217058.html) — getreu extrahiert aus [`../LEHRPLAN.md`](../LEHRPLAN.md) (verifiziert 2026-07-26).
 > **Extraktion:** 2026-09-07 · Rechtsstand ①: unverändert seit 2015 ([`../RIS.md`](../RIS.md)).
 
-> **Unterrichtsstand:** II. Jahrgang wurde im **SJ 2025/26 unterrichtet** (Klasse 2AHWII, Georg allein, 2 h/Woche). Die konkrete Ist-Doku liegt in [`jg2-einheiten.md`](../../../unterricht/HWII-INFI/jg2-einheiten.md), die didaktischen Steckbriefe in [`../kompetenzmodule/km3.md`](../kompetenzmodule/km3.md) und [`../kompetenzmodule/km4.md`](../kompetenzmodule/km4.md).
+> **Unterrichtsstand:** II. Jahrgang wurde im **SJ 2025/26 unterrichtet** (Klasse 2AHWII, Georg allein, 2 h/Woche). Die konkrete Ist-Doku liegt in [`jg2-einheiten.md`](../jg2-einheiten.md), die didaktischen Steckbriefe in [`../../kompetenzmodule/km3.md`](../../kompetenzmodule/km3.md) und [`../../kompetenzmodule/km4.md`](../../kompetenzmodule/km4.md).
 
 ---
 
@@ -20,7 +20,7 @@
 > als Schema, als SQL-Code. Die Kohorte 2025/26 mischte KM3- und KM4-Anteile
 > (CRUD/Abfragen ab Herbst, Modellierung/DDL verstärkt im Frühjahr) und streifte
 > die Normalformen nur — ihr systematischer Nachhol erfolgt in KM5. Details:
-> [`../kompetenzmodule/km3.md`](../kompetenzmodule/km3.md).
+> [`../../kompetenzmodule/km3.md`](../../kompetenzmodule/km3.md).
 
 **Bildungs- und Lehraufgabe:**
 - Aufgabenstellungen modellieren und in einem Entity-Relationship (ER)-Modell abbilden;
@@ -96,7 +96,7 @@ Datenmodellierung (konzeptioneller Datenbankentwurf, Notation, Entities, Attribu
 > transitiven Abhängigkeiten) prüfen das Schema auf Redundanz und auf
 > Anfälligkeit für Änderungs-, Einfüge- und Löschanomalien — in der Kohorte
 > 2025/26 nur gestreift, systematischer Durchgang in KM5
-> ([`../kompetenzmodule/km5.md`](../kompetenzmodule/km5.md)). **Referentielle
+> ([`../../kompetenzmodule/km5.md`](../../kompetenzmodule/km5.md)). **Referentielle
 > Integrität** schließlich sichert zu, dass jeder Fremdschlüsselwert auf eine
 > existierende Zeile zeigt — vom DBS als Constraint erzwungen, nicht nur als
 > Konvention zwischen Entwicklern.
@@ -109,7 +109,7 @@ Datenmodellierung (konzeptioneller Datenbankentwurf, Notation, Entities, Attribu
 > DDL erzeugen; deren modernste Ausprägung sind ORM-Migrations — die Kohorte hat
 > mit **Prisma** (`schema.prisma`, `prisma migrate dev`) genau so einen Generator
 > benutzt und damit KM6-Terrain vorweggenommen (Übererfüllung, siehe
-> [`../kompetenzmodule/km3.md`](../kompetenzmodule/km3.md)). **SQL** ist der
+> [`../../kompetenzmodule/km3.md`](../../kompetenzmodule/km3.md)). **SQL** ist der
 > Industriestandard der deklarativen Datenbanksprachen: man beschreibt, *was*
 > man will, und das DBS entscheidet, *wie* es gesucht wird.
 
@@ -124,7 +124,7 @@ Datenmodellierung (konzeptioneller Datenbankentwurf, Notation, Entities, Attribu
 > Formulare und Berichte erfüllt; deren Konzepte werden in KM5 (Views als
 > Sichten) und KM6 (Reportgenerierung) nachgeformt, die DCL erst in KM5 mit der
 > dortigen „Benutzerverwaltung" zusammengeführt. Details:
-> [`../kompetenzmodule/km4.md`](../kompetenzmodule/km4.md).
+> [`../../kompetenzmodule/km4.md`](../../kompetenzmodule/km4.md).
 
 **Bildungs- und Lehraufgabe:**
 - Abfragen in SQL erstellen und durchführen;
@@ -175,7 +175,7 @@ Abfragesprachen (Projektion, Selektion, Gruppierung, Aggregatfunktionen, Verbund
 > Produktivdatenbank (getrennte Lese-, Schreib- und Admin-Konten); die Kohorte
 > hat sie nicht explizit geübt — sie wird in KM5 mit dem dortigen
 > Lehrplanpunkt „Benutzerverwaltung" zusammengeführt
-> ([`../kompetenzmodule/km5.md`](../kompetenzmodule/km5.md)).
+> ([`../../kompetenzmodule/km5.md`](../../kompetenzmodule/km5.md)).
 
 > **Erläuterung:** „**Entwurf von Formularen und Berichten**" meint die
 > nutzerseitige Erschließung einer Datenbank: **Formulare** sind strukturierte
@@ -192,4 +192,4 @@ Abfragesprachen (Projektion, Selektion, Gruppierung, Aggregatfunktionen, Verbund
 
 ---
 
-> **Ist-Randnotiz (nicht Rechtsbestandteil):** Die Normalformen wurden 2025/26 nur gestreift — die Lücke wird in KM5 (III. Jahrgang, Klasse `3HWII`) geschlossen, siehe [`../kompetenzmodule/km5.md`](../kompetenzmodule/km5.md).
+> **Ist-Randnotiz (nicht Rechtsbestandteil):** Die Normalformen wurden 2025/26 nur gestreift — die Lücke wird in KM5 (III. Jahrgang, Klasse `3HWII`) geschlossen, siehe [`../../kompetenzmodule/km5.md`](../../kompetenzmodule/km5.md).
