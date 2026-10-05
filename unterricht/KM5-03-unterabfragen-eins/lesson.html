@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion KM5-03 · Unterabfragen I — Skalar, Zeile, Tabelle</title>
+<script>(function(){var s=location.pathname.split("/");s.pop();(function t(){if(!s.length)return;var r=s.join("/")+"/",e=document.createElement("script");e.src=r+"assets/loader.js";e.setAttribute("data-css","lesson.css");e.setAttribute("data-js","theme.js,quiz.js");e.onerror=function(){s.pop();t()};e.onload=function(){if(!window.__SITE_ROOT__){s.pop();t()}};document.head.appendChild(e)})();</script>
+</head>
+<body>
+<header class="meta">
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">Dunkel</button>
+  <span class="kicker">Lektion KM5-03 · Komplexe Abfragen · KM5-Kern</span>
+  <h1>Unterabfragen I — Skalar, Zeile, Tabelle</h1>
+  <p class="subtitle">Schwierige Fragen in Stufen zerlegen: eine Abfrage in der anderen.</p>
+</header>
+
+<nav class="breadcrumb">Prepared Lesson KM5-03 · Musik-Streaming-DB · SQLite</nav>
+
+<div class="callout">
+  <span class="label">Pflichtlektüre (vor der Stunde)</span>
+  <ul>
+    <li>SQLite-Doku: <a href="https://www.sqlite.org/lang_expr.html#subqueries">Subqueries</a> (Skalar-, Zeilen- und Tabellen-Subqueries).</li>
+    <li>Referenzbegriffe: <a href="../../GLOSSAR.md">GLOSSAR.md</a> (Skalar-, Zeilen-, Tabellen-Subquery).</li>
+  </ul>
+</div>
+
+<h2>1. Die Einstiegsfrage</h2>
+<p>„Welche Songs sind <strong>länger als der Durchschnitt</strong>?" — Das Problem: Den
+Durchschnitt kenne ich erst, wenn ich ihn berechnet habe. In Excel wären das zwei
+Schritte. In SQL geht das in <em>einer</em> Abfrage, indem man eine Abfrage
+<strong>in die andere schachtelt</strong>:</p>
+<pre><code>SELECT titel, dauer_sek
+FROM song
+WHERE dauer_sek > (SELECT AVG(dauer_sek) FROM song)
+ORDER BY dauer_sek DESC;</code></pre>
+<p>Die eingeklammerte Abfrage liefert <em>einen Wert</em> (den Durchschnitt) — und der
+äußeren Abfrage ist es egal, woher er kommt. Das ist die <strong>Unterabfrage</strong>
+(Subquery).</p>
+
+<h2>2. Drei Formen, drei Orte</h2>
+<p>Unterabfragen liefern drei Arten von Ergebnissen — und passen an verschiedene Orte:</p>
+<table>
+  <tr><th>Form</th><th>Liefert</th><th>Typischer Ort</th></tr>
+  <tr><td><strong>Skalar</strong></td><td>Genau einen Wert</td><td><code>WHERE dauer_sek &gt; (SELECT AVG(…) …)</code>, auch in <code>SELECT</code></td></tr>
+  <tr><td><strong>Zeile</strong></td><td>Genau eine Zeile</td><td><code>WHERE (a, b) = (SELECT …)</code> (Tupelvergleich)</td></tr>
+  <tr><td><strong>Tabelle</strong></td><td>Eine Ergebnismenge</td><td><code>FROM (SELECT …) AS x</code> — Alias in SQLite Pflicht</td></tr>
+</table>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">1. Was liefert eine Skalar-Subquery?</p>
+<label><input type="radio" name="q1" value="0" data-grund="Richtig, weil eine Skalar-Subquery genau einen einzelnen Wert liefert — etwa AVG als Vergleichswert."> Genau einen einzelnen Wert</label>
+<label><input type="radio" name="q1" value="1" data-grund="Falsch, weil eine ganze Zeile die Zeilen-Subquery liefert."> Genau eine ganze Zeile</label>
+<label><input type="radio" name="q1" value="2" data-grund="Falsch, weil eine Ergebnismenge die Tabellen-Subquery ist."> Genau eine Ergebnismenge</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">2. Was braucht eine Subquery in <code>FROM</code>?</p>
+<label><input type="radio" name="q2" value="0" data-grund="Falsch, weil ein Verweis auf Außenzeilen eine korrelierte Subquery kennzeichnet, nicht die FROM-Platzierung."> Einen Verweis auf eine Außenzeile</label>
+<label><input type="radio" name="q2" value="1" data-grund="Richtig, weil FROM (SELECT …) AS x in SQLite zwingend einen Alias hinter der Klammer braucht."> Einen Alias hinter der Klammer</label>
+<label><input type="radio" name="q2" value="2" data-grund="Falsch, weil ORDER BY sortiert und keine Subquery-Form kennt."> Eine Sortierung der Ergebniszeilen</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">3. Wohin gehört der Durchschnittsvergleich in der Einstiegsfrage?</p>
+<label><input type="radio" name="q3" value="0" data-grund="Falsch, weil eine Tabellen-Subquery in FROM eine Ergebnismenge liefert, keinen Einzelwert zum Vergleich."> Tabellen-Subquery in der FROM-Klausel</label>
+<label><input type="radio" name="q3" value="1" data-grund="Falsch, weil eine Zeilen-Subquery ein Tupel vergleicht, nicht den Mittelwert."> Zeilen-Subquery in der GROUP-Klausel</label>
+<label><input type="radio" name="q3" value="2" data-grund="Richtig, weil WHERE dauer_sek > (SELECT AVG(…) …) genau der Skalar-Vergleich in der WHERE-Klausel ist."> Skalar-Subquery in der WHERE-Klausel</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>3. Skalar-Subqueries</h2>
+<p>Ein Skalar liefert <strong>genau einen Wert</strong>. Zwei Orte sind typisch:</p>
+<p><strong>(a) in <code>WHERE</code> — als Vergleichswert:</strong></p>
+<pre><code>SELECT titel FROM song
+WHERE dauer_sek > (SELECT AVG(dauer_sek) FROM song);</code></pre>
+<p><strong>(b) in <code>SELECT</code> — als zusätzliche Vergleichsspalte pro Zeile:</strong></p>
+<pre><code>SELECT titel,
+       dauer_sek,
+       (SELECT ROUND(AVG(dauer_sek), 1) FROM song) AS durchschnitt
+FROM song
+ORDER BY titel;</code></pre>
+<p>Der Durchschnitt ist in jeder Ergebniszeile derselbe Wert (<code>212.5</code>) — man
+kann die Dauer direkt mit ihm vergleichen.</p>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">4. `WHERE (kuenstler_id, dauer_sek) = (SELECT …)` — welche Subquery-Form ist das?</p>
+<label><input type="radio" name="q4" value="0" data-grund="Richtig, weil ein Tupelvergleich genau eine Zeile mit mehreren Spalten erwartet — die Zeilen-Subquery."> Eine Zeilen-Subquery</label>
+<label><input type="radio" name="q4" value="1" data-grund="Falsch, weil eine Skalar-Subquery nur einen einzelnen Wert liefert, kein Tupel."> Eine Skalar-Subquery</label>
+<label><input type="radio" name="q4" value="2" data-grund="Falsch, weil eine Tabellen-Subquery eine ganze Ergebnismenge liefert, nicht eine Zeile."> Eine Tabellen-Subquery</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">5. Welche Bedingung gilt für eine Subquery in <code>SELECT</code>?</p>
+<label><input type="radio" name="q5" value="0" data-grund="Falsch, weil beliebig viele Zeilen nicht in eine einzelne SELECT-Spalte passen — dann bräuchte man JOIN oder Aggregation."> Sie darf beliebig viele Zeilen liefern</label>
+<label><input type="radio" name="q5" value="1" data-grund="Richtig, weil eine Subquery in SELECT skalar sein muss — genau ein Wert pro Ergebniszeile."> Sie muss genau einen Wert liefern</label>
+<label><input type="radio" name="q5" value="2" data-grund="Falsch, weil den Alias die abgeleitete Tabelle in FROM braucht, nicht die Subquery in SELECT."> Sie muss einen Alias tragen</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>4. Tabellen-Subqueries (in <code>FROM</code>)</h2>
+<p>Eine Tabellen-Subquery liefert eine ganze Ergebnismenge und wird in <code>FROM</code>
+wie eine Tabelle verwendet — deshalb heißt sie <strong>abgeleitete Tabelle</strong>. In
+SQLite ist der <strong>Alias Pflicht</strong>:</p>
+<pre><code>SELECT name, n
+FROM (
+  SELECT k.name AS name, COUNT(*) AS n
+  FROM kuenstler k JOIN song s ON s.kuenstler_id = k.id
+  GROUP BY k.id
+) AS t
+WHERE t.n &gt;= 2
+ORDER BY t.n DESC, t.name;</code></pre>
+<p>Erst wird innen gruppiert und gezählt, dann außen gefiltert. Das ist oft lesbarer, als
+alles in eine Abfrage mit <code>HAVING</code> zu quetschen — und subqueries dürfen
+beliebig tief verschachtelt werden.</p>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">6. Im Beispiel `WHERE dauer_sek > (SELECT AVG(dauer_sek) FROM song)` — was macht die innere Abfrage?</p>
+<label><input type="radio" name="q6" value="0" data-grund="Falsch, weil die innere Abfrage keinen Alias vergibt; das wäre eine Tabellen-Subquery."> Sie liefert eine Tabelle für einen Alias</label>
+<label><input type="radio" name="q6" value="1" data-grund="Falsch, weil nur eine Spalte (ein Wert) zurückkommt, kein Tupel."> Sie liefert ein Tupel zweier Spalten</label>
+<label><input type="radio" name="q6" value="2" data-grund="Richtig, weil sie mit AVG einen einzelnen Durchschnittswert berechnet, den die äußere WHERE-Klausel vergleicht."> Sie liefert den Durchschnitt als einen Wert</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">7. Was ist `AS t` in der Tabellen-Subquery?</p>
+<label><input type="radio" name="q7" value="0" data-grund="Richtig, weil AS t die abgeleitete Tabelle benennt, damit die äußere Abfrage ihre Spalten (t.n) ansprechen kann."> Der Alias der abgeleiteten Tabelle</label>
+<label><input type="radio" name="q7" value="1" data-grund="Falsch, weil Spaltennamen aus dem Inneren stammen (name, n), nicht aus dem Alias."> Der Name einer Ergebnisspalte</label>
+<label><input type="radio" name="q7" value="2" data-grund="Falsch, weil HAVING Gruppen filtert und nichts mit dem Tabellen-Alias zu tun hat."> Der Filtername für eine HAVING-Klausel</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>5. Zeilen-Subqueries (Tupelvergleich)</h2>
+<p>Eine Zeilen-Subquery liefert <strong>genau eine Zeile</strong>. Man vergleicht sie mit
+einem Tupel in Klammern. Beispiel: „Auers längster Song" — der Künstler und seine
+Maximaldauer in einem Schritt:</p>
+<pre><code>SELECT titel, dauer_sek
+FROM song
+WHERE (kuenstler_id, dauer_sek) =
+      (SELECT kuenstler_id, MAX(dauer_sek) FROM song WHERE kuenstler_id = 1);</code></pre>
+<p>Ohne Zeilen-Subquery bräuchte man zwei verschachtelte Skalar-Abfragen. Der
+Tupelvergleich macht die Absicht lesbar.</p>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">8. Dürfen Unterabfragen mehrfach verschachtelt werden?</p>
+<label><input type="radio" name="q8" value="0" data-grund="Falsch, weil SQL keine harte Ein-Ebenen-Grenze kennt; man kann beliebig tief schachteln."> Nein, nur eine Ebene ist erlaubt</label>
+<label><input type="radio" name="q8" value="1" data-grund="Richtig, weil Subqueries beliebig verschachtelt werden dürfen — die Lesbarkeit ist die Grenze, nicht die Syntax."> Ja, Subqueries dürfen verschachtelt werden</label>
+<label><input type="radio" name="q8" value="2" data-grund="Falsch, weil Verschachtelung nichts mit Korrelation zu tun hat; auch unkorrelierte Subqueries lassen sich schachteln."> Nur wenn die Subquery korreliert ist</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">9. Wie verhält sich eine Tabellen-Subquery zu einem JOIN?</p>
+<label><input type="radio" name="q9" value="0" data-grund="Falsch, weil beide eine Ergebnismenge liefern; die Subquery strukturiert sie als abgeleitete Tabelle."> Nur ein JOIN liefert eine Ergebnismenge</label>
+<label><input type="radio" name="q9" value="1" data-grund="Falsch, weil eine Subquery nicht automatisch schneller ist; das entscheidet der Ausführungsplan."> Eine Subquery ist immer schneller als ein JOIN</label>
+<label><input type="radio" name="q9" value="2" data-grund="Richtig, weil auch eine Tabellen-Subquery eine Ergebnismenge liefert — sie wird als abgeleitete Tabelle in FROM verwendet."> Beide liefern eine Ergebnismenge</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<h2>6. Regeln &amp; Fallen auf einen Blick</h2>
+<table>
+  <tr><th>Ort</th><th>Regel</th></tr>
+  <tr><td>Subquery in <code>SELECT</code></td><td>muss <strong>skalar</strong> sein (genau ein Wert pro Zeile)</td></tr>
+  <tr><td>Subquery in <code>FROM</code></td><td>braucht in SQLite fast immer einen <strong>Alias</strong> (<code>AS x</code>)</td></tr>
+  <tr><td>Subquery in <code>WHERE</code></td><td>skalar = ein Wert; Tupel = eine Zeile</td></tr>
+  <tr><td>Lesbarkeit</td><td>eine Abfrage pro Zeile, eingerückt; tiefe Verschachtelung später durch CTEs ersetzen</td></tr>
+</table>
+
+<h2>7. Typische Fehler</h2>
+<ul>
+  <li><strong>Alias vergessen:</strong> <code>FROM (SELECT …)</code> ohne <code>AS x</code> bricht in SQLite.</li>
+  <li><strong>Nicht-skalare Subquery in <code>SELECT</code>:</strong> Liefert die Subquery mehrere Zeilen, gibt es einen Fehler — dann JOIN oder <code>IN</code> nutzen.</li>
+  <li><strong>Spaltenverwechslung:</strong> Außen auf eine Spalte zugreifen, die die Subquery nicht ausgibt.</li>
+  <li><strong>Klammern vergessen:</strong> <code>WHERE dauer_sek &gt; SELECT AVG(…)</code> — die Subquery muss in Klammern.</li>
+</ul>
+
+<hr>
+
+<h2>8. Jetzt du!</h2>
+<ol>
+  <li><strong>Vorhersage (zuerst notieren!):</strong> Was gibt
+  <code>SELECT titel FROM song WHERE dauer_sek &gt; (SELECT AVG(dauer_sek) FROM song)</code>
+  zurück — und wie viele Zeilen? Erst schätzen, dann laufen lassen.</li>
+  <li><strong>Tabellen-Subquery:</strong> Schreibe eine Abfrage, die pro Label die Anzahl
+  der Songs liefert — gruppiere innen, filtere außen auf mehr als 2 Songs.</li>
+  <li><strong>Zeilen-Subquery:</strong> Finde mit einem Tupelvergleich den längsten Song
+  des Künstlers „Frei".</li>
+</ol>
+<div class="callout">
+  <span class="label">Anfassen</span>
+  Das Beispielprojekt <a href="../../Beispielprojekte/km5-03-unterabfragen/">Beispielprojekte/km5-03-unterabfragen/</a>
+  enthält alle vier Formen lauffähig: <code>deno task demo</code> und <code>deno task test</code>.
+</div>
+
+<hr>
+
+<h2>9. Zusammenfassung</h2>
+<table>
+  <tr><th>Form</th><th>Liefert</th><th>Ort</th></tr>
+  <tr><td>Skalar</td><td>einen Wert</td><td><code>WHERE</code>, <code>SELECT</code></td></tr>
+  <tr><td>Zeile</td><td>eine Zeile</td><td><code>WHERE (a, b) = (SELECT …)</code></td></tr>
+  <tr><td>Tabelle</td><td>eine Ergebnismenge</td><td><code>FROM (SELECT …) AS x</code></td></tr>
+</table>
+<p><strong>Ausblick:</strong> In KM5-04 kommen <em>korrelierte</em> Subqueries,
+<code>EXISTS</code>/<code>NOT EXISTS</code> und die <code>IN</code>-NULL-Falle dazu — und
+wir vergleichen Self-JOIN gegen korrelierte Subquery. Danach strukturieren <em>CTEs</em>
+(KM5-05) tiefe Verschachtelungen lesbar.</p>
+
+<hr>
+
+<h2>Aufgabe</h2>
+<ol>
+  <li><strong>Vorhersage:</strong> Notiere <em>vor</em> dem Ausführen, welche Songs die
+  Durchschnitts-Abfrage liefert und warum.</li>
+  <li><strong>Drei Formen:</strong> Schreibe auf der Musik-DB je eine Skalar- (in
+  <code>WHERE</code>), eine Tabellen- (in <code>FROM</code>, mit Alias) und eine
+  Zeilen-Subquery (Tupelvergleich).</li>
+  <li><strong>Interleaving:</strong> Löse Aufgabe 2 einmal mit einer Subquery und einmal
+  mit einem JOIN in <code>FROM</code> — welche Form liest sich klarer?</li>
+  <li><strong>Demo:</strong> <code>deno task demo</code> im Beispielprojekt
+  <code>Beispielprojekte/km5-03-unterabfragen/</code> laufen lassen.</li>
+</ol>
+<p>Abgabe nach Vorgabe deiner Lehrperson (SQL-Datei mit je einem Kommentar).</p>
+
+<footer class="lesson-foot">
+  <p>Zurück: <a href="../KM5-02-normalisierung/lesson.html">KM5-02 — Normalisierung</a> ·
+  Referenz: <a href="../../GLOSSAR.md">Glossar</a>.</p>
+</footer>
+</body>
+</html>

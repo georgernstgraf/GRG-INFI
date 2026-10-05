@@ -1,0 +1,10 @@
+{
+  "nodeModulesDir": "none",
+  "tasks": {
+    "demo": "deno run --allow-read queries.ts",
+    "test": "deno test --allow-read"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1"
+  }
+}
