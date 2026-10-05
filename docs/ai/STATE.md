@@ -24,6 +24,10 @@ Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetze
 
 ## Completed (2026-10-05)
 
+- [x] **Issue #5 geschlossen** (3AHWII X, kohortenspezifisch in `3ahwii/`): UE-Materialien
+      „Rep ohne Node" (29.09., Deno + `node:sqlite` + dev.to-Leseauftrag) und „Normalisierung
+      3NF" (06.10., Teach-HTML, 11 Quizze, `seed-3nf.sql`, `demo.ts`) vollständig; Verifikation
+      `deno task test` 2/2 (3NF) bzw. 3/3 (Rep, mit geladenem Seed); keine offenen Sub-Issues
 - [x] **KM5-01-Beispielprojekt auf TypeScript-Client** (`prisma-client` + `tsx`) umgestellt: `src/prisma.js`→`src/db.ts`, `src/seed.js`→`src/seed.ts`, `src/queries.js`→`src/queries.ts`, `test/queries.test.js`→`.ts`; Schema-Generator + `package.json`-Scripts + Lesson/Hausaufgabe/README angeglichen — Issue **#9** **geschlossen**, Commit `88d8064`; `run` + 5/5 Tests grün
 - [x] **Beispielprojekte ausgelagert**: Skill `create-lesson` verschärft (kein lauffähiger Code unter `unterricht/`; Ablage per Konvention, Default `Beispielprojekte/`) — opencode-helpers#101 **geschlossen**, Commit `fbcf08b`, `test_skill_links` grün
 - [x] Root-`Beispielprojekte/` angelegt; `praxis/` von `KM5-01-nodejs-prisma`, `KM6-01-prisma-werkzeuge`, `KM6-02-prisma-query-api` dorthin verschoben (git rename); Projekt-Verweise in den Tages-README-Vorlagen und die Repo-Doku (AGENTS/README/ARCHITECTURE) nachgezogen — GRG-INFI#8 **geschlossen**, Commit `68649e1`

@@ -24,6 +24,13 @@ grün. **2026-10-05 (3):** KM5-01 auf **TypeScript-Client** (`prisma-client` + `
 (Issue #9) — alle drei Beispielprojekte nutzen jetzt denselben Client. Künftige Lessons legen
 **keinen** lauffähigen Code mehr unter `unterricht/` an (siehe `docs/ai/CONVENTIONS.md`).
 
+**2026-10-05 (4) — Issue #5 geschlossen (3AHWII X):** Beide UE-Materialien der Kohorte sind
+vollständig und verifiziert — `3ahwii/2026-09-29_rep-ohne-node/` (Deno + `node:sqlite`,
+dev.to-Leseauftrag; `deno task test` 3/3 mit geladenem Seed) und
+`3ahwii/2026-10-06_normalisierung-3nf/` (Teach-HTML, 11 Quizze, `seed-3nf.sql`, `demo.ts`;
+2/2 grün). Die **Kohorten-Ordner `3ahwii/`** werden manuell gepflegt und sind **nicht** Teil
+des GitHub-Pages-Angebots (Pages liefert nur `unterricht/`).
+
 ---
 
 ## Tasks ab 2026-09-14 (Agentic Coding / Kohorten-Ordner) — **offen**
