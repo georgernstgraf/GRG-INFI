@@ -1,5 +1,7 @@
 # GRG-INFI
 
+> **📖 Alle Lektionen durchklicken auf GitHub Pages: <https://georgernstgraf.github.io/GRG-INFI/>**
+
 Unterlagen, Übungen und Lösungen für den Informatik-Unterricht (Wirtschaftsingenieure – Betriebsinformatik) an der **HTL Spengergasse**.
 
 > Schuljahr 2025/26 (Klasse 2AHWII) ist archiviert unter [`ARCHIV/2025-26-2ahwii/`](ARCHIV/2025-26-2ahwii/).
