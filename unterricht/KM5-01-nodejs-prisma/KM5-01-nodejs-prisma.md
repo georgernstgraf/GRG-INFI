@@ -19,4 +19,4 @@ Abgabe wie im Klassen-Repo vereinbart (Projekt-Commit + Markdown).
 - Lehrplan: `lehrplan/infi-hwii/3HWII/3HWII.lehrplan.md` (KM5) · `lehrplan/infi-hwii/LEHRPLAN.md`
 - KM-Bezug: KM5 („komplexe Abfragen"; Auffrischung KM3/KM4) → UE 1b/Rep; ORM-Anbahnung Richtung KM6 (Prisma)
 - Runtime: **Node.js LTS + npm** nur für die Prisma-/DB-Werkzeugkette; allgemeiner Code bleibt Deno/TypeScript
-- Übernahme: Prepared Lesson unter `unterricht/KM5-01-nodejs-prisma/`; Klassen-Kopie per Hand nach `3ahwii/` (Asset-Pfad `../../3ahwii/assets/` → `../assets/` anpassen)
+- Übernahme: Prepared Lesson unter `unterricht/KM5-01-nodejs-prisma/`; Klassen-Kopie per Hand nach `3ahwii/` (Asset-Pfad `../../assets/` → `../assets/` anpassen — die Kohorte hat eigene Assets)

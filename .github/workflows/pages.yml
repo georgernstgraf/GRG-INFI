@@ -25,8 +25,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Site zusammenstellen
-        # Nur die Web-Inhalte veröffentlichen; schwere Archiv-/Unterlagen-Ordner
-        # und Build-Artefakte ausschließen.
+        # Nur die vorbereiteten Web-Inhalte aus unterricht/ (+ geteiltes assets/
+        # und Navigator index.html) veröffentlichen. Kohorten-Ordner (3ahwii/)
+        # werden manuell gepflegt und bleiben ebenso außen vor wie schwere
+        # Archiv-/Unterlagen-Ordner und Build-Artefakte.
         run: |
           mkdir -p _site
           rsync -a \
@@ -34,7 +36,7 @@ jobs:
             --exclude='node_modules' \
             --exclude='*.db' \
             --exclude='*.sqlite' \
-            index.html assets 3ahwii unterricht \
+            index.html assets unterricht \
             _site/
 
       - name: Configure Pages
