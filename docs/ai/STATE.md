@@ -24,7 +24,7 @@ Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetze
 
 ## Completed (2026-10-05)
 
-- [x] **KM5-01-Beispielprojekt auf TypeScript-Client** (`prisma-client` + `tsx`) umgestellt: `src/prisma.js`→`src/db.ts`, `src/seed.js`→`src/seed.ts`, `src/queries.js`→`src/queries.ts`, `test/queries.test.js`→`.ts`; Schema-Generator + `package.json`-Scripts + Lesson/Hausaufgabe/README angeglichen — Issue **#9**, Commit `88d8064`; `run` + 5/5 Tests grün
+- [x] **KM5-01-Beispielprojekt auf TypeScript-Client** (`prisma-client` + `tsx`) umgestellt: `src/prisma.js`→`src/db.ts`, `src/seed.js`→`src/seed.ts`, `src/queries.js`→`src/queries.ts`, `test/queries.test.js`→`.ts`; Schema-Generator + `package.json`-Scripts + Lesson/Hausaufgabe/README angeglichen — Issue **#9** **geschlossen**, Commit `88d8064`; `run` + 5/5 Tests grün
 - [x] **Beispielprojekte ausgelagert**: Skill `create-lesson` verschärft (kein lauffähiger Code unter `unterricht/`; Ablage per Konvention, Default `Beispielprojekte/`) — opencode-helpers#101 **geschlossen**, Commit `fbcf08b`, `test_skill_links` grün
 - [x] Root-`Beispielprojekte/` angelegt; `praxis/` von `KM5-01-nodejs-prisma`, `KM6-01-prisma-werkzeuge`, `KM6-02-prisma-query-api` dorthin verschoben (git rename); Projekt-Verweise in den Tages-README-Vorlagen und die Repo-Doku (AGENTS/README/ARCHITECTURE) nachgezogen — GRG-INFI#8 **geschlossen**, Commit `68649e1`
 - [x] Verifikation nach dem Verschieben: `npm test` grün (KM5-01 5/5 frisch installiert, KM6-01 3/3, KM6-02 9/9); keine `praxis`-Referenzen mehr unter `unterricht/`
