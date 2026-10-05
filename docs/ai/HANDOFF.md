@@ -24,6 +24,12 @@ grün. **2026-10-05 (3):** KM5-01 auf **TypeScript-Client** (`prisma-client` + `
 (Issue #9) — alle drei Beispielprojekte nutzen jetzt denselben Client. Künftige Lessons legen
 **keinen** lauffähigen Code mehr unter `unterricht/` an (siehe `docs/ai/CONVENTIONS.md`).
 
+**2026-10-05 (5) — GitHub Pages auf `unterricht/` begrenzt (Issue #10):** `pages.yml`
+veröffentlicht nur noch `index.html`, `assets/` und `unterricht/`; die Kohorten-Ordner
+`3ahwii/` sind **nicht** mehr im Deploy (werden manuell gepflegt). Der Lektions-Navigator
+`index.html` verweist nur noch auf die Prepared Lessons; `KM5-01` nutzt jetzt die repo-weiten
+`assets/` (`lesson.css`, `quiz.js`) statt `3ahwii/assets/`. Deploy grün, `/3ahwii/…` → **404**.
+
 **2026-10-05 (4) — Issue #5 geschlossen (3AHWII X):** Beide UE-Materialien der Kohorte sind
 vollständig und verifiziert — `3ahwii/2026-09-29_rep-ohne-node/` (Deno + `node:sqlite`,
 dev.to-Leseauftrag; `deno task test` 3/3 mit geladenem Seed) und

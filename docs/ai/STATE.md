@@ -24,6 +24,11 @@ Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetze
 
 ## Completed (2026-10-05)
 
+- [x] **Issue #10 geschlossen** — GitHub Pages veröffentlicht nur noch die vorbereiteten
+      Materialien aus `unterricht/` (+ repo-weites `assets/`, Navigator `index.html`);
+      `3ahwii/` aus `pages.yml` entfernt, alle Navigator-Links nach `3ahwii/` gestrichen,
+      `KM5-01` auf die repo-weiten `assets/` (`lesson.css`, `quiz.js`) umgestellt;
+      Deploy grün, `/3ahwii/…` liefert **404**
 - [x] **Issue #5 geschlossen** (3AHWII X, kohortenspezifisch in `3ahwii/`): UE-Materialien
       „Rep ohne Node" (29.09., Deno + `node:sqlite` + dev.to-Leseauftrag) und „Normalisierung
       3NF" (06.10., Teach-HTML, 11 Quizze, `seed-3nf.sql`, `demo.ts`) vollständig; Verifikation

@@ -1,6 +1,6 @@
 # GRG-INFI
 
-> **📖 Alle Lektionen durchklicken auf GitHub Pages: <https://georgernstgraf.github.io/GRG-INFI/>**
+> **📖 Alle vorbereiteten Lektionen (`unterricht/`) durchklicken auf GitHub Pages: <https://georgernstgraf.github.io/GRG-INFI/>**
 
 Unterlagen, Übungen und Lösungen für den Informatik-Unterricht (Wirtschaftsingenieure – Betriebsinformatik) an der **HTL Spengergasse**.
 
