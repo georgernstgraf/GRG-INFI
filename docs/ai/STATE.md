@@ -1,15 +1,27 @@
 # Project State
 
-Current status as of 2026-09-29.
+Current status as of 2026-10-05.
 
 ## Current Focus
 
-ORM-Entscheid umgesetzt: **Prisma bleibt, DB-Werkzeugkette → Node.js** (ADR 2026-09-29).
-**Prepared Lesson** `unterricht/KM5-01-nodejs-prisma/` (Node LTS + Prisma 7 + SQLite/better-sqlite3,
-`praxis/` lauffähig, 5/5 Tests) als Original für die UE „Rep & ORM-Einstieg" (29.09.).
-lehrplan-Skill vollständig ausgeführt (Konformitäts-Check + Erläuterungen + Novellen-Check),
-Issue **#3** geschlossen. Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie
-durch die Node-Variante ersetzen und Stack-Zeilen angleichen.
+**Lesson-Infrastruktur + KM6-Vorbereitung (2026-10-05):** repo-weites `assets/` (Loader/Theme/
+lesson.css/quiz/site/Badge) + `serve.sh`, **GitHub Pages** live
+(<https://georgernstgraf.github.io/GRG-INFI/>, Lektions-Navigator `index.html`).
+Zwei **Prepared Lessons** für **KM6 (SS 2027)**: `unterricht/KM6-01-prisma-werkzeuge/` und
+`unterricht/KM6-02-prisma-query-api/` — TypeScript-Client, `praxis/` verifiziert, Issue **#6** geschlossen.
+Das **Wintersemester bleibt KM5** (SQL-Vertiefung); die KM6-Lessons warten aufs SS.
+
+Früherer Stand (2026-09-29): ORM-Entscheid umgesetzt: **Prisma bleibt, DB-Werkzeugkette → Node.js**
+(ADR 2026-09-29); Prepared Lesson `unterricht/KM5-01-nodejs-prisma/` (Original „Rep & ORM-Einstieg").
+Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetzen.
+
+## Completed (2026-10-05)
+
+- [x] Lesson-Infrastruktur: `assets/` (loader.js, theme.js, lesson.css, quiz.js, site.js, github-pages-link.js) + `serve.sh`
+- [x] GitHub Pages: Workflow `.github/workflows/pages.yml`, `build_type=workflow`, `index.html` als Lektions-Navigator, Pages-Link oben in `README.md`
+- [x] Prepared Lesson **KM6-01** (`prisma-werkzeuge`): CLI, `prisma7.config.ts`, `migrate`-Optionen, `db pull`/`db push`, Studio; Praxis mit **TypeScript-Client** (Node + tsx); Quiz „Setup & Tooling" (8)
+- [x] Prepared Lesson **KM6-02** (`prisma-query-api`): alle CRUD-Operationen, `where`/`select`/`include`, Aggregate, `$transaction`, `$queryRaw`; Praxis mit **9 grünen Tests**; Quiz „Query Language" (10)
+- [x] Befunde dokumentiert: Prisma 7 + SQLite **inkompatibel mit Deno** → Node + `prisma-client` (TS); Studio braucht `file://./dev.db`; Issue **#6** geschlossen
 
 ## Completed (2026-09-29)
 

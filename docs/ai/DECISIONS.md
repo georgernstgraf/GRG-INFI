@@ -108,3 +108,19 @@ Superseded decisions are relocated to HISTORY.md.
   **Prepared Lesson** `unterricht/KM5-01-nodejs-prisma/` ist das neue Original.
 - **Folgen**: KM6-/Verbund-Passagen („Prisma vertieft", `Deno.serve`) sind beim Ausarbeiten
   auf Node+Prisma nachzuziehen; Prisma-Version immer **pinnen** (npm-`latest` = 8-RC).
+
+## 2026-10-05: Prisma-Client = TypeScript-Generator (`prisma-client`); Deno bestätigt inkompatibel
+
+- **Choice**: Immer der **TypeScript-Client** — `generator client { provider = "prisma-client" }`
+  mit eigenem `output`, ausgeführt unter **Node + `tsx`**. Der alte `prisma-client-js` (CommonJS)
+  wird nicht mehr verwendet.
+- **Reason**: `prisma-client-js` erzeugt CommonJS und bricht unter ESM beim Named-Import
+  (`import { PrismaClient } from "@prisma/client"` → „Named export not found"). Der
+  `prisma-client`-Generator erzeugt echtes ESM/TypeScript. **Deno + Prisma 7 + SQLite ist
+  inkompatibel** (empirisch bestätigt) — stützt die Node-Entscheidung vom 29.09.
+- **Considered**: Deno als Runtime (SWP-Konvention `runtime = "deno"`, Prisma 6) — für
+  Prisma 7 + SQLite nicht möglich; verworfen.
+- **Folgen**: `unterricht/KM6-01`/`KM6-02` sind die TypeScript-Client-Originale; die KM5-01-Lesson
+  (noch CJS-Client) ist bei Gelegenheit anzugleichen.
+- **Stolperstein (dokumentiert):** Prisma Studio v7 verlangt für SQLite die Doppel-Slash-URL
+  `file://./dev.db` (die Konfig-URL `file:./dev.db` wird abgelehnt: „not supported for the file: protocol").

@@ -9,6 +9,16 @@ bleibt (noch) die alte Fassung → bei Übernahme durch die Node-Variante ersetz
 Organisatorische Follow-ups (Kollegen-Absprache, PLF-Termine, PG-Docker-Demo,
 Domänenwahl): `lehrplan/infi-hwii/3HWII/README.md` → Offene Punkte bzw. `STATE.md` → Pending.
 
+**2026-10-05:** Lesson-Infrastruktur für GRG-INFI aufgebaut (repo-weites `assets/` aus PMM-Vorbild
++ `serve.sh`), **GitHub Pages** aktiviert (Lektions-Navigator `index.html`, Pages-Link oben in
+`README.md`). Zwei **KM6-Prepared-Lessons** (SS 2027) angelegt: `unterricht/KM6-01-prisma-werkzeuge/`
+(CLI/Migrations/Studio) und `unterricht/KM6-02-prisma-query-api/` (CRUD/Query API) — beide mit
+verifizierter `praxis/`; Issue **#6** geschlossen. **Kernbefunde:** Prisma 7 + SQLite ist mit
+**Deno inkompatibel** → **Node + TypeScript-Client** (`prisma-client`) + `tsx`; Studio braucht
+für SQLite `file://./dev.db`. **Offen (Folge):** KM5-01-Lesson nutzt noch den alten
+CJS-Client (`prisma-client-js`) → auf TypeScript-Client angleichen; KM6-Lessons sind fürs SS 2027
+vorbereitet (das WS bleibt KM5).
+
 ---
 
 ## Tasks ab 2026-09-14 (Agentic Coding / Kohorten-Ordner) — **offen**
