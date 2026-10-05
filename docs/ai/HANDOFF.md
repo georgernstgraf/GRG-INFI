@@ -12,12 +12,17 @@ Domänenwahl): `lehrplan/infi-hwii/3HWII/README.md` → Offene Punkte bzw. `STAT
 **2026-10-05:** Lesson-Infrastruktur für GRG-INFI aufgebaut (repo-weites `assets/` aus PMM-Vorbild
 + `serve.sh`), **GitHub Pages** aktiviert (Lektions-Navigator `index.html`, Pages-Link oben in
 `README.md`). Zwei **KM6-Prepared-Lessons** (SS 2027) angelegt: `unterricht/KM6-01-prisma-werkzeuge/`
-(CLI/Migrations/Studio) und `unterricht/KM6-02-prisma-query-api/` (CRUD/Query API) — beide mit
-verifizierter `praxis/`; Issue **#6** geschlossen. **Kernbefunde:** Prisma 7 + SQLite ist mit
-**Deno inkompatibel** → **Node + TypeScript-Client** (`prisma-client`) + `tsx`; Studio braucht
-für SQLite `file://./dev.db`. **Offen (Folge):** KM5-01-Lesson nutzt noch den alten
-CJS-Client (`prisma-client-js`) → auf TypeScript-Client angleichen; KM6-Lessons sind fürs SS 2027
+(CLI/Migrations/Studio) und `unterricht/KM6-02-prisma-query-api/` (CRUD/Query API); Issue **#6** geschlossen.
+**Kernbefunde:** Prisma 7 + SQLite ist mit **Deno inkompatibel** → **Node + TypeScript-Client**
+(`prisma-client`) + `tsx`; Studio braucht für SQLite `file://./dev.db`. KM6-Lessons sind fürs SS 2027
 vorbereitet (das WS bleibt KM5).
+
+**2026-10-05 (2) — Beispielprojekte ausgelagert:** `unterricht/` ist jetzt **codefrei**; die drei
+`praxis/`-Scaffolds liegen unter Root-`Beispielprojekte/` (KM5-01/KM6-01/KM6-02). Skill
+`create-lesson` repo-übergreifend verschärft (opencode-helpers#101); Migration GRG-INFI#8, Tests
+grün. **Offen (Folge):** `Beispielprojekte/km5-01-nodejs-prisma/` nutzt noch den CJS-Client
+(`prisma-client-js`) → auf TypeScript-Client angleichen. Künftige Lessons legen **keinen**
+lauffähigen Code mehr unter `unterricht/` an (siehe `docs/ai/CONVENTIONS.md`).
 
 ---
 

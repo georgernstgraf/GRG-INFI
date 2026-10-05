@@ -124,3 +124,22 @@ Superseded decisions are relocated to HISTORY.md.
   (noch CJS-Client) ist bei Gelegenheit anzugleichen.
 - **Stolperstein (dokumentiert):** Prisma Studio v7 verlangt für SQLite die Doppel-Slash-URL
   `file://./dev.db` (die Konfig-URL `file:./dev.db` wird abgelehnt: „not supported for the file: protocol").
+
+## 2026-10-05: Lauffähige Beispielprojekte außerhalb `unterricht/` (Skill `create-lesson` verschärft)
+
+- **Choice**: `unterricht/` enthält **ausschließlich Unterrichtsmaterial** (HTML, Markdown,
+  zentrale `assets/`) und **keinen lauffähigen Projektcode**. Fertige Beispielprojekte liegen in
+  der **Beispielprojekt-Ablage des Repos** — hier im Root `Beispielprojekte/`. Der repo-übergreifende
+  Skill `create-lesson` (`opencode-helpers`) wurde entsprechend verschärft: keine `praxis/`-Scaffolds
+  unter `unterricht/`; die Ablage wird per Repo-Konvention ermittelt (Erkennungsliste, z. B.
+  `Sample_Projects/` in GRG-SWP; Default `Beispielprojekte/`). Code-Beispiele im `lesson.html`
+  bleiben als Lehrmaterial ausdrücklich erlaubt.
+- **Reason**: Trennung von Lehrmaterial und lauffähigem Code; `unterricht/` bleibt frei von
+  Build-/Abhängigkeits-Ballast (`node_modules`, `package-lock`). Das kanonische PMM-Vorbild hatte
+  nie Code in den Lessons — die `praxis/`-Ordner waren eine Übererfüllung.
+- **Considered**: `praxis/` pro Lesson belassen (bisherige Praxis); Default-Name `Sample_Projects/`
+  (einheitlich mit SWP, englisch) — verworfen zugunsten Deutsch `Beispielprojekte/`, da die
+  Erkennung abweichend benannte Ordner ohnehin findet.
+- **Tradeoff**: Beispielprojekt und Lesson liegen getrennt (relativer Verweis
+  `../../Beispielprojekte/<slug>/`); zwei Orte, aber klare Zuständigkeit. Übernahme in die Kohorte
+  bleibt manuell durch die Lehrperson.

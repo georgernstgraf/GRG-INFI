@@ -20,6 +20,14 @@ Follow these without question. Do not deviate unless explicitly told.
 - Klassenordner **groß** schreiben (z. B. `lehrplan/infi-hwii/3HWII/`, mögliche Parallelklassen 3a/3b).
 - Schichten-Notation: **①** offizieller RIS-Text · **②** Schuladaption · **③** Unterricht/Repo-Didaktik.
 
+## Unterrichtsmaterial vs. lauffähiger Code
+
+- `unterricht/` ist **reiner Material-Ordner** (HTML/Markdown + zentrale `assets/`) — **kein
+  lauffähiger Projektcode** (Skill `create-lesson`, ADR 2026-10-05).
+- Lauffähige Beispielprojekte liegen **außerhalb** `unterricht/`, im Root-Ordner `Beispielprojekte/`.
+- Lessons verweisen per relativem Link auf ihr Beispielprojekt (`../../Beispielprojekte/<slug>/`)
+  und duplizieren keinen Projektcode; Code-Beispiele im `lesson.html` sind Lehrmaterial.
+
 ## Semesterplan-Format
 
 - **13 echte UE + 2 PLF-DS** pro Semester; 1 UE = 1 Doppelstunde (2 h).
