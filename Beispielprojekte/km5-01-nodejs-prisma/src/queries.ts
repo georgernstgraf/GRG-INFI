@@ -1,6 +1,6 @@
-// src/queries.js — die 5 Diagnose-Queries aus UE 1, einmal als Prisma-API.
+// src/queries.ts — die 5 Diagnose-Queries aus UE 1, einmal als Prisma-API.
 // Vergleich in der Lesson: erst SQL (seed-musik-mini.sql), dann dieselbe Frage über Prisma.
-import { prisma } from "./prisma.js";
+import { prisma } from "./db.ts";
 
 // 1. Top-Künstler nach Track-Anzahl (SQL: JOIN + GROUP BY + ORDER BY + LIMIT).
 export async function topKuenstler(limit = 5) {

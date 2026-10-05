@@ -1,6 +1,7 @@
-// Prisma-Schema — Musik-Streaming-DB (Mini-Ausschnitt, UE 29.09.2026)
+// Prisma-Schema — Musik-Streaming-DB (Mini-Ausschnitt)
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {

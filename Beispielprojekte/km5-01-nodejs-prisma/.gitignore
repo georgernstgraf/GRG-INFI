@@ -1,6 +1,5 @@
 node_modules
+/generated
 .env
-
-/generated/prisma
 *.db
 *.db-journal

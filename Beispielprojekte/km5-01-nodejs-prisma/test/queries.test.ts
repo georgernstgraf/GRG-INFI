@@ -1,15 +1,15 @@
-// test/queries.test.js — node:test (eingebaut, keine Zusatz-Abhängigkeit).
+// test/queries.test.ts — Node-Testrunner über tsx (eingebaut, keine Test-Framework-Abhängigkeit).
 // Voraussetzung: npm run db:seed (nutzt dev.db).
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
-import { prisma } from "../src/prisma.js";
+import { prisma } from "../src/db.ts";
 import {
   kuenstlerMitUndOhneLabel,
   labelPaare,
   langeSongs,
   topKuenstler,
   volleLabels,
-} from "../src/queries.js";
+} from "../src/queries.ts";
 
 before(async () => {
   assert.ok((await prisma.song.count()) > 0, "Bitte zuerst `npm run db:seed` ausführen.");

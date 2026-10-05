@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "description": "Lauffähiges Node.js+Prisma-7-Scaffold (SQLite) zur Prepared Lesson KM5-01",
   "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
-    "test": "node --test",
+    "test": "node --import tsx --test test/queries.test.ts",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
-    "db:seed": "node src/seed.js",
+    "db:seed": "tsx src/seed.ts",
+    "db:status": "prisma migrate status",
     "db:reset": "prisma migrate reset --force",
-    "run": "node src/queries.js",
+    "run": "tsx src/queries.ts",
+    "studio": "prisma studio --url file://./dev.db",
     "postinstall": "prisma generate"
   },
   "keywords": [],
@@ -21,6 +26,9 @@
     "@prisma/client": "^7.10.0",
     "dotenv": "^18.0.4",
     "prisma": "^7.10.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15"
   },
   "allowScripts": {
     "@prisma/engines@7.10.0": true,

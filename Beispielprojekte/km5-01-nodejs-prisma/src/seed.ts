@@ -1,5 +1,5 @@
-// src/seed.js — Mini-Musik-DB befüllen (idempotent: erst leeren, dann neu).
-import { prisma } from "./prisma.js";
+// src/seed.ts — Mini-Musik-DB befüllen (idempotent: erst leeren, dann neu).
+import { prisma } from "./db.ts";
 
 async function main() {
   // Reihenfolge wegen Fremdschlüsseln: Kinder zuerst.
@@ -10,8 +10,8 @@ async function main() {
   await prisma.label.createMany({
     data: [{ name: "Ohrwurm Records" }, { name: "Indie Nord" }],
   });
-  const ohrwurm = await prisma.label.findUnique({ where: { name: "Ohrwurm Records" } });
-  const indie = await prisma.label.findUnique({ where: { name: "Indie Nord" } });
+  const ohrwurm = await prisma.label.findUniqueOrThrow({ where: { name: "Ohrwurm Records" } });
+  const indie = await prisma.label.findUniqueOrThrow({ where: { name: "Indie Nord" } });
 
   await prisma.kuenstler.createMany({
     data: [
@@ -21,10 +21,10 @@ async function main() {
       { name: "Ohne Label", labelId: null }, // für COUNT(*)-vs-COUNT(col)-Demo
     ],
   });
-  const nova = await prisma.kuenstler.findFirst({ where: { name: "Nova" } });
-  const pixel = await prisma.kuenstler.findFirst({ where: { name: "Pixel" } });
-  const solveig = await prisma.kuenstler.findFirst({ where: { name: "Solveig" } });
-  const ohne = await prisma.kuenstler.findFirst({ where: { name: "Ohne Label" } });
+  const nova = await prisma.kuenstler.findFirstOrThrow({ where: { name: "Nova" } });
+  const pixel = await prisma.kuenstler.findFirstOrThrow({ where: { name: "Pixel" } });
+  const solveig = await prisma.kuenstler.findFirstOrThrow({ where: { name: "Solveig" } });
+  const ohne = await prisma.kuenstler.findFirstOrThrow({ where: { name: "Ohne Label" } });
 
   await prisma.song.createMany({
     data: [

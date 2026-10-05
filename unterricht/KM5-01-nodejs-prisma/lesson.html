@@ -40,6 +40,7 @@ npm pkg set type=module
 
 # Prisma 7 — BITTE pinnen!
 npm i prisma@7 @prisma/client@7 @prisma/adapter-better-sqlite3@7 dotenv
+npm i -D tsx                     # führt TypeScript direkt aus (ESM)
 
 # Node ≥ 22.6 blockt Install-Scripts standardmäßig:
 npm approve-scripts --all</code></pre>
@@ -49,7 +50,8 @@ npm approve-scripts --all</code></pre>
 <h2>4. Das Schema</h2>
 <p>Prisma beschreibt die Datenbank in einer eigenen Sprache. Datei: <code>prisma/schema.prisma</code>.</p>
 <pre><code>generator client {
-  provider = "prisma-client-js"   // Import: @prisma/client
+  provider = "prisma-client"      // TypeScript-Client (ESM)
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -92,8 +94,9 @@ npx prisma generate      # passiert bei migrate dev automatisch</code></pre>
 
 <h2>6. Den Client verbinden (Driver Adapter!)</h2>
 <p>Der wichtigste neue Baustein. Ohne Adapter startet der Client nicht:</p>
-<pre><code>// src/prisma.js
-import { PrismaClient } from "@prisma/client";
+<pre><code>// src/db.ts
+import "dotenv/config";
+import { PrismaClient } from "../generated/prisma/client.ts";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
 const adapter = new PrismaBetterSqlite3({
@@ -120,6 +123,7 @@ const mitLabel = await prisma.kuenstler.count({ where: { labelId: { not: null } 
 <h2>8. Typische Fehler</h2>
 <ul>
 <li><strong>Ungepinntes Prisma:</strong> <code>npm i prisma</code> → 8.0.0-RC. Immer <code>@7</code>.</li>
+<li><strong>Falscher Generator:</strong> <code>prisma-client-js</code> erzeugt CommonJS und bricht unter ESM beim Named-Import — nimm <code>prisma-client</code> (TypeScript).</li>
 <li><strong>Adapter vergessen:</strong> <code>new PrismaClient()</code> ohne <code>{ adapter }</code> bricht unter Prisma 7 ab.</li>
 <li><strong>Kein <code>.env</code>:</strong> Ohne <code>DATABASE_URL</code> findet die CLI die DB nicht.</li>
 <li><strong>Install-Scripts geblockt:</strong> <code>better-sqlite3</code> bleibt ohne <code>approve-scripts</code> ungebaut.</li>
