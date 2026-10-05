@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion KM6-01 · Prisma 7 — Werkzeuge &amp; Migrations</title>
+<script>(function(){var s=location.pathname.split("/");s.pop();(function t(){if(!s.length)return;var r=s.join("/")+"/",e=document.createElement("script");e.src=r+"assets/loader.js";e.setAttribute("data-css","lesson.css");e.setAttribute("data-js","theme.js,quiz.js");e.onerror=function(){s.pop();t()};e.onload=function(){if(!window.__SITE_ROOT__){s.pop();t()}};document.head.appendChild(e)})()})();</script>
+</head>
+<body>
+<header class="meta">
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">Dunkel</button>
+  <span class="kicker">Lektion KM6-01 · Datenbankanwendung mit Prisma</span>
+  <h1>Prisma 7 — Werkzeuge &amp; Migrations</h1>
+  <p class="subtitle">Vom leeren Ordner zur versionierten Datenbank: CLI, Schema, <code>migrate</code>, <code>db pull</code>, Studio.</p>
+</header>
+
+<nav class="breadcrumb">Prepared Lesson KM6-01 · TypeScript-Client · Node + tsx · Mediensammlung</nav>
+
+<div class="callout">
+  <span class="label">Pflichtlektüre (vor der Stunde)</span>
+  <ul>
+    <li>Prisma CLI-Referenz (v7): <a href="https://www.prisma.io/docs/orm/v7/reference/prisma-cli-reference">prisma.io/docs/orm/v7/reference/prisma-cli-reference</a></li>
+    <li>Prisma Config (v7): <a href="https://www.prisma.io/docs/orm/v7/reference/prisma-config-reference">…/reference/prisma-config-reference</a></li>
+    <li>SQLite-Quickstart (v7): <a href="https://www.prisma.io/docs/v7/prisma-orm/quickstart/sqlite">prisma.io/docs/v7/prisma-orm/quickstart/sqlite</a></li>
+    <li>Prisma Studio: <a href="https://www.prisma.io/docs/studio">prisma.io/docs/studio</a></li>
+  </ul>
+</div>
+
+<h2>1. Ziel dieser Lesson</h2>
+<p>Am Ende hast du ein <strong>lauffähiges, migriertes</strong> Prisma-7-Projekt mit dem
+<strong>TypeScript-Client</strong> — und du kennst die Werkzeugkette: Schema schreiben,
+mit <code>migrate</code> versionieren, mit <code>db pull</code> eine Altdatenbank einlesen und mit
+<strong>Studio</strong> in die Daten schauen. Die CRUD-Abfragen kommen in der Folge-Lektion
+<em>KM6-02</em>.</p>
+
+<h2>2. Warum Node — und welcher Client?</h2>
+<p>Die Klasse arbeitet sonst mit <strong>Deno/TypeScript</strong>. Für Prisma 7 mit SQLite gilt:
+<strong>Deno ist nicht kompatibel</strong> (Prisma 7 hat die Rust-Engine entfernt und braucht einen
+nativen Driver Adapter). Deshalb: <strong>Node.js als Transportmittel</strong>, unser Anwendungscode
+bleibt <strong>TypeScript</strong>.</p>
+<p>Und wir verwenden <strong>immer den TypeScript-Client</strong>, also den Generator
+<code>prisma-client</code> — <em>nicht</em> das alte <code>prisma-client-js</code>. Das alte erzeugt
+CommonJS und bricht unter ESM:</p>
+<pre><code>// ✗ alter Generator: CommonJS, unter ESM nicht als Named-Export nutzbar
+import { PrismaClient } from "@prisma/client";</code></pre>
+<p>Der neue Generator schreibt echte TypeScript-Dateien in einen eigenen Ordner — und die
+importieren wir direkt.</p>
+
+<h2>3. Projekt aufsetzen</h2>
+<pre><code>npm init -y
+npm pkg set type=module          # ESM
+
+# CLI + TypeScript-Runner
+npm i -D prisma@7 tsx
+# Client + SQLite-Adapter + .env
+npm i @prisma/client@7 @prisma/adapter-better-sqlite3@7 dotenv</code></pre>
+<p>Bitte <strong>auf <code>@7</code> pinnen</strong>: ein ungepinntes <code>npm i prisma</code> zieht sonst
+die Prisma-8-Vorabversion.</p>
+
+<h2>4. Die CLI-Konfiguration</h2>
+<p>Prisma 7 liest die Verbindungsdaten aus einer Config-Datei — nicht mehr aus Flags wie
+<code>--schema</code>/<code>--url</code> (die wurden entfernt). Die Datei heißt ab 7.10
+<code>prisma7.config.ts</code> (der CLI findet auch <code>prisma.config.ts</code>):</p>
+<pre><code>// prisma7.config.ts
+import "dotenv/config";
+import { defineConfig, env } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: { path: "prisma/migrations" },
+  datasource: { url: env("DATABASE_URL") },
+});</code></pre>
+<pre><code># .env
+DATABASE_URL="file:./dev.db"</code></pre>
+
+<h2>5. Das Schema (Prisma Schema Language)</h2>
+<pre><code>// prisma/schema.prisma
+generator client {
+  provider = "prisma-client"     // TypeScript-Client!
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Sammlung {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  medien Medium[]
+}
+
+model Medium {
+  id         Int      @id @default(autoincrement())
+  titel      String
+  jahr       Int?
+  sammlungId Int
+  sammlung   Sammlung @relation(fields: [sammlungId], references: [id], onDelete: Cascade)
+  tags       Tag[]    // n:m — Prisma legt die Zwischentabelle implizit an
+}
+
+model Tag {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  medien Medium[]
+}</code></pre>
+<p>Beziehungen stehen als <strong>Felder</strong> (<code>medien</code>, <code>tags</code>); daraus baut
+Prisma Fremdschlüssel und Zwischentabelle. <code>?</code> heißt optional (NULL erlaubt).</p>
+
+<h2>6. Client erzeugen und verbinden</h2>
+<pre><code>npx prisma generate</code></pre>
+<pre><code>// src/db.ts — ein Driver Adapter ist Pflicht
+import "dotenv/config";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "../generated/prisma/client.ts";
+
+const url = process.env.DATABASE_URL ?? "file:./dev.db";
+const adapter = new PrismaBetterSqlite3({ url });
+export const prisma = new PrismaClient({ adapter });</code></pre>
+<p><code>tsx</code> führt die <code>.ts</code>-Dateien direkt aus — kein Compile-Schritt.</p>
+
+<h2>7. Migrationen — „Schema-Git"</h2>
+<p><code>migrate dev</code> vergleicht Schema und Datenbank (über eine <strong>Shadow-DB</strong>),
+erzeugt daraus eine SQL-Migration und wendet sie an:</p>
+<pre><code>npx prisma migrate dev --name init
+
+<span class="out">Applying migration `20261005105826_init`
+The following migration(s) have been created and applied:
+prisma/migrations/ └─ 20261005105826_init/ └─ migration.sql
+Your database is now in sync with your schema.</span></code></pre>
+<p>Die Migration ist <strong>echtes SQL</strong>, das du lesen und mit-committen kannst:</p>
+<pre><code>-- prisma/migrations/20261005105826_init/migration.sql (Auszug)
+CREATE TABLE "Sammlung" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL
+);
+CREATE TABLE "Medium" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "titel" TEXT NOT NULL,
+    "jahr" INTEGER,
+    "sammlungId" INTEGER NOT NULL,
+    CONSTRAINT "Medium_sammlungId_fkey" FOREIGN KEY ("sammlungId")
+      REFERENCES "Sammlung" ("id") ON DELETE CASCADE
+);
+-- … plus Tag und die implizite n:m-Tabelle "_MediumToTag"</code></pre>
+<table>
+  <tr><th>Befehl</th><th>Zweck</th></tr>
+  <tr><td><code>migrate dev --name x</code></td><td>Neue Migration erzeugen + anwenden (nur Entwicklung)</td></tr>
+  <tr><td><code>migrate dev --create-only</code></td><td>Migration nur erzeugen, nicht anwenden (zum Prüfen/Anpassen)</td></tr>
+  <tr><td><code>migrate status</code></td><td>Zeigen, ob die DB zum Migrationsordner passt</td></tr>
+  <tr><td><code>migrate reset</code></td><td>DB leeren, alle Migrationen neu anwenden</td></tr>
+  <tr><td><code>migrate deploy</code></td><td>Vorhandene Migrationen anwenden (Staging/Produktion, keine neuen)</td></tr>
+  <tr><td><code>migrate diff</code> / <code>migrate resolve</code></td><td>SQL-Diff zeigen / fehlgeschlagene Migration markieren</td></tr>
+</table>
+<pre><code>npx prisma migrate status
+<span class="out">1 migration found in prisma/migrations
+Database schema is up to date!</span></code></pre>
+
+<h2>8. <code>db push</code> statt Migrationen (Prototyping)</h2>
+<p>Zum schnellen Ausprobieren schiebt <code>db push</code> den Schema-Stand direkt in die DB —
+<strong>ohne</strong> Migrationsdateien. Gut für Prototypen, schlecht fürs Team (keine Historie).</p>
+<pre><code>npx prisma db push
+<span class="out">The database is already in sync with the Prisma schema.</span></code></pre>
+
+<h2>9. <code>db pull</code> — Altdatenbank einlesen (Introspection)</h2>
+<p>Umgekehrter Weg: eine <strong>bestehende</strong> Datenbank ohne Prisma-Schema wird eingelesen
+und in Modelle übersetzt. Im Praxisprojekt liegt dafür <code>altbestand/legacy.sql</code>:</p>
+<pre><code>sqlite3 altbestand/legacy.db &lt; altbestand/legacy.sql
+DATABASE_URL="file:./altbestand/legacy.db" npx prisma db pull --print
+
+<span class="out">model buecher {
+  id    Int     @id @default(autoincrement())
+  titel String
+  autor String?
+  jahr  Int?
+}</span></code></pre>
+<p><strong>Achtung:</strong> <code>db pull</code> <em>überschreibt</em> das Schema. Vorher committen;
+<code>--print</code> zeigt nur an, schreibt nichts.</p>
+
+<h2>10. Prisma Studio — in die Daten schauen</h2>
+<pre><code>npx prisma studio --url file://./dev.db
+<span class="out">Prisma Studio is running at: http://localhost:5555</span></code></pre>
+<div class="callout">
+  <span class="label">Stolperstein Prisma 7.10</span>
+  Mit der üblichen URL <code>file:./dev.db</code> bricht Studio ab:
+  <em>„not supported for the file:./dev.db protocol"</em>. Es zerlegt die URL am
+  <code>://</code>. Nimm für Studio die Doppel-Slash-Form <code>file://./dev.db</code>.
+</div>
+
+<h2>11. Die restliche Werkzeugkiste</h2>
+<table>
+  <tr><th>Befehl</th><th>Zweck</th></tr>
+  <tr><td><code>prisma init</code></td><td>Projekt bootstrappen (<code>--datasource-provider sqlite</code>)</td></tr>
+  <tr><td><code>prisma generate</code></td><td>TypeScript-Client aus dem Schema erzeugen</td></tr>
+  <tr><td><code>prisma validate</code></td><td>Schema prüfen</td></tr>
+  <tr><td><code>prisma format</code></td><td>Schema formatieren</td></tr>
+  <tr><td><code>prisma db seed</code></td><td>Seed-Script laut Config ausführen</td></tr>
+  <tr><td><code>prisma db execute</code></td><td>SQL-Skript ohne Migrations-Tracking ausführen</td></tr>
+</table>
+
+<h2>12. Typische Fehler</h2>
+<ul>
+  <li><strong>Falscher Generator:</strong> <code>prisma-client-js</code> erzeugt CommonJS → ESM-Import scheitert. Immer <code>prisma-client</code>.</li>
+  <li><strong>Adapter vergessen:</strong> <code>new PrismaClient()</code> ohne <code>{ adapter }</code> startet unter Prisma 7 nicht.</li>
+  <li><strong>Ungepinntes Prisma:</strong> <code>npm i prisma</code> zieht die 8er-Vorabversion. Immer <code>@7</code>.</li>
+  <li><strong>Keine <code>.env</code>:</strong> ohne <code>DATABASE_URL</code> findet die CLI die DB nicht.</li>
+  <li><strong>Studio mit <code>file:</code>:</strong> Doppel-Slash <code>file://./dev.db</code> nötig.</li>
+</ul>
+
+<h2>13. Quiz — Setup &amp; Tooling</h2>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">1. Warum nutzen wir für Prisma 7 + SQLite Node.js statt Deno?</p>
+<label><input type="radio" name="q1" value="0" data-grund="Richtig, weil Prisma 7 mit SQLite unter Deno nicht kompatibel ist und einen nativen Driver Adapter braucht."> Weil Prisma 7 mit SQLite unter Deno nicht läuft</label>
+<label><input type="radio" name="q1" value="1" data-grund="Falsch, weil Deno TypeScript sehr wohl ausführt — die Inkompatibilität liegt an Prisma 7 mit SQLite."> Weil Deno kein TypeScript ausführen kann</label>
+<label><input type="radio" name="q1" value="2" data-grund="Falsch, weil Node hier nur Transportmittel ist; die Sprache im Projekt bleibt TypeScript."> Weil Node die Sprache des Projekts vorgibt</label>
+<label><input type="radio" name="q1" value="3" data-grund="Falsch, weil es keine Lizenzfrage ist, sondern eine technische Inkompatibilität."> Weil die Prisma-Lizenz Node vorschreibt</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">2. Welcher Generator liefert den TypeScript-Client?</p>
+<label><input type="radio" name="q2" value="0" data-grund="Falsch, weil prisma-client-js CommonJS erzeugt und unter ESM als Named-Import scheitert."> der Generator prisma-client-js</label>
+<label><input type="radio" name="q2" value="1" data-grund="Richtig, weil der Generator prisma-client echte TypeScript-Dateien in einen eigenen Ordner schreibt."> der Generator prisma-client</label>
+<label><input type="radio" name="q2" value="2" data-grund="Falsch, weil prisma-types kein Client-Generator ist; so heißt keine Prisma-Option."> der Generator prisma-types</label>
+<label><input type="radio" name="q2" value="3" data-grund="Falsch, weil prisma-client-esm nicht existiert; der Name ist prisma-client."> der Generator prisma-client-esm</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">3. Welche Aufgabe hat die Datei <code>prisma7.config.ts</code>?</p>
+<label><input type="radio" name="q3" value="0" data-grund="Falsch, weil die Modelle im Schema stehen, nicht in der Config-Datei."> Sie definiert die Tabellen und Beziehungen</label>
+<label><input type="radio" name="q3" value="2" data-grund="Richtig, weil sie der CLI Schema-Pfad, Migrationsordner und Verbindungs-URL bereitstellt."> Sie konfiguriert die Prisma-CLI und die Verbindung</label>
+<label><input type="radio" name="q3" value="1" data-grund="Falsch, weil den Client der Generator im Schema erzeugt, nicht die Config-Datei."> Sie erzeugt den TypeScript-Client aus dem Schema</label>
+<label><input type="radio" name="q3" value="3" data-grund="Falsch, weil die Config-Datei keine Seed-Daten enthält; Seed ist ein eigenes Script."> Sie hält die Seed-Datensätze der Datenbank</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="3">
+<p class="frage">4. Was tut <code>npx prisma migrate dev --name init</code>?</p>
+<label><input type="radio" name="q4" value="0" data-grund="Falsch, weil migrate dev die Migration anwendet, nicht bloß eine Kopie anlegt."> Es legt eine Sicherungskopie der Datenbank an</label>
+<label><input type="radio" name="q4" value="1" data-grund="Falsch, weil deploy vorhandene Migrationen anwendet; dev erzeugt zusätzlich eine neue."> Es wendet nur vorhandene Migrationen an</label>
+<label><input type="radio" name="q4" value="2" data-grund="Falsch, weil migrate dev SQL-Migrationen erzeugt, nicht das Schema formatiert."> Es formatiert das Schema und prüft die Modelle</label>
+<label><input type="radio" name="q4" value="3" data-grund="Richtig, weil migrate dev den Schema-Diff erkennt, eine SQL-Migration erzeugt und anwendet."> Es erzeugt eine Migration und wendet sie an</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="0">
+<p class="frage">5. Was bewirkt <code>prisma db pull</code>?</p>
+<label><input type="radio" name="q5" value="0" data-grund="Richtig, weil db pull eine bestehende Datenbank introspiziert und daraus Prisma-Modelle erzeugt."> Es liest eine bestehende Datenbank ins Schema ein</label>
+<label><input type="radio" name="q5" value="1" data-grund="Falsch, weil db pull das Schema überschreibt; das Einspielen ins Schema ist gerade sein Zweck."> Es schreibt das Schema in die bestehende Datenbank</label>
+<label><input type="radio" name="q5" value="2" data-grund="Falsch, weil db pull keine Daten exportiert, sondern die Struktur erfasst."> Es exportiert alle Datensätze als CSV-Datei</label>
+<label><input type="radio" name="q5" value="3" data-grund="Falsch, weil das Anwenden von Migrationen migrate dev bzw. deploy macht."> Es wendet offene Migrationen auf die Datenbank an</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="1">
+<p class="frage">6. Wann ist <code>db push</code> die richtige Wahl gegenüber <code>migrate</code>?</p>
+<label><input type="radio" name="q6" value="0" data-grund="Falsch, weil db push keine Historie erzeugt — fürs Team ist migrate gedacht."> Wenn das Team eine lückenlose Historie braucht</label>
+<label><input type="radio" name="q6" value="1" data-grund="Richtig, weil db push den Schema-Stand ohne Migrationsdateien direkt überträgt — ideal fürs Prototyping."> Wenn man schnell prototypisiert und nichts versioniert</label>
+<label><input type="radio" name="q6" value="2" data-grund="Falsch, weil db push keine Altdatenbank einliest; das ist db pull."> Wenn eine Altdatenbank ins Schema gelesen wird</label>
+<label><input type="radio" name="q6" value="3" data-grund="Falsch, weil db push keine Migration zurückrollt; Rollback ist kein Feature davon."> Wenn eine Migration zurückgerollt werden soll</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="2">
+<p class="frage">7. Mit welcher URL startet Prisma Studio mit unserer SQLite-Datei?</p>
+<label><input type="radio" name="q7" value="0" data-grund="Falsch, weil genau diese Single-Slash-Form an der Studio-URL-Zerlegung scheitert."> npx prisma studio --url file:./dev.db</label>
+<label><input type="radio" name="q7" value="1" data-grund="Falsch, weil sqlite: kein von Studio unterstütztes Protokoll ist."> npx prisma studio --url sqlite:./dev.db</label>
+<label><input type="radio" name="q7" value="2" data-grund="Richtig, weil Studio die URL am :// zerlegt und deshalb die Doppel-Slash-Form file://./dev.db braucht."> npx prisma studio --url file://./dev.db</label>
+<label><input type="radio" name="q7" value="3" data-grund="Falsch, weil http: kein Datenbank-Protokoll ist; Studio braucht file://."> npx prisma studio --url http://./dev.db</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<div class="quiz" data-loesung="3">
+<p class="frage">8. Wozu braucht der PrismaClient in Version 7 einen Driver Adapter?</p>
+<label><input type="radio" name="q8" value="0" data-grund="Falsch, weil Prisma 7 die frühere Rust-Engine gerade entfernt hat."> Weil Prisma 7 wieder eine Rust-Engine mitbringt</label>
+<label><input type="radio" name="q8" value="1" data-grund="Falsch, weil der Adapter kein Schema erzeugt; den Client erzeugt prisma generate."> Weil der Adapter das Schema in SQL übersetzt</label>
+<label><input type="radio" name="q8" value="2" data-grund="Falsch, weil der Client die Verbindung über den Adapter erhält, nicht aus der Config."> Weil der Client die URL aus der Config liest</label>
+<label><input type="radio" name="q8" value="3" data-grund="Richtig, weil Prisma 7 die Engine entfernt hat und der Client über einen nativen Treiber mit der DB spricht."> Weil der Client über einen nativen Treiber spricht</label>
+<p class="feedback" aria-live="polite"></p>
+</div>
+
+<hr>
+
+<h2>14. Zusammenfassung</h2>
+<table>
+  <tr><th>Thema</th><th>Kern</th></tr>
+  <tr><td>Runtime</td><td>Node (nicht Deno bei Prisma 7 + SQLite); Code bleibt TypeScript</td></tr>
+  <tr><td>Client</td><td>Generator <code>prisma-client</code> → TypeScript</td></tr>
+  <tr><td>Konfiguration</td><td><code>prisma7.config.ts</code>: Schema, Migrationspfad, URL</td></tr>
+  <tr><td>Versionierung</td><td><code>migrate dev</code> erzeugt + wendet an; Migrationsordner = Git fürs Schema</td></tr>
+  <tr><td>Richtungen</td><td><code>migrate</code>/<code>db push</code> (Schema → DB) vs. <code>db pull</code> (DB → Schema)</td></tr>
+  <tr><td>Ansehen</td><td>Prisma Studio — bei SQLite mit <code>file://./dev.db</code></td></tr>
+</table>
+<p><strong>Ausblick:</strong> In <em>KM6-02 — Query API &amp; CRUD</em> holen wir Daten über den
+Client: <code>create</code>, <code>findMany</code>, <code>include</code>, <code>update</code>,
+<code>delete</code>, Aggregate und <code>$transaction</code>.</p>
+
+<hr>
+
+<h2>Aufgabe</h2>
+<ol>
+  <li><strong>Vorhersage:</strong> Notiere <em>vor</em> dem Ausführen, welche Dateien und Ordner
+  <code>prisma migrate dev --name init</code> anlegt, und was in <code>migration.sql</code> für
+  die implizite n:m-Tabelle steht.</li>
+  <li><strong>Aufsetzen:</strong> Projekt neu aufsetzen (Node, <code>prisma@7</code>, <code>tsx</code>,
+  Adapter, <code>prisma7.config.ts</code>, <code>.env</code>) und mit dem TypeScript-Schema die
+  Modelle <code>Sammlung</code>/<code>Medium</code>/<code>Tag</code> migrieren
+  (<code>npm run db:migrate -- --name init</code>).</li>
+  <li><strong>Beide Richtungen:</strong> Lege per <code>altbestand/legacy.sql</code> eine Altdatenbank
+  an, lies sie mit <code>db pull --print</code> ein und vergleiche das Ergebnis mit deinem Schema.</li>
+  <li><strong>Studio:</strong> Starte Prisma Studio und öffne die Tabelle <code>Medium</code>.
+  Notiere, welche URL du brauchtest und warum.</li>
+</ol>
+<p>Abgabe nach Vorgabe deiner Lehrperson (Projekt-Commit + kurze Markdown-Notiz).</p>
+
+<footer class="lesson-foot">
+  <p>Weiter zu <a href="../KM6-02-prisma-query-api/lesson.html">KM6-02 — Query API &amp; CRUD</a>.</p>
+</footer>
+</body>
+</html>

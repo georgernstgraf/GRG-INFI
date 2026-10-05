@@ -1,0 +1,34 @@
+{
+  "name": "km6-01-prisma-werkzeuge-praxis",
+  "version": "1.0.0",
+  "description": "Lauffähiges Node.js+Prisma-7-Scaffold (SQLite) zur Prepared Lesson KM6-01",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node --import tsx --test test/schema.test.ts",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "db:seed": "tsx src/seed.ts",
+    "db:status": "prisma migrate status",
+    "db:reset": "prisma migrate reset --force",
+    "db:push": "prisma db push",
+    "db:pull": "prisma db pull",
+    "studio": "prisma studio --url file://./dev.db",
+    "postinstall": "prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "dotenv": "^18.0.5",
+    "prisma": "^7.10.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15"
+  }
+}
