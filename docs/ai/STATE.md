@@ -31,6 +31,14 @@ Früherer Stand (2026-09-29): ORM-Entscheid umgesetzt: **Prisma bleibt, DB-Werkz
 (ADR 2026-09-29); Prepared Lesson `unterricht/KM5-01-nodejs-prisma/` (Original „Rep & ORM-Einstieg").
 Offen bleibt der **Kohorten-Nachzug** (3ahwii): alte „ohne Node"-Kopie ersetzen.
 
+## Completed (2026-10-12)
+- [x] Homework-Discovery 3ahwii (INFIx): Lesson 2026-10-06 (Normalformen) hatte
+      keinen Datumsordner — `3ahwii/2026-10-06_normalformen/` angelegt mit
+      `Aufgabe.md` (KM5-02 hausaufgabe.md als Referenz + Stunden-Zusatz
+      „mit Prisma"); README `## Aufgaben` als erste Sektion mit 2 Einträgen
+      (29.9. KM5-01 legacy `hausaufgabe.md`, 6.10. Normalisierung). Legacy-Datei
+      unverändert. Generierte Dateien bewusst **uncommitted** zur Review.
+
 ## Completed (2026-10-05)
 
 - [x] **Struktur + Skills (Issues #11, opencode-helpers#103)** — `create-lesson`/`lehrplan`
