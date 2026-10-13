@@ -29,3 +29,21 @@ Read this file carefully before making changes in affected areas.
   `DOMContentLoaded` ist dann oft vorbei; Init-Code muss bei
   `document.readyState !== "loading"` sofort starten (Muster wie in `theme.js`), sonst bleiben
   Quiz/Toggle auf GitHub Pages ohne Funktion (#16).
+- **Drizzle + `node:sqlite` existiert nur in der 1.0-RC-Linie:** die stabile
+  `drizzle-orm` 0.45.x exportiert `drizzle-orm/node-sqlite` **nicht**
+  (`ERR_PACKAGE_PATH_NOT_EXPORTED`). Doku-Standard-Pfad: `npm:drizzle-orm@1.0.0-rc.4`
+  **gepinnt** eintragen (`Beispielprojekte/km5-05-drizzle-orm/deno.json`).
+- **`drizzle-kit` läuft nicht unter Deno:** der Kit-CLI (`push`/`generate`) bricht mit
+  `Cannot find module 'drizzle-orm/_relations'` (CJS-`require` außerhalb der Exports-Map).
+  Für Deno-Projekte: Tabellen-Anlage per DDL in `db.ts` (muster: `CREATE TABLE IF NOT
+  EXISTS`, synchron mit `schema.ts` halten); Kit/Migrationen = KM6-Stoff (dort Node-Zwang
+  wie bei Prisma akzeptabel).
+- **`drizzle(client)` ohne `{ }` ist der Pfad-Overload:** bei der node-sqlite-Variante
+  baut der Positional-Aufruf intern eine **eigene** Verbindung — DDL auf dem eigenen
+  `DatabaseSync` ist unsichtbar („no such table"). Immer **`drizzle({ client })`**.
+- **Drizzle-Aggregationen liefern Strings:** `avg()`/`sum()` über `node:sqlite` geben
+  z. B. `"200"` (String) zurück, nicht `number` — Ergebnis prüfen statt dem
+  TypeScript-Typ vertrauen (KM6-relevant für Reports).
+- **`sql`-Template inliniert Literale:** in `` sql`... > 180` `` steckt `180` als Text
+  im SQL; parametrisiert werden nur Operator-Argumente (`eq`, `gt`, `limit`-Werte).
+  Für parametrisierte Vergleiche Operatoren (`gt`) statt `sql`-Template verwenden.

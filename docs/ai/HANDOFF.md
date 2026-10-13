@@ -1,5 +1,13 @@
 # HANDOFF
 
+**2026-10-13:** Prepared Lesson `unterricht/KM5-05-drizzle-orm/` (Drizzle ORM Einstieg,
+Deno + `node:sqlite` + `drizzle-orm` 1.0.0-rc.4) + Beispielprojekt
+`Beispielprojekte/km5-05-drizzle-orm/` (Demo + 9/9 Tests) — Issue **#17** geschlossen
+(Sub-Issue von #7). Reine Drizzle-Lesson (kein Prisma-Bezug); ADR 2026-09-29 bleibt
+unangetastet. Technik-Befunde: `drizzle-kit` läuft nicht unter Deno (DDL in `db.ts` stattdessen),
+`drizzle({ client })` statt `drizzle(client)`, `avg()`/`sum()` liefern Strings — siehe
+`PITFALLS.md`. Offen: Issue #7 (KM5-UE 6–13 + Bonus), Kohorten-Nachzug `3ahwii/` (manuell).
+
 No pending tasks from the 2026-09-07 cycle („Lehrplan-Werk SJ 2026/27 für INFI" — erfüllt,
 siehe `HISTORY.md`; Ergebnis-Zustand: `STATE.md`, Abschluss-Report: GRG-INFI#1).
 **2026-09-29:** Prepared Lesson `unterricht/KM5-01-nodejs-prisma/` angelegt (Node.js + Prisma 7,

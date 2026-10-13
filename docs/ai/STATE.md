@@ -1,10 +1,18 @@
 # Project State
 
-Current status as of 2026-10-05.
+Current status as of 2026-10-13.
 
 ## Current Focus
 
-**Struktur + KM5-Lektionen UE 1–3 (2026-10-05):** Skills `create-lesson`/`lehrplan` geschärft
+**KM5-05 Drizzle-Lesson (2026-10-13):** Prepared Lesson `unterricht/KM5-05-drizzle-orm/`
+(90 min, 12 Quizze, kohortenagnostisch) + Beispielprojekt `Beispielprojekte/km5-05-drizzle-orm/`
+(Deno + `node:sqlite` + `drizzle-orm` 1.0.0-rc.4 gepinnt, 9/9 Tests) — Issue **#17** geschlossen
+(Sub-Issue von #7). **Reine Drizzle-Lesson ohne Prisma-Bezug**; ADR 2026-09-29 („Prisma bleibt")
+bleibt unangetastet. `drizzle-kit` läuft nicht unter Deno → DDL in `db.ts`, Kit = KM6-Ausblick.
+Befunde in `PITFALLS.md`. Navigator/GLOSSAR/Beispielprojekte-README nachgezogen.
+**Offen:** Issue **#7** — KM5-UE 6–13 + Bonus; Kohorten-Nachzug `3ahwii/` (manuell).
+
+Vorheriger Stand (2026-10-05): **Struktur + KM5-Lektionen UE 1–3 (2026-10-05):** Skills `create-lesson`/`lehrplan` geschärft
 (opencode-helpers#103): `unterricht/` enthält **nur** Lesson-Ordner, Glossar = Root-`GLOSSAR.md`,
 Zweig-Ordner **ohne Fach-Präfix**. Repo migriert (`lehrplan/hwii`, `lehrplan/hwit`,
 `lehrplan/kompetenzmodule/`; Planungsdateien → `lehrplan/hwii/`) — Issue **#11**, Link-Check 0.
