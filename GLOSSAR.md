@@ -67,3 +67,29 @@ die eine verschachtelte Subquery lesbarer macht.
 
 **View** — Eine gespeicherte, benannte Sicht (`CREATE VIEW`) auf eine Abfrage.
 *Meiden*: „virtuelle Tabelle" ohne den Abfrage-Bezug.
+
+## ORM-Einstieg (KM5)
+
+**ORM (Object-Relational Mapping)** — Schicht, die Zeilen relationaler Tabellen
+zu Objekten der Programmiersprache mappt (und umgekehrt). Ein ORM **erzeugt**
+SQL, es **ersetzt** es nicht — wer das erzeugte SQL nicht lesen kann, baut blind.
+*Meiden*: „ORM macht SQL überflüssig".
+
+**Drizzle ORM** — TypeScript-natives ORM mit Schema in Code (`sqliteTable`):
+Tabellen, Spalten und Beziehungen als TypeScript-Objekte; Queries sind
+typsicher und laufen erst bei `await`. Treiber in unserem Stack: `node:sqlite`.
+*Meiden*: „das ORM baut die Tabellen" — `sqliteTable` ist reine Definition.
+
+**Schema-first** — Das Schema (Tabellen/Spalten) wird zuerst als Code-Definition
+geschrieben und ist die Quelle für Typen und Queries; die DB-Anlage folgt über
+DDL bzw. Migrationen. *Meiden*: Tabellen „im Database-Tool malen" und Code
+erraten lassen.
+
+**Parametrisierung** — Werte werden getrennt vom SQL-Text als Parameter
+übergeben (`?` + Params-Array): Daten ≠ Code, struktureller Injection-Schutz.
+In Drizzle by default (sichtbar in `.toSQL().params`).
+*Meiden*: Werte per String-Interpolation in SQL-Text einbetten.
+
+**lazy Query (Query-Builder)** — Der Aufbau `db.select()...from(...)` erzeugt
+nur ein Query-Objekt (Promise); ausgeführt wird erst bei `await`.
+*Meiden*: „die Query läuft beim Aufbau schon".
