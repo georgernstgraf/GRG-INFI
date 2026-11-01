@@ -1,7 +1,7 @@
 # UE 2026-09-29 — Rep ohne Node + ORM-Lektüre (X-Gruppe)
 
 **Fach:** INFI · **Klasse:** 3AHWII X · **Zeit:** 1 DS (2 h) ·
-**Voraussetzung:** UE 1 (22.09.) + [`lessons/0001-wiederholung-diagnose.html`](../lessons/0001-wiederholung-diagnose.html)
+**Voraussetzung:** UE 1 (22.09.) + [`KM5-04 Wiederholung & Diagnose`](../../unterricht/KM5-04-wiederholung-diagnose/lesson.html)
 (Theorie + Diagnose-Quiz, bereits im Repo).
 
 Diese Stunde repariert die UE-1-Krise vom 22.09.: Das Prisma-7-Scaffold in
