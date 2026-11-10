@@ -92,4 +92,99 @@ In Drizzle by default (sichtbar in `.toSQL().params`).
 
 **lazy Query (Query-Builder)** — Der Aufbau `db.select()...from(...)` erzeugt
 nur ein Query-Objekt (Promise); ausgeführt wird erst bei `await`.
-*Meiden*: „die Query läuft beim Aufbau schon".
+*Meiden*: „die Query läuft beim Aufbau schon“.
+
+## Blockchain und verteilte Datenbanken (SA-01, Anschluss KM5/KM9)
+
+**Blockchain** — Append-only-Kette von Blöcken, in der jeder Block den Hash
+seines Vorgängers trägt; jede Teilnehmerin hält ein geprüftes Replikat, der
+gültige Stand entsteht per Konsensregel statt per Administrator.
+*Meiden*: „unhackbare Datenbank“ — gehackt werden Börsen, Bridges und
+Schlüssel, nicht die Hash-Kette.
+
+**Block** — Ein Datensatz mit Index, Zeitstempel, Vorgänger-Hash,
+Merkle-Wurzel, Nonce und eigenem Hash; die Transaktionen liegen in eigenen
+Zeilen und werden über die Merkle-Wurzel abgedeckt.
+*Meiden*: „Block speichert die Transaktionen im Hash“ — der Hash ist eine
+Prüfsumme, kein Speicher.
+
+**Append-only Ledger** — Datenbank, die nur anhängt: kein `UPDATE`, kein
+`DELETE`; Korrekturen sind Gegenbuchungen, der Zustand (Saldo) wird aus den
+Ereignissen berechnet. *Meiden*: „unveränderliche Datenbank“ ohne den
+Gegenbuchungs-Teil — sonst bleibt unklar, wie Fehler korrigiert werden.
+
+**Hashfunktion (SHA-256)** — Bildet beliebigen Text auf 256 Bit ab:
+deterministisch, lawinenartig (ein Zeichen ändert den Hash völlig) und
+einwegig (nicht zurückrechenbar).
+*Meiden*: „Verschlüsselung“ — ein Hash ist nicht entschlüsselbar.
+
+**Merkle-Baum** — Paarweise Hashes über die Transaktionen eines Blocks, bis
+eine **Merkle-Wurzel** übrig bleibt; eine geänderte Transaktion ändert die
+Wurzel, ein Einschlussbeweis braucht nur `log₂(n)` Hashes.
+*Meiden*: „Hash-Liste“ — der Baum ist gerade die Verkürzung der Prüfung.
+
+**Nonce** — Frei wählbare Zahl im Block-Header, die beim Mining so lange
+erhöht wird, bis der Block-Hash das Schwierigkeitsziel erfüllt.
+*Meiden*: „Zufallszahl“ ohne Zweck — die Nonce ist der Suchparameter des
+Proof of Work.
+
+**Proof of Work (Mining)** — Nachweis aufgewendeter Rechenarbeit: Der
+Block-Hash muss mit `d` Hex-Nullen beginnen, erwartet werden `16^d` Versuche;
+die Schwierigkeit wird so angepasst, dass die Blockzeit konstant bleibt.
+*Meiden*: „Rechenaufgabe, die etwas berechnet“ — das Ergebnis ist nur der
+Nachweis, kein Nutzen.
+
+**Proof of Stake** — Konsens über gebundenes Kapital statt Rechenarbeit: Wer
+mehr Einsatz hinterlegt, darf eher Blöcke erzeugen; Regelverstöße kosten den
+Einsatz (Slashing). *Meiden*: „ohne Energieverbrauch, also gratis“ — Kapital
+und Zentralisierungsrisiko sind der Preis.
+
+**Konsensregel (Nakamoto)** — Gültig ist die Kette mit der meisten
+aufgewendeten Arbeit („längste Kette“); bei Gleichstand gewinnt die zuerst
+gesehene. *Meiden*: „Mehrheit der Knoten entscheidet“ — Knoten sind gratis
+vermehrbar.
+
+**Fork / verwaister Block** — Zwei Miner bauen fast gleichzeitig auf
+denselben Vorgänger; der unterlegene Zweig wird verwaist, seine Transaktionen
+gelten als unbestätigt und wandern meist in den nächsten Block.
+*Meiden*: „Fehler im Netz“ — Forks sind normaler Betrieb.
+
+**Bestätigung / Finalität** — Anzahl der Blöcke nach einer Transaktion;
+Finalität ist bei Proof of Work wahrscheinlich (nach sechs Blöcken praktisch
+unumkehrbar), nicht absolut.
+*Meiden*: „sofort endgültig“ — Endgültigkeit ist eine Frage der Arbeit.
+
+**Sybil-Angriff** — Ein Angreifer erzeugt beliebig viele billige Identitäten
+(Knoten), um Abstimmungen zu kippen; deshalb wird nach Arbeit oder Stake
+gewichtet, nicht nach Knotenzahl.
+*Meiden*: „viele Nutzer, also Mehrheit“.
+
+**51-%-Angriff** — Mehrheit der Rechenleistung (bzw. des Stakes) erlaubt
+Reorgs und Double Spending; der Angreifer muss den angegriffenen Block **und
+alle Folgeblöcke** neu rechnen und dabei die ehrliche Kette überholen.
+*Meiden*: „51 % = Kette komplett übernommen“ — alte Blöcke bleiben, es geht
+um die aktuelle Spitze.
+
+**Double Spending** — Dieselbe Münze zweimal ausgeben: erst in einer Kette,
+die per Reorg verdrängt wird, dann in der gültigen.
+*Meiden*: „Betrug am Protokoll“ — technisch ist es ein Reorg-Wettlauf.
+
+**Smart Contract** — Programm auf der Kette, das Bedingungen automatisch
+ausführt; Code ohne Gericht, Fehler sind unwiderruflich.
+*Meiden*: „digitaler Vertrag“ — die rechtliche Verbindlichkeit ist eine
+eigene Frage.
+
+**Oracle-Problem** — Die Kette garantiert Unverändertheit, nicht Wahrheit:
+Off-Chain-Daten (Sensoren, Kurse, Urkunden) sind nur so ehrlich wie ihre
+Quelle. *Meiden*: „on-chain, also geprüft“.
+
+**Bridge** — Vertrag, der Vermögenswerte auf einer Kette sperrt und auf einer
+anderen ausgibt; wegen des verwahrten Werts eines der häufigsten Ziele von
+Angriffen. *Meiden*: „Chain-zu-Chain-Transfer“ — übertragen wird eine
+Forderung, nicht der Coin.
+
+**Verwahrung (Custody)** — Wer den privaten Schlüssel hält, verfügt über die
+Guthaben: „Not your keys, not your coins“; Börsen sind Verwahrer und damit
+ein zentraler Ausfallpunkt.
+*Meiden*: „Die Coins liegen auf der Börse“ — dort liegt ein Anspruch, kein
+Schlüssel.

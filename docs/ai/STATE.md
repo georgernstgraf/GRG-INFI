@@ -1,6 +1,21 @@
 # Project State
 
-Current status as of 2026-10-13.
+Current status as of 2026-11-10.
+
+## Current Focus
+
+**SA-01 Blockchain als Datenbank (2026-11-10):** Prepared Lesson
+`unterricht/SA-01-blockchain-als-datenbank/` (90 min, 7 Lernquizze mit 21 Fragen,
+Quiz-Format 2.1) + `aufgabe.md` (Beispiel 1–3) + Beispielprojekt
+`Beispielprojekte/sa-01-blockchain-als-datenbank/` (Deno + `node:sqlite` +
+`node:crypto`, 10/10 Tests). Zusätzlich **Quiz-2.1-Assets aus GRG-PMM** übernommen
+(`quiz.js` mit Alt- und Lernmodus, `tables.js`, `lesson.css` mit Quiz-2.1- und
+Tabellen-Regeln, `theme.js`-Guard, `loader.js` lädt `tables.js`) — die sieben
+Bestandslessons laufen im Altmodus unverändert (per CDP geprüft). Glossar-Abschnitt
+„Blockchain und verteilte Datenbanken“ (18 Begriffe), Navigator-Block
+„Schulautonom (SA)“. Issue **#19**.
+
+Vorheriger Stand (2026-10-13).
 
 ## Current Focus
 

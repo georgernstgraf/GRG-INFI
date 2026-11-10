@@ -3,6 +3,17 @@
 Things that do not work, subtle bugs, and non-obvious constraints.
 Read this file carefully before making changes in affected areas.
 
+- **Inline-Bootstrap: ein fehlendes `()` kostet die ganze Seite.** Der Kopf jeder Lesson endet
+  auf `document.head.appendChild(e)})()})();` — fehlt die innere Invocation, wird `t` nur
+  *definiert* und nie aufgerufen: keine Assets, kein Theme, kein Quiz, und `--dump-dom` zeigt
+  eine scheinbar heile Seite. Kopfzeile beim Bauen immer gegen eine funktionierende Lesson
+  diffen; `python3`-Byte-Vergleich der Zeile findet Homoglyphen/fehlende Klammern sofort.
+- **`chromium --dump-dom` wartet keine dynamisch injizierten Skripte ab.** Screenshots/Dumps
+  zeigen dann den Zustand vor `loader.js`. Für echte Prüfung (Quiz klicken, Theme, Legacy-Modus)
+  das DevTools-Protokoll nutzen: `--remote-debugging-port`, `PUT /json/new?<url>`, dann per
+  WebSocket `Runtime.evaluate` — Muster: `/tmp/opencode/cdp.ts` (Session 2026-11-10).
+- **Snap-Chromium liest `/tmp` nicht** (privates Snap-`/tmp`): `file:///tmp/...` liefert eine
+  leere Antwort. Testseiten in den Repo-Root legen und über `serve.sh` laden, danach löschen.
 - **RIS-HTML ist eine einzige Riesenzeile:** `grep -n` auf RIS-Exporte (z. B. NOR40217058) ist
   nutzlos (alles in Zeile 1). Mit Python slicen (`t.find(...)` + Fenster), Artefakte wie
   `–Strichaufzählung` / `:römisch eins.` sind RIS-Markup, kein Inhalt.

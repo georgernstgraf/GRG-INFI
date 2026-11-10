@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion SA-01 · Blockchain als Datenbank</title>
+<script>(function(){var s=location.pathname.split("/");s.pop();(function t(){if(!s.length)return;var r=s.join("/")+"/",e=document.createElement("script");e.src=r+"assets/loader.js";e.setAttribute("data-css","lesson.css");e.setAttribute("data-js","theme.js,quiz.js");e.onerror=function(){s.pop();t()};e.onload=function(){if(!window.__SITE_ROOT__){s.pop();t()}};document.head.appendChild(e)})()})();</script>
+</head>
+<body>
+
+<header class="meta">
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">Dunkel</button>
+  <span class="kicker">Lektion SA-01 · Datenbanken · schulautonome Vertiefung</span>
+  <h1>Blockchain als Datenbank</h1>
+  <p class="subtitle">Eine Datenbank, in der niemand der Chef ist — und die
+  deshalb <strong>jede</strong> Änderung verrät.</p>
+</header>
+
+<div class="callout">
+  <span class="label">Lektüre</span>
+  <ul>
+    <li>Satoshi Nakamoto: <a href="https://bitcoin.org/bitcoin.pdf">Bitcoin: A Peer-to-Peer
+    Electronic Cash System</a> (2008) — Abschnitte 1–4 reichen für heute.</li>
+    <li>Ethereum-Doku: <a href="https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/">Proof
+    of Stake</a> — derselbe Konsensgedanke ohne Rechenwettlauf.</li>
+    <li>Cambridge: <a href="https://ccaf.io/cbnsi/cbeci">Bitcoin Electricity
+    Consumption Index</a> — die Stromzahl, live geschätzt.</li>
+    <li>Referenzbegriffe:
+    <a href="https://github.com/georgernstgraf/GRG-INFI/blob/main/GLOSSAR.md">GLOSSAR.md</a>
+    (Abschnitt „Blockchain“) · Beispielprojekt:
+    <a href="https://github.com/georgernstgraf/GRG-INFI/tree/main/Beispielprojekte/sa-01-blockchain-als-datenbank">sa-01-blockchain-als-datenbank</a>.</li>
+  </ul>
+</div>
+
+<h2>1. Die Einstiegsfrage</h2>
+<p>Jede Datenbank, die du bisher gebaut hast, hat einen unsichtbaren Gast:
+den Administrator. Diese Person darf <code>UPDATE</code> und
+<code>DELETE</code> ausführen — und niemand merkt es, wenn das Protokoll
+abgeschaltet ist.</p>
+<p>Für ein Kassenbuch, ein Grundbuch oder die Lieferkette eines Medikaments
+ist genau das ein Problem. Nicht weil der Administrator böse ist, sondern
+weil <strong>jede Prüfung nur so viel wert ist wie die Instanz, die sie
+durchführt</strong>.</p>
+<div class="callout tipp">
+  <span class="label">Die Frage dieser Lektion</span>
+  Wie müsste eine Datenbank aussehen, in der <strong>niemand</strong> heimlich
+  eine Zeile ändern kann — auch nicht der Betreiber, auch nicht mit
+  Datenbankzugriff?
+</div>
+
+<h2>2. Das Ziel: eine Kette, die sich selbst verrät</h2>
+<p>Am Ende der Doppelstunde steht ein Lauf, den du selbst starten kannst.
+Drei Blöcke, jeder mit Proof of Work, dann ein Sabotage-Versuch:</p>
+<pre><code><span class="out">1) Drei Blöcke anlegen (Schwierigkeit 3 → 3 Hex-Nullen)
+
+  Block 0: nonce= 9812 hash=000945c61142…  (1 Tx)
+  Block 1: nonce=  856 hash=0001b6ac22ee…  (2 Tx)
+  Block 2: nonce= 4791 hash=0006a0e5eaf3…  (3 Tx)
+
+2) Prüfung der unveränderten Kette
+   ok=true · Blöcke=3 · Fehler=0
+
+3) Angriff: Betrag in Block 1 von 30 auf 9999 ändern
+   ok=false
+   · Block 1: merkle_root passt nicht zu den Transaktionen
+
+4) Reparaturversuch: Block 1 neu minen
+   ok=false
+   · Block 2: prev_hash verweist nicht auf Block 1</span></code></pre>
+<p>Die Nonces und Hashes ändern sich bei jedem Lauf — die gefundene Zufallszahl
+hängt von der Uhrzeit ab. Die <strong>Struktur</strong> bleibt gleich: Ein
+geänderter Betrag bricht die Prüfung an zwei Stellen, und die zweite Stelle
+lässt sich nicht mitreparieren, ohne die ganze Kette neu zu rechnen.</p>
+
+<h2>3. Die Datenbank, die nur wächst</h2>
+<p>Datenbanktechnisch ist eine Blockchain zuerst eines:
+eine <strong>append-only</strong> Tabelle. Unser Beispielprojekt legt dafür
+zwei Tabellen an — mehr braucht die Kette nicht:</p>
+<pre><code>CREATE TABLE block (
+  idx         INTEGER PRIMARY KEY,
+  zeit        INTEGER NOT NULL,
+  prev_hash   TEXT    NOT NULL,   <span class="cmt">-- Hash des Vorgängers</span>
+  merkle_root TEXT    NOT NULL,   <span class="cmt">-- Wurzel über alle Tx</span>
+  nonce       INTEGER NOT NULL,
+  hash        TEXT    NOT NULL
+);
+
+CREATE TABLE tx (
+  block_idx INTEGER NOT NULL REFERENCES block(idx),
+  position  INTEGER NOT NULL,
+  von       TEXT    NOT NULL,
+  an        TEXT    NOT NULL,
+  betrag    REAL    NOT NULL,
+  PRIMARY KEY (block_idx, position)
+);</code></pre>
+<p>Es gibt im Protokoll kein <code>UPDATE</code> und kein
+<code>DELETE</code>. Korrekturen laufen wie in der Buchhaltung: als
+<strong>Gegenbuchung</strong>. Ein falscher Betrag wird nicht überschrieben,
+sondern durch eine neue Transaktion ausgeglichen — beide bleiben sichtbar.</p>
+<p>Daraus folgt der zweite Unterschied: Der <strong>Kontostand wird nicht
+gespeichert, sondern berechnet</strong>:</p>
+<pre><code><span class="cmt">-- Saldo statt Kontostandsspalte:</span>
+SELECT sum(betrag) AS saldo
+FROM   tx
+WHERE  an = 'anna';</code></pre>
+<div class="callout">
+  <span class="label">Merke</span>
+  Eine Blockchain speichert <strong>Ereignisse</strong>, keinen Zustand.
+  Den Zustand (Saldo, Lagerstand, Grundbucheintrag) leitet jede Anwendung
+  aus den Ereignissen ab — und kommt bei gleicher Kette immer zum selben
+  Ergebnis.
+</div>
+<p>Der dritte Unterschied ist der wichtigste: Es gibt <strong>keinen
+maßgeblichen Knoten</strong>. Jeder Teilnehmer hält eine vollständige Kopie
+und prüft jede neue Zeile selbst. Das ist keine Sicherung
+(<em>Backup</em>), sondern eine <strong>Replikation mit Prüfpflicht</strong>:
+Ein Backup ersetzt Daten, wenn sie verloren gehen; ein Replikat wird
+verworfen, wenn es nicht zur Kette passt.</p>
+
+<div class="quiz" data-titel="Quiz: datenbank-die-nur-waechst">
+  <fieldset class="frage">
+    <legend class="frage-text">Ein Betrag wurde falsch gebucht. Was passiert in einer Blockchain?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q1" value="0" data-richtig data-grund="Richtig — Korrekturen sind neue Transaktionen (Gegenbuchung), damit die ursprüngliche Buchung nachvollziehbar bleibt."> Eine neue Transaktion gleicht den falschen Betrag aus</label>
+      <label><input type="checkbox" name="sa-01-q1" value="1" data-grund="Falsch — das Überschreiben wäre ein UPDATE; genau das schließt das Protokoll aus, sonst wäre die Historie wertlos."> Die betroffene Zeile wird überschrieben</label>
+      <label><input type="checkbox" name="sa-01-q1" value="2" data-grund="Falsch — Löschen gibt es nicht; eine gelöschte Zeile wäre eine Lücke, die niemand mehr prüfen könnte."> Die Zeile wird gelöscht und neu eingefügt</label>
+      <label><input type="checkbox" name="sa-01-q1" value="3" data-grund="Falsch — ein Trigger würde nur den Administrator treffen; die Kette schützt sich nicht durch Rechte, sondern durch Hashes."> Ein Trigger verhindert Änderungen nur für Administratoren</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Worin unterscheidet sich ein Replikat von einem Backup?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q2" value="0" data-richtig data-grund="Richtig — jedes Replikat wird gegen die Kette geprüft und bei Abweichung verworfen; ein Backup wird beim Wiederherstellen einfach zurückgespielt."> Ein Replikat wird geprüft und bei Abweichung verworfen</label>
+      <label><input type="checkbox" name="sa-01-q2" value="1" data-richtig data-grund="Richtig — die Kopie dient der Verfügbarkeit und Prüfung im Betrieb, nicht der Wiederherstellung nach einem Datenverlust."> Ein Replikat dient dem laufenden Betrieb, nicht der Rettung</label>
+      <label><input type="checkbox" name="sa-01-q2" value="2" data-grund="Falsch — Replikate sind vollwertige, schreibbare Kopien; sie nehmen neue Blöcke genauso an wie das Original."> Ein Replikat ist schreibgeschützt und nur lesbar</label>
+      <label><input type="checkbox" name="sa-01-q2" value="3" data-grund="Falsch — ein Backup enthält einen Zustand zu einem Zeitpunkt; die Kette enthält die Ereignisse selbst."> Ein Backup enthält mehr Information als ein Replikat</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Woher kommt der Kontostand in einer Blockchain-Datenbank?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q3" value="0" data-richtig data-grund="Richtig — der Saldo ist eine Aggregation über die Buchungen (sum), kein gespeicherter Wert."> Er wird aus den Buchungen berechnet</label>
+      <label><input type="checkbox" name="sa-01-q3" value="1" data-grund="Falsch — eine Kontostandsspalte wäre ein Zustand, der bei jeder Buchung geändert werden müsste; genau das will die Kette vermeiden."> Er steht in einer eigenen Spalte der Kontentabelle</label>
+      <label><input type="checkbox" name="sa-01-q3" value="2" data-grund="Falsch — der Block-Hash ist eine Prüfsumme, keine Rechenvorschrift für Salden."> Er ergibt sich aus dem Hash des letzten Blocks</label>
+      <label><input type="checkbox" name="sa-01-q3" value="3" data-grund="Falsch — die Nonce ist eine Zufallszahl für den Proof of Work und hat mit Beträgen nichts zu tun."> Er wird aus der Nonce des letzten Blocks abgeleitet</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>4. Die Algorithmen: vier Bausteine, kein Zauber</h2>
+<p>Eine Blockchain ist aus vier bekannten Bausteinen zusammengesetzt. Wir
+gehen sie in der Reihenfolge durch, in der sie beim Bauen gebraucht werden.</p>
+
+<h3>Baustein 1 — Hashfunktion (SHA-256)</h3>
+<p>Ein Hash bildet beliebig viel Text auf 256 Bit ab. Drei Eigenschaften
+tragen die ganze Konstruktion:</p>
+<ul>
+  <li><strong>deterministisch:</strong> gleicher Text, gleicher Hash — immer;</li>
+  <li><strong>lawinenartig:</strong> ein geändertes Zeichen ändert etwa die
+  Hälfte aller Bits;</li>
+  <li><strong>einwegig:</strong> aus dem Hash lässt sich der Text nicht
+  zurückrechnen.</li>
+</ul>
+<pre><code>sha256("abc")
+<span class="out">// ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
+// ein Zeichen anders → völlig anderer Hash, keine Ähnlichkeit</span></code></pre>
+
+<h3>Baustein 2 — Merkle-Baum</h3>
+<p>Die Transaktionen eines Blocks landen nicht einzeln im Block-Hash. Sie
+werden zu einer <strong>Wurzel</strong> zusammengefasst: Benachbarte Hashes
+werden paarweise gehasht, die Ergebnisse wieder paarweise.</p>
+<p>Das geht so weiter, bis eine einzige Wurzel übrig bleibt. Bei ungerader
+Anzahl wird das letzte Blatt mit sich selbst gepaart.</p>
+<pre><code>tx1 ─┐
+     ├─ h(tx1+tx2) ─┐
+tx2 ─┘              ├─ <span class="cmt">merkle_root</span>
+tx3 ─┐              │
+     ├─ h(tx3+tx3) ─┘
+tx3 ─┘  <span class="cmt">(ungerade → letztes doppelt)</span></code></pre>
+<p>Der Nutzen ist doppelt: Eine einzige geänderte Transaktion ändert die
+Wurzel — und ein Beweis, dass eine Transaktion in einem Block steckt,
+braucht nur <code>log₂(n)</code> Hashes. Bei 1024 Transaktionen sind das
+10 statt 1024.</p>
+
+<h3>Baustein 3 — Proof of Work</h3>
+<p>Der Block-Hash entsteht aus Index, Zeit, Vorgänger-Hash, Merkle-Wurzel und
+einer frei wählbaren Zahl, der <strong>Nonce</strong>. Mining heißt: Nonce
+hochzählen, bis der Hash mit einer vereinbarten Anzahl Hex-Nullen beginnt.</p>
+<pre><code><span class="cmt">// erwartete Versuche: 16^schwierigkeit</span>
+schwierigkeit 3 →      4.096 Versuche
+schwierigkeit 4 →     65.536 Versuche
+schwierigkeit 6 → 16.777.216 Versuche</code></pre>
+<p>Die Schwierigkeit ist kein Naturgesetz, sondern eine Absprache: Bitcoin
+passt sie alle 2016 Blöcke so an, dass im Schnitt alle zehn Minuten ein Block
+entsteht. Mehr Rechenleistung im Netz führt also nicht zu schnelleren Blöcken,
+sondern zu schwereren Aufgaben.</p>
+<div class="callout achtung">
+  <span class="label">Achtung</span>
+  Proof of Work <strong>beweist keine Nützlichkeit</strong>. Er beweist nur,
+  dass jemand Rechenzeit aufgewendet hat. Der „Wert“ entsteht daraus, dass
+  ein Angreifer dieselbe Arbeit noch einmal leisten müsste.
+</div>
+
+<h3>Baustein 4 — Signaturen</h3>
+<p>Eine Transaktion wird mit dem <strong>privaten Schlüssel</strong> signiert
+und von jedem Knoten mit dem <strong>öffentlichen Schlüssel</strong> geprüft.
+Der private Schlüssel verlässt das Gerät nie; die Adresse ist im Wesentlichen
+ein Hash des öffentlichen Schlüssels.</p>
+<p>Daraus folgt der bekannteste Merksatz der Branche: <em>Not your keys, not
+your coins.</em> Wer die Schlüssel verwahrt — eine Börse, eine Wallet-App,
+ein Backup — kann über die Coins verfügen. Die Kette prüft nur die Signatur,
+nicht die Absicht des Verwahrers.</p>
+
+<div class="quiz" data-titel="Quiz: hash-und-merkle">
+  <fieldset class="frage">
+    <legend class="frage-text">Welche Eigenschaft macht den Hash als Beweis brauchbar?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q4" value="0" data-richtig data-grund="Richtig — eine kleine Änderung erzeugt einen völlig anderen Hash; deshalb ist jede Manipulation sichtbar."> Kleine Änderungen erzeugen einen völlig anderen Hash</label>
+      <label><input type="checkbox" name="sa-01-q4" value="1" data-grund="Falsch — der Hash ist nicht umkehrbar; genau das verhindert, dass man aus ihm den Inhalt rekonstruiert."> Der Hash lässt sich in den Ausgangstext zurückrechnen</label>
+      <label><input type="checkbox" name="sa-01-q4" value="2" data-grund="Falsch — ein Hash ist immer gleich lang (256 Bit), unabhängig von der Eingabe; das ist der Sinn einer festen Prüfsumme."> Der Hash wächst mit der Länge des Eingabetextes</label>
+      <label><input type="checkbox" name="sa-01-q4" value="3" data-grund="Falsch — Hashes sind deterministisch; derselbe Text ergibt immer denselben Wert, sonst wäre keine Prüfung möglich."> Derselbe Text ergibt bei jedem Aufruf einen anderen Hash</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Was leistet die Merkle-Wurzel in einem Block?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q5" value="0" data-richtig data-grund="Richtig — die Wurzel fasst alle Transaktions-Hashes zusammen; eine Änderung irgendwo im Block ändert sie."> Sie deckt alle Transaktionen des Blocks mit einem Hash ab</label>
+      <label><input type="checkbox" name="sa-01-q5" value="1" data-richtig data-grund="Richtig — für einen Einschlussbeweis genügen die Geschwister-Hashes auf dem Weg zur Wurzel, also logarithmisch viele."> Sie erlaubt einen Einschlussbeweis mit wenigen Hashes</label>
+      <label><input type="checkbox" name="sa-01-q5" value="2" data-grund="Falsch — die Wurzel verschlüsselt nichts; sie ist eine Prüfsumme über bereits öffentliche Daten."> Sie verschlüsselt die Transaktionen des Blocks</label>
+      <label><input type="checkbox" name="sa-01-q5" value="3" data-richtig data-grund="Richtig — ein geänderter Betrag ändert das Transaktions-Hash und damit den Weg bis zur Wurzel."> Sie ändert sich, sobald ein Betrag im Block geändert wird</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Womit wird eine Transaktion gültig?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q6" value="0" data-richtig data-grund="Richtig — die Signatur mit dem privaten Schlüssel wird von jedem Knoten über den öffentlichen Schlüssel geprüft."> Mit der Signatur des privaten Schlüssels</label>
+      <label><input type="checkbox" name="sa-01-q6" value="1" data-grund="Falsch — die Nonce gehört zum Mining des Blocks, nicht zur Autorisierung einer Transaktion."> Mit der Nonce des zugehörigen Blocks</label>
+      <label><input type="checkbox" name="sa-01-q6" value="2" data-grund="Falsch — die Merkle-Wurzel bündelt Transaktionen, sie autorisiert niemanden."> Mit der Merkle-Wurzel des Blocks</label>
+      <label><input type="checkbox" name="sa-01-q6" value="3" data-grund="Falsch — die Adresse ist öffentlich; wer sie kennt, kann keine Transaktionen freigeben."> Mit der Veröffentlichung der Empfängeradresse</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Welche Aussage über Proof of Work ist richtig?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q21" value="0" data-grund="Falsch — das Ergebnis ist nur der Nachweis aufgewendeter Arbeit; einen sonstigen Nutzen hat die Rechnung nicht."> Er berechnet ein Ergebnis, das anderweitig nützlich ist</label>
+      <label><input type="checkbox" name="sa-01-q21" value="1" data-grund="Falsch — Arbeit beweist Aufwand, nicht Wahrheit; ob eine Zahl stimmt, entscheidet die Quelle."> Er garantiert, dass die gespeicherten Daten wahr sind</label>
+      <label><input type="checkbox" name="sa-01-q21" value="2" data-grund="Falsch — unveränderlich ist die Kette nur, solange die Mehrheit ehrlich rechnet; ein 51-%-Angreifer kann zurückrollen."> Er macht Blöcke für immer unveränderlich</label>
+      <label><input type="checkbox" name="sa-01-q21" value="3" data-grund="Falsch — Sybil-Schutz entsteht gerade durch die Kosten; kostenlos ist der Angriff nur bei einer Abstimmung nach Knotenzahl."> Er verhindert Sybil-Angriffe ohne jede Kosten</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>5. Das verteilte System: Konsens statt Administrator</h2>
+<p>Ohne Administrator braucht die Kette eine Regel, welcher Stand gilt. Die
+einfachste Regel ist bis heute die von Bitcoin: <strong>Die längste Kette
+gewinnt</strong> — genauer: die Kette mit der meisten aufgewendeten Arbeit.
+Ein Knoten, der eine neue Kette sieht, vergleicht die Arbeit, nicht die
+Anzahl der Blöcke.</p>
+<p>Neue Blöcke verbreiten sich über ein <strong>Peer-to-Peer-Netz</strong>:
+Jeder Knoten gibt sie an seine Nachbarn weiter (<em>Gossip</em>), ohne
+zentrale Anmeldung. Dabei entstehen zwangsläufig <strong>Forks</strong>:
+Zwei Miner finden fast gleichzeitig einen Block, ein Teil des Netzes hört
+zuerst von A, ein Teil von B.</p>
+<pre><code>Block 100 ─┬─ Block 101a ── Block 102a ── Block 103a   <span class="cmt">← gewinnt</span>
+           └─ Block 101b   <span class="cmt">← verwaist (orphan)</span></code></pre>
+<p>Der verlierende Block verschwindet nicht aus der Geschichte, er wird
+<strong>verwaist</strong>. Seine Transaktionen gelten als nicht bestätigt und
+wandern in den nächsten Block. Deshalb spricht man von
+<strong>Bestätigungen</strong>: Eine Transaktion ist umso sicherer, je mehr
+Blöcke danach gebaut wurden.</p>
+<div class="callout">
+  <span class="label">Merke</span>
+  Finalität ist bei Bitcoin <strong>wahrscheinlich, nicht absolut</strong>.
+  Nach sechs Blöcken (im Schnitt eine Stunde) gilt eine Transaktion als
+  praktisch unumkehrbar — nicht als mathematisch unumkehrbar.
+</div>
+<p>Für die Verteidigung gegen Sybil-Angriffe ist das entscheidend: Identitäten
+sind gratis, ein Angreifer kann beliebig viele Knoten starten. Deshalb zählt nicht die Zahl der Knoten. Es zählt die <strong>Arbeit</strong>
+in der Kette (Proof of Work) oder das <strong>gebundene Kapital</strong>
+(Proof of Stake).</p>
+
+<div class="quiz" data-titel="Quiz: konsens-und-forks">
+  <fieldset class="frage">
+    <legend class="frage-text">Nach welcher Regel entscheidet ein Knoten, welche Kette gilt?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q7" value="0" data-richtig data-grund="Richtig — verglichen wird die aufgewendete Arbeit; die längste Kette ist nur die praktische Folge, wenn die Schwierigkeit gleich bleibt."> Nach der aufgewendeten Arbeit in der Kette</label>
+      <label><input type="checkbox" name="sa-01-q7" value="1" data-grund="Falsch — die Anzahl der Knoten ist manipulierbar (Sybil); sie sagt nichts über die Arbeit aus."> Nach der Anzahl der Knoten, die sie unterstützen</label>
+      <label><input type="checkbox" name="sa-01-q7" value="2" data-grund="Falsch — es gibt keine zentrale Instanz, die eine Kette für gültig erklärt; genau das ist der Punkt."> Nach der Freigabe durch die Betreiber</label>
+      <label><input type="checkbox" name="sa-01-q7" value="3" data-grund="Falsch — das Alter einer Kette ist kein Kriterium; eine alte Kette kann durch mehr Arbeit überholt werden."> Nach dem Alter der zuerst gesehenen Kette</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Was passiert mit dem Block, der den Fork verliert?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q8" value="0" data-richtig data-grund="Richtig — er wird verwaist; seine Transaktionen gelten als unbestätigt und werden meist im nächsten Block erneut aufgenommen."> Er wird verwaist, seine Transaktionen gelten als unbestätigt</label>
+      <label><input type="checkbox" name="sa-01-q8" value="1" data-grund="Falsch — gelöscht wird nichts; der Block bleibt als Seitenzweig sichtbar, er zählt nur nicht mehr."> Er wird aus der Datenbank gelöscht</label>
+      <label><input type="checkbox" name="sa-01-q8" value="2" data-grund="Falsch — die Transaktionen sind nicht verloren; sie werden in der Regel in einem späteren Block bestätigt."> Seine Transaktionen sind dauerhaft verloren</label>
+      <label><input type="checkbox" name="sa-01-q8" value="3" data-grund="Falsch — ein Fork ist ein normaler Betriebszustand, kein Fehler; er entsteht durch die Laufzeit im Netz."> Er beweist, dass das Netz kompromittiert ist</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Warum reicht die Zahl der Knoten nicht als Abstimmung?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q9" value="0" data-richtig data-grund="Richtig — eine Identität im Netz kostet nichts; damit ist eine Abstimmung nach Köpfen sofort kaufbar."> Identitäten im Netz kosten nichts</label>
+      <label><input type="checkbox" name="sa-01-q9" value="1" data-richtig data-grund="Richtig — ein Angreifer startet tausende Knoten (Sybil-Angriff) und hätte nach Köpfen die Mehrheit."> Ein Angreifer kann beliebig viele Knoten starten</label>
+      <label><input type="checkbox" name="sa-01-q9" value="2" data-grund="Falsch — eine Gewichtung nach Rechenleistung ist die Lösung, nicht das Problem; sie macht Stimmen teuer."> Weil jede Stimme mit Rechenleistung gewichtet wird</label>
+      <label><input type="checkbox" name="sa-01-q9" value="3" data-grund="Falsch — die Zahl der Knoten schwankt, aber das ist nicht der Grund; entscheidend ist, dass sie fälschbar ist."> Weil die Zahl der Knoten täglich schwankt</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>6. Was das bringt: die Vorteile</h2>
+<p>Der Nutzen ist nicht „Dezentralität“ als Selbstzweck, sondern die
+<strong>Prüfbarkeit ohne Treuhänder</strong>. Vier Vorteile halten einer
+nüchternen Prüfung stand:</p>
+<table>
+  <tr><th>Vorteil</th><th>Was er konkret bedeutet</th></tr>
+  <tr><td><strong>Integrität</strong></td><td>Jede Änderung an alten Daten ist nachweisbar; niemand muss dem Betreiber glauben.</td></tr>
+  <tr><td><strong>Auditierbarkeit</strong></td><td>Die vollständige Historie liegt bei jedem Teilnehmer; Prüfungen brauchen keinen Zugriff auf ein fremdes System.</td></tr>
+  <tr><td><strong>Provenienz</strong></td><td>Herkunft und Eigentümerwechsel sind lückenlos belegt — interessant für Lieferketten und Urkunden.</td></tr>
+  <tr><td><strong>Verfügbarkeit</strong></td><td>Es gibt keinen einzelnen Ausfallpunkt; fällt ein Knoten aus, bleibt die Kette lesbar.</td></tr>
+</table>
+<p>Dazu kommt die <strong>Programmierbarkeit</strong>: Smart Contracts sind
+Programme, die auf der Kette liegen und Bedingungen automatisch ausführen.
+Das ist ein echter Vorteil — und die Quelle der größten Schäden, wie wir
+später sehen.</p>
+<div class="callout achtung">
+  <span class="label">Achtung</span>
+  Die Kette schützt nur, was <strong>auf</strong> ihr liegt. Ein Medikament,
+  dessen Temperaturkurve ein Sensor liefert, ist nur so ehrlich wie der
+  Sensor. Dieses <em>Oracle-Problem</em> ist der häufigste Denkfehler bei
+  Blockchain-Projekten.
+</div>
+
+<div class="quiz" data-titel="Quiz: vorteile">
+  <fieldset class="frage">
+    <legend class="frage-text">Welche Vorteile folgen wirklich aus der Konstruktion?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q10" value="0" data-richtig data-grund="Richtig — Änderungen an alten Blöcken sind berechenbar nachweisbar; dieser Nachweis braucht keinen Treuhänder."> Änderungen an alten Daten sind nachweisbar</label>
+      <label><input type="checkbox" name="sa-01-q10" value="1" data-richtig data-grund="Richtig — jeder Teilnehmer hat die Historie und kann selbst prüfen, ohne fremden Systemzugriff."> Jeder Teilnehmer kann die Historie selbst prüfen</label>
+      <label><input type="checkbox" name="sa-01-q10" value="2" data-grund="Falsch — die Kette macht keine Aussage über die Herkunft von Off-Chain-Daten; dafür braucht es Vertrauen in Sensoren oder Behörden."> Auch Off-Chain-Daten werden automatisch glaubwürdig</label>
+      <label><input type="checkbox" name="sa-01-q10" value="3" data-grund="Falsch — Rechenleistung und Speicher kosten; eine Blockchain ist in der Regel teurer als eine zentrale Datenbank."> Der Betrieb wird billiger als bei einer zentralen Datenbank</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Was ist das Oracle-Problem?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q11" value="0" data-richtig data-grund="Richtig — die Kette kann nur prüfen, was in ihr steht; ob die eingetragene Temperatur stimmt, entscheidet die Quelle."> Die Kette garantiert die Echtheit der Datenquelle nicht</label>
+      <label><input type="checkbox" name="sa-01-q11" value="1" data-grund="Falsch — ein Datenbank-Oracle ist etwas anderes; hier geht es um die Schnittstelle zwischen Realität und Kette."> Ein Oracle ist eine Datenbankmarke und damit nicht kompatibel</label>
+      <label><input type="checkbox" name="sa-01-q11" value="2" data-grund="Falsch — Smart Contracts können Daten nicht selbst erheben; sie lesen, was ihnen übergeben wird."> Smart Contracts lesen die Daten direkt aus der realen Welt</label>
+      <label><input type="checkbox" name="sa-01-q11" value="3" data-grund="Falsch — Verschlüsselung ersetzt keine Prüfung der Herkunft; sie schützt den Transport, nicht die Wahrheit."> Verschlüsselung der Messdaten löst das Problem</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>7. Was es kostet: Nachteile und Scheiterpunkte</h2>
+<p>Die Vorteile sind real, die Rechnung auch. Wer eine Blockchain vorschlägt,
+muss diese sechs Punkte beantworten können.</p>
+
+<h3>Energie</h3>
+<p>Proof of Work tauscht Strom gegen Sicherheit. Bitcoin verbraucht je nach
+Modell und Stichtag <strong>138–190 TWh pro Jahr</strong>. Der
+Cambridge-Report von April 2025 nennt 138 TWh für das Jahr 2024, der
+Live-Schätzer liegt im November 2026 bei etwa 160 TWh.</p>
+<p>Das ist die Größenordnung eines halben Prozents des Weltstromverbrauchs.</p>
+<p>Proof of Stake braucht diese Rechnung nicht: Ethereum hat mit dem
+<em>Merge</em> am 15. September 2022 den Energieverbrauch um
+<strong>über 99,9 %</strong> gesenkt (Cambridge CCAF beziffert danach
+7,87 GWh pro Jahr).</p>
+
+<h3>Durchsatz</h3>
+<table>
+  <tr><th>System</th><th>Transaktionen pro Sekunde</th><th>Anmerkung</th></tr>
+  <tr><td>Bitcoin</td><td>≈ 6,4</td><td>Messwert 10.11.2026 (Blockchair)</td></tr>
+  <tr><td>Ethereum (L1)</td><td>≈ 24</td><td>Messwert 10.11.2026 (Blockchair)</td></tr>
+  <tr><td>Visa</td><td>bis 65.000</td><td>Spitzenkapazität laut Visa, nicht Durchschnitt</td></tr>
+</table>
+<p>Der Vergleich mit einer relationalen Datenbank hinkt bewusst: SQLite hat
+keinen Konsens und kein Netzwerk. Genau diese beiden Posten sind der Preis —
+nicht die Speicherung.</p>
+
+<h3>Speicher und Governance</h3>
+<p>Jede Vollkopie trägt die gesamte Historie, und die wächst monoton. Wer
+Platz spart, schneidet alte Blöcke ab (<em>Pruning</em>) — und verliert damit
+einen Teil der Prüfbarkeit.</p>
+<p>Governance ist der unterschätzte Punkt: Ein Protokoll ändert sich nur
+durch einen <strong>Hard Fork</strong>, und der wird von Menschen beschlossen.
+The DAO 2016 ist das Lehrstück — dazu gleich mehr.</p>
+
+<h3>Löschen und Schlüssel</h3>
+<p>Die DSGVO kennt ein Recht auf Löschung; eine Kette kennt kein
+<code>DELETE</code>. Personenbezogene Daten gehören deshalb nicht „zur
+Sicherheit“ on-chain. Und wer seinen privaten Schlüssel verliert, hat keinen
+Support: Es gibt kein Passwort-Zurücksetzen, nur den Verlust.</p>
+
+<h3>Zwei Gräber</h3>
+<p><strong>TradeLens</strong> (Maersk/IBM) galt als Vorzeigeprojekt der
+Lieferkette. Im November 2022 wurde die Einstellung angekündigt, Ende des
+ersten Quartals 2023 war die Plattform offline. Begründung: Die „vollständige
+globale Zusammenarbeit der Branche“ sei nicht erreicht worden. Die Technik
+lief — das Ökosystem nicht.</p>
+<p><strong>ASX CHESS</strong>: Die Australische Börse wollte ihr
+Abwicklungssystem ab 2015 auf Blockchain umstellen. Im November 2022 wurde
+das Projekt nach rund sieben Jahren gestoppt; rund
+<strong>A$245–255 Mio.</strong> waren abgeschrieben. 2026 verglich sich die
+Börse mit der Aufsicht ASIC auf eine Strafe von A$20,5 Mio.</p>
+<div class="callout achtung">
+  <span class="label">Achtung</span>
+  Beide Projekte scheiterten nicht an Hashes, sondern an
+  <strong>Teilnehmerzahl, Rechtslage und Kosten</strong>. Wer eine Blockchain
+  vorschlägt, muss zuerst diese drei Fragen beantworten.
+</div>
+
+<div class="quiz" data-titel="Quiz: kosten-und-scheitern">
+  <fieldset class="frage">
+    <legend class="frage-text">Warum senkt der Wechsel zu Proof of Stake den Energieverbrauch so stark?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q12" value="0" data-richtig data-grund="Richtig — statt Rechenwettlauf entscheidet gebundenes Kapital; es wird keine Rechenarbeit mehr als Beweis benötigt."> Weil nicht mehr um Rechenarbeit gewettet wird, sondern Kapital gebunden ist</label>
+      <label><input type="checkbox" name="sa-01-q12" value="1" data-grund="Falsch — die Blöcke werden weiterhin validiert; nur der Wettlauf um den nächsten Block entfällt."> Weil Blöcke gar nicht mehr validiert werden</label>
+      <label><input type="checkbox" name="sa-01-q12" value="2" data-grund="Falsch — die Hardware wird nicht effizienter; sie wird für den Konsens schlicht nicht mehr gebraucht."> Weil die Mining-Hardware effizienter geworden ist</label>
+      <label><input type="checkbox" name="sa-01-q12" value="3" data-grund="Falsch — die Datenmenge bleibt ähnlich; der Stromverbrauch hing am Konsensverfahren, nicht an der Speicherung."> Weil weniger Transaktionen gespeichert werden</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Was war das zentrale Problem von TradeLens?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q13" value="0" data-richtig data-grund="Richtig — die Plattform funktionierte, aber die Branche zog nicht mit; ohne Teilnehmer gibt es kein Netzwerk."> Zu wenige Teilnehmer, also kein Netzwerkeffekt</label>
+      <label><input type="checkbox" name="sa-01-q13" value="1" data-grund="Falsch — die Technik lief; gerade deshalb ist der Fall lehrreich."> Die Hashfunktion war zu schwach</label>
+      <label><input type="checkbox" name="sa-01-q13" value="2" data-grund="Falsch — 51-%-Angriffe spielten hier keine Rolle; es fehlte die Zusammenarbeit."> Ein 51-%-Angriff hat die Kette übernommen</label>
+      <label><input type="checkbox" name="sa-01-q13" value="3" data-grund="Falsch — die Abschaltung war eine Managemententscheidung, kein technischer Defekt."> Die Software ließ sich nicht mehr warten</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Warum passen personenbezogene Daten und eine Blockchain schlecht zusammen?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q14" value="0" data-richtig data-grund="Richtig — die Löschpflicht trifft auf Daten, die konstruktionsbedingt nicht gelöscht werden können."> Löschpflicht und Unlöschbarkeit widersprechen sich</label>
+      <label><input type="checkbox" name="sa-01-q14" value="1" data-grund="Falsch — Verschlüsselung schützt den Inhalt, hebt aber die Speicherung nicht auf; der Eintrag bleibt."> Verschlüsselung macht die Daten unsichtbar und damit löschbar</label>
+      <label><input type="checkbox" name="sa-01-q14" value="2" data-grund="Falsch — die Kette ist nicht zu klein; sie wächst monoton und bleibt vollständig."> Die Kette ist zu klein für Personendaten</label>
+      <label><input type="checkbox" name="sa-01-q14" value="3" data-grund="Falsch — eine Signatur beweist Urheberschaft, sie entfernt keine Daten."> Eine Signatur ersetzt die Löschung</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>8. Wie man es angreift</h2>
+<p>Angriffe auf eine Kette zielen selten auf die Hashfunktion. Sie zielen auf
+die <strong>Annahme</strong>, dass die Mehrheit ehrlich rechnet — oder auf
+die Software daneben.</p>
+
+<h3>Der 51-%-Angriff</h3>
+<p>Wer die Mehrheit der Rechenleistung hat, darf schneller Blöcke bauen als
+alle anderen zusammen. Damit kann er einen Block <strong>zurückrollen</strong>
+(<em>Reorg</em>) und eine bereits bestätigte Zahlung erneut ausgeben —
+<strong>Double Spending</strong>.</p>
+<p>In der Praxis ist das kein Gedankenspiel. Ethereum Classic erlebte im
+August 2020 innerhalb von zwei Wochen drei Angriffe: Der erste rollte
+<strong>3.693 Blöcke</strong> zurück und erbeutete 807.260 ETC (rund
+5,6 Mio. USD), der dritte mehr als 7.000 Blöcke. Bitcoin Gold verlor im Mai
+2018 rund 388.200 BTG (17,5–18 Mio. USD) über einen Reorg von 22 Blöcken.</p>
+<div class="callout">
+  <span class="label">Merke</span>
+  Der Angriff ist teuer, aber nicht unmöglich: Er lohnt sich, sobald die
+  Beute größer ist als die Rechenzeit. Kleine Ketten mit wenig Hashrate sind
+  deshalb besonders gefährdet.
+</div>
+
+<h3>Angriffe auf das Netz und auf Verträge</h3>
+<ul>
+  <li><strong>Sybil:</strong> viele billige Knoten — deshalb zählt Arbeit oder
+  Stake, nicht Knotenzahl.</li>
+  <li><strong>Eclipse:</strong> Ein Knoten wird vom Netz abgeschirmt und
+  bekommt nur noch die Kette des Angreifers zu sehen.</li>
+  <li><strong>Selfish Mining:</strong> Blöcke werden zurückgehalten und erst
+  später veröffentlicht, um Konkurrenten Arbeit zu entwerten.</li>
+  <li><strong>Smart-Contract-Fehler:</strong> The DAO 2016 verlor 3,6 Mio. ETH
+  (rund 50–60 Mio. USD) durch eine ausnutzbare Funktion. Die Community
+  reparierte per Hard Fork — die nicht geforkte Kette lebt als
+  <em>Ethereum Classic</em> weiter.</li>
+  <li><strong>Bridges:</strong> Der Vertrag, der Werte zwischen Ketten
+  bewegt, verwahrt fremdes Geld — das beliebteste Ziel der letzten Jahre.</li>
+</ul>
+
+<div class="quiz" data-titel="Quiz: angriffe">
+  <fieldset class="frage">
+    <legend class="frage-text">Was braucht ein 51-%-Angreifer mindestens?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q15" value="0" data-richtig data-grund="Richtig — mehr Rechenleistung als der ehrliche Rest, um schneller eine längere Kette zu bauen."> Mehr Rechenleistung als der ehrliche Rest des Netzes</label>
+      <label><input type="checkbox" name="sa-01-q15" value="1" data-grund="Falsch — private Schlüssel der Nutzer helfen nicht; der Angriff arbeitet an der Kette, nicht an Konten."> Die privaten Schlüssel der Nutzer</label>
+      <label><input type="checkbox" name="sa-01-q15" value="2" data-grund="Falsch — ein Smart Contract ist für den Reorg nicht nötig; der Angriff sitzt im Konsens."> Einen fehlerhaften Smart Contract</label>
+      <label><input type="checkbox" name="sa-01-q15" value="3" data-grund="Falsch — Zugriff auf die Server genügt nicht; es geht um Arbeit, nicht um Rechenzentren."> Zugriff auf die Server der Börsen</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Was ist Double Spending technisch?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q16" value="0" data-richtig data-grund="Richtig — dieselbe Münze wird in zwei konkurrierenden Ketten ausgegeben; die verdrängte Zahlung verschwindet."> Dieselbe Münze wird in zwei Ketten ausgegeben</label>
+      <label><input type="checkbox" name="sa-01-q16" value="1" data-grund="Falsch — Kopien derselben Datei sind kein Angriff; entscheidend ist die Gültigkeit der Buchung."> Eine Datei wird mehrfach kopiert</label>
+      <label><input type="checkbox" name="sa-01-q16" value="2" data-grund="Falsch — die Signatur ist gültig; deshalb funktioniert der Angriff überhaupt."> Eine Signatur wird gefälscht</label>
+      <label><input type="checkbox" name="sa-01-q16" value="3" data-grund="Falsch — die Merkle-Wurzel wird nicht manipuliert; der Angreifer baut eine alternative Kette."> Die Merkle-Wurzel wird neu berechnet</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Warum sind Bridges besonders gefährdet?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q17" value="0" data-richtig data-grund="Richtig — sie verwahren Werte auf einer Kette und geben sie auf einer anderen aus; ein Fehler trifft den gesamten verwahrten Bestand."> Sie verwahren fremde Werte und geben sie auf einer anderen Kette aus</label>
+      <label><input type="checkbox" name="sa-01-q17" value="1" data-grund="Falsch — Bridges nutzen dieselben Hashfunktionen; die Schwäche liegt im Vertrag und in der Verwahrung."> Sie verwenden schwächere Hashfunktionen</label>
+      <label><input type="checkbox" name="sa-01-q17" value="2" data-richtig data-grund="Richtig — Verträge, Verwahrer und Schlüssel müssen zusammenspielen; jede Station dieser Kette ist eine eigene Angriffsfläche."> Mehrere Verträge und Schlüssel müssen zusammenspielen</label>
+      <label><input type="checkbox" name="sa-01-q17" value="3" data-grund="Falsch — Bridges verbrauchen wenig Energie; ihr Risiko ist der verwahrte Wert."> Sie verbrauchen besonders viel Energie</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>9. Krypto-Diebstähle: die Kette hielt, die Verwahrung nicht</h2>
+<p>Die größten Verluste der Branche entstanden fast nie durch gebrochene
+Kryptografie. Sie entstanden dort, wo Menschen Schlüssel verwahrten oder
+Verträge programmierten. Stand: November 2026.</p>
+<table>
+  <tr><th>Fall</th><th>Jahr</th><th>Beute</th><th>Was wirklich passierte</th></tr>
+  <tr><td>Mt. Gox</td><td>2014</td><td>850.000 BTC (750.000 Kunden + 100.000 eigene), damals ca. 473–480 Mio. USD</td><td>Börse verlor die Kontrolle über ihre Bestände; 200.000 BTC tauchten später wieder auf</td></tr>
+  <tr><td>Bitfinex</td><td>2016</td><td>119.756 BTC, ca. 72 Mio. USD</td><td>Schlüssel der Börse kompromittiert; 2022 beschlagnahmte das DOJ 94.643 BTC</td></tr>
+  <tr><td>Coincheck</td><td>2018</td><td>523 Mio. NEM, ca. 534 Mio. USD</td><td>Börsenkonto ohne ausreichenden Schutz</td></tr>
+  <tr><td>Poly Network</td><td>2021</td><td>611 Mio. USD</td><td>Vertragslogik ausgehebelt; der Angreifer gab fast alles zurück</td></tr>
+  <tr><td>Ronin (Axie)</td><td>2022</td><td>173.600 ETH + 25,5 Mio. USDC, ca. 620 Mio. USD</td><td>Bridge-Schlüssel erbeutet; laut FBI die Lazarus-Gruppe</td></tr>
+  <tr><td>Wormhole</td><td>2022</td><td>120.000 wETH, ca. 326 Mio. USD</td><td>Bridge-Vertrag ließ sich falsch auszahlen; der Betreiber ersetzte den Schaden</td></tr>
+  <tr><td>Bybit</td><td>2025</td><td>401.347 ETH plus Staking-Token, ca. 1,46 Mrd. USD</td><td>Größter Krypto-Diebstahl bisher; Zugriff auf eine Wallet</td></tr>
+</table>
+<p>Ein Fall gehört ausdrücklich <strong>nicht</strong> in diese Liste:
+<strong>FTX</strong> (2022). Dort fehlten rund 8 Mrd. USD an Kundengeldern,
+weil sie veruntreut wurden — kein Hack, sondern Betrug. Das ist der
+Unterschied zwischen „die Sicherheit hat versagt“ und „jemand hat es
+darauf angelegt“.</p>
+<div class="callout tipp">
+  <span class="label">Muster</span>
+  Vier Angriffsflächen wiederholen sich: <strong>Verwahrung</strong>
+  (Börsen), <strong>Bridges</strong> (Verträge mit fremdem Geld),
+  <strong>Schlüssel</strong> (Phishing, Geräte) und <strong>Betrug</strong>
+  (Vertrauen in Personen). Die Hash-Kette war in keinem dieser Fälle das
+  Problem.
+</div>
+
+<div class="quiz" data-titel="Quiz: diebstaehle">
+  <fieldset class="frage">
+    <legend class="frage-text">Was haben Mt. Gox, Bitfinex und Bybit gemeinsam?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q18" value="0" data-richtig data-grund="Richtig — in allen drei Fällen wurde die Verwahrung kompromittiert, nicht die Kette selbst."> Die Verwahrung der Schlüssel wurde angegriffen</label>
+      <label><input type="checkbox" name="sa-01-q18" value="1" data-grund="Falsch — SHA-256 ist in keinem dieser Fälle gebrochen worden."> Die Hashfunktion wurde gebrochen</label>
+      <label><input type="checkbox" name="sa-01-q18" value="2" data-grund="Falsch — ein 51-%-Angriff war in keinem der Fälle die Ursache."> Die Mehrheit der Rechenleistung wurde übernommen</label>
+      <label><input type="checkbox" name="sa-01-q18" value="3" data-grund="Falsch — die Beträge standen korrekt in der Kette; gestohlen wurden Schlüssel bzw. Verfügungsrechte."> Die Beträge in der Kette wurden gefälscht</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Warum ist FTX kein Beispiel für einen Blockchain-Angriff?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q19" value="0" data-richtig data-grund="Richtig — es wurden Kundengelder veruntreut; das ist Betrug, kein technischer Angriff."> Weil Kundengelder veruntreut wurden, nicht Technik versagte</label>
+      <label><input type="checkbox" name="sa-01-q19" value="1" data-grund="Falsch — die Börse nutzte durchaus Blockchain-Technik; der Unterschied liegt in der Absicht."> Weil FTX keine Blockchain verwendet hat</label>
+      <label><input type="checkbox" name="sa-01-q19" value="2" data-grund="Falsch — die Höhe spielt keine Rolle für die Einordnung; auch kleine Betrugsfälle sind Betrug."> Weil der Schaden zu hoch für einen Hack war</label>
+      <label><input type="checkbox" name="sa-01-q19" value="3" data-grund="Falsch — ein Smart Contract war nicht die Ursache; es fehlten schlicht die Kundengelder."> Weil ein Smart Contract den Fehler verursacht hat</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Was folgt aus „Not your keys, not your coins“?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-01-q20" value="0" data-richtig data-grund="Richtig — wer die Schlüssel hält, kann verfügen; das gilt für dich und für jede Börse."> Wer die Schlüssel hält, kann über die Guthaben verfügen</label>
+      <label><input type="checkbox" name="sa-01-q20" value="1" data-grund="Falsch — die Kette kennt kein Zurückholen; Wiederherstellung ist eine Frage der Verwahrung, nicht des Protokolls."> Verlorene Coins können von der Kette zurückgeholt werden</label>
+      <label><input type="checkbox" name="sa-01-q20" value="2" data-grund="Falsch — die Adresse ist öffentlich und allein nicht ausreichend, um Guthaben zu bewegen."> Die Adresse allein genügt, um Guthaben zu bewegen</label>
+      <label><input type="checkbox" name="sa-01-q20" value="3" data-grund="Falsch — Einlagen bei einer Börse sind ein Anspruch; die Coins liegen dort nicht als dein Eigentum."> Einlagen bei Börsen sind rechtlich deine Coins</label>
+    </div>
+  </fieldset>
+</div>
+
+<div class="callout">
+  <span class="label">Quellen (Stand November 2026)</span>
+  Mt. Gox: Reuters/BBC (28.02.2014, 21.03.2014) · Bitfinex: ABC News
+  (03.08.2016) · Coincheck: BBC (26.01.2018) · Poly Network: The Block
+  (12.08.2021) · Ronin: FBI-Statement, wiedergegeben bei UPI (14.04.2022) ·
+  Wormhole: BleepingComputer (03.02.2022) · Bybit: Bybit-Sicherheits-FAQ
+  (03.03.2025) · FTX: BBC (06.10.2024), CFTC-Vergleich (08.08.2024) ·
+  Ethereum Classic: ethereumclassic.com, CoinDesk (08/2020) · Bitcoin Gold:
+  ZDNet (24.05.2018), The Next Web (26.01.2020) · Energie: Cambridge CBECI
+  und Digital-Mining-Report (April 2025) · Durchsatz: Blockchair
+  (10.11.2026), Visa (31.01.2024) · TradeLens: Maersk (29.11.2022) · ASX:
+  ASIC-Mitteilung 26-119MR (13.06.2026).
+</div>
+
+<hr>
+
+<h2>10. Jetzt du!</h2>
+<ol>
+  <li><strong>Vorhersage (zuerst notieren!):</strong> In Block 1 stehen zwei
+  Transaktionen. Du änderst den Betrag der zweiten von 5 auf 6. Welche Felder
+  in <code>block</code> und <code>tx</code> ändern sich dadurch — und welche
+  <em>nicht</em>?</li>
+  <li><strong>Rechnen:</strong> Wie viele Versuche erwartet der Proof of Work
+  bei Schwierigkeit 5 im Mittel? Und wie viele bei Schwierigkeit 7? Rechne mit
+  <code>16^d</code> und schreibe die Zahl aus.</li>
+  <li><strong>Ausführen:</strong> Starte im
+  <a href="https://github.com/georgernstgraf/GRG-INFI/tree/main/Beispielprojekte/sa-01-blockchain-als-datenbank">Beispielprojekt</a>
+  <code>deno task demo</code> und vergleiche mit deiner Vorhersage. Dann
+  <code>deno task test</code> — welcher Test entspricht deiner Rechnung aus
+  Punkt 2?</li>
+</ol>
+
+<hr>
+
+<h2>11. Typische Fehler</h2>
+<ul>
+  <li><strong>„Eine Blockchain ist unhackbar.“</strong> Nicht die Kette wird
+  gehackt, sondern die Umgebung: Börsen, Bridges, Schlüssel, Verträge.
+  <em>Anti-Beispiel:</em> „Die Coins sind sicher, sie liegen auf der Börse.“</li>
+  <li><strong>„On-Chain heißt wahr.“</strong> Die Kette beweist, dass ein
+  Eintrag unverändert ist — nicht, dass er stimmt. <em>Anti-Beispiel:</em>
+  „Die Temperatur steht in der Chain, also war die Kühlkette intakt.“</li>
+  <li><strong>„Dezentral heißt ohne Betreiber.“</strong> Es gibt fast immer
+  jemanden, der Software schreibt, Updates verteilt oder Schlüssel verwahrt.
+  <em>Anti-Beispiel:</em> „Das Netz entscheidet selbst“ — bei einem Hard Fork
+  entscheiden Menschen.</li>
+  <li><strong>„Der Hash speichert die Daten.“</strong> Er ist eine Prüfsumme.
+  <em>Anti-Beispiel:</em> „Wir legen die Rechnungen in den Hash.“</li>
+  <li><strong>„Ein Smart Contract ist ein Vertrag.“</strong> Er ist Code ohne
+  Gericht: Was er falsch macht, macht er unwiderruflich falsch.
+  <em>Anti-Beispiel:</em> „Der Code führt schon aus, das klären wir später.“</li>
+  <li><strong>„Blockchain löst das Löschproblem.“</strong> Sie verschärft es:
+  Was einmal drin ist, bleibt. <em>Anti-Beispiel:</em> personenbezogene Daten
+  „sicherheitshalber“ on-chain speichern.</li>
+</ul>
+
+<h2>12. Zusammenfassung</h2>
+<table>
+  <tr><th>Frage</th><th>Relationale Datenbank</th><th>Blockchain</th></tr>
+  <tr><td>Wer darf schreiben?</td><td>Wer Rechte hat (DBA, App)</td><td>Wer die Konsensregel erfüllt</td></tr>
+  <tr><td>Änderbar?</td><td>Ja, per <code>UPDATE</code>/<code>DELETE</code></td><td>Nein, nur Gegenbuchung</td></tr>
+  <tr><td>Vertrauen nötig?</td><td>In den Betreiber</td><td>In die Regel und die Mehrheit</td></tr>
+  <tr><td>Kosten pro Schreibvorgang</td><td>Millisekunden, Cent</td><td>Sekunden bis Minuten, Gebühr</td></tr>
+  <tr><td>Löschen (DSGVO)</td><td>Standardfall</td><td>Konstruktionsproblem</td></tr>
+  <tr><td>Gute Wahl für</td><td>Zustand, Auswertung, Löschpflicht</td><td>Nachweis zwischen Misstrauenden</td></tr>
+</table>
+<p><strong>Eselsbrücke:</strong> „Eine Blockchain ist ein Kassenbuch, das
+jeder mitrechnet — teuer, langsam und unbestechlich, solange die Mehrheit
+ehrlich rechnet.“</p>
+<p><strong>Ausblick:</strong> Die SQL-Seite dieser Frage — Transaktionen,
+Isolation, Sperren — hast du in KM5 gesehen. Wie eine Anwendung die Kette
+liest, zeigt KM6 (Prisma/Query API). Und der Zahlungsverkehr aus KM9 ist
+genau der Bereich, in dem die Kryptowelt auf die Buchhaltung trifft.</p>
+
+<hr>
+
+<h2>Aufgabe</h2>
+<p>Die drei Beispiele stehen in
+<a href="aufgabe.md">aufgabe.md</a> im selben Ordner: eine Kette Block für
+Block prüfen, ein Selbsttest im WÜ-Format und der Transfer „Blockchain oder
+relationale Datenbank?“.</p>
+<ol>
+  <li><strong>Beispiel 1:</strong> Eine vorgelegte Kette auf einen defekten
+  Verweis prüfen und die Abhängigkeitskette der Hashes zeichnen.</li>
+  <li><strong>Beispiel 2:</strong> Vier Aussagen bewerten — alle zutreffenden
+  ankreuzen, mit Musterlösung.</li>
+  <li><strong>Beispiel 3:</strong> Zwei Szenarien entscheiden, das
+  Oracle-Problem erklären und die Sechs-Bestätigungen-Regel begründen.</li>
+</ol>
+<p>Abgabe nach Vorgabe deiner Lehrperson (Markdown, Pfeilkette zu Beispiel 1).</p>
+
+<details class="lehrplan">
+  <summary>Lehrplan &amp; Einordnung</summary>
+  <ul>
+    <li><strong>Lehrplan:</strong> INFI (HWII), Anlage 1.24 — schulautonome
+    Vertiefung zum Bereich Datenbanken. Kein eigener KM-Punkt; Anschluss an
+    KM5 (komplexe Abfragen, DDL) und KM9 (Informationssysteme,
+    elektronischer Zahlungsverkehr).</li>
+    <li><strong>Quellen:</strong> Nakamoto (2008); Boneh/Goldwasser, CACM
+    2020; Fallzahlen mit Behörden-/Exchange-Quellen, Stand November 2026
+    (siehe Quellenbox im Abschnitt „Krypto-Diebstähle“).</li>
+    <li><strong>Runtime:</strong> Deno + <code>node:sqlite</code> +
+    <code>node:crypto</code> (Beispielprojekt), keine externen
+    Abhängigkeiten.</li>
+  </ul>
+</details>
+
+<footer class="navi">
+  <p>Referenz: <a href="https://github.com/georgernstgraf/GRG-INFI/blob/main/GLOSSAR.md">Glossar</a> ·
+  Beispiellösung: <a href="https://github.com/georgernstgraf/GRG-INFI/tree/main/Beispielprojekte/sa-01-blockchain-als-datenbank">sa-01-blockchain-als-datenbank</a> ·
+  Aufgabe: <a href="aufgabe.md">aufgabe.md</a> ·
+  <a href="../../index.html">alle Lektionen</a></p>
+</footer>
+</body>
+</html>

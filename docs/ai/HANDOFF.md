@@ -1,5 +1,19 @@
 # HANDOFF
 
+**2026-11-10:** Prepared Lesson `unterricht/SA-01-blockchain-als-datenbank/`
+(90 min, 7 Lernquizze / 21 Fragen im **Quiz-Format 2.1**, `aufgabe.md` mit
+Beispiel 1–3) + Beispielprojekt `Beispielprojekte/sa-01-blockchain-als-datenbank/`
+(Hash-Kette in zwei Tabellen, Merkle-Wurzel, PoW, `kettePruefen`, Reorg-Regel;
+Deno + `node:sqlite` + `node:crypto`, 10/10 Tests) — Issue **#19**.
+**Assets aus GRG-PMM übernommen:** `quiz.js` (Alt- *und* Lernmodus), `tables.js`,
+`lesson.css` (Quiz 2.1, Tabellen-Querscroll, `details.lehrplan`, `footer.navi`;
+INFI-Palette), `theme.js`-readyState-Guard, `loader.js` → `tables.js`.
+Die sieben Bestandslessons laufen im Altmodus unverändert (per DevTools-Protokoll
+geprüft, Quiz klickbar). Befunde in `PITFALLS.md` (Bootstrap-Klammer,
+`--dump-dom` wartet keine Assets, Snap-Chromium ohne `/tmp`).
+**Offen:** Lesson ist noch **keiner Kohorte** zugeordnet (manuelle Übernahme);
+Zoomstufe/Beamer-Probe in echter Projektion steht aus.
+
 **2026-10-13:** Prepared Lesson `unterricht/KM5-05-drizzle-orm/` (Drizzle ORM Einstieg,
 Deno + `node:sqlite` + `drizzle-orm` 1.0.0-rc.4) + Beispielprojekt
 `Beispielprojekte/km5-05-drizzle-orm/` (Demo + 9/9 Tests) — Issue **#17** geschlossen
