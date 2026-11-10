@@ -11,8 +11,9 @@ INFI-Palette), `theme.js`-readyState-Guard, `loader.js` → `tables.js`.
 Die sieben Bestandslessons laufen im Altmodus unverändert (per DevTools-Protokoll
 geprüft, Quiz klickbar). Befunde in `PITFALLS.md` (Bootstrap-Klammer,
 `--dump-dom` wartet keine Assets, Snap-Chromium ohne `/tmp`).
-**Offen:** Lesson ist noch **keiner Kohorte** zugeordnet (manuelle Übernahme);
-Zoomstufe/Beamer-Probe in echter Projektion steht aus.
+**Bewusst kohortenfrei:** Die Lesson gehört zum Thema, nicht zu einer Kohorte —
+die Übernahme in einen Datums-Ordner macht die Lehrperson per Hand. Offen ist
+nur die Beamer-Probe in echter Projektion.
 
 **2026-10-13:** Prepared Lesson `unterricht/KM5-05-drizzle-orm/` (Drizzle ORM Einstieg,
 Deno + `node:sqlite` + `drizzle-orm` 1.0.0-rc.4) + Beispielprojekt
