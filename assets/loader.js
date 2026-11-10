@@ -48,7 +48,8 @@
   liste("data-css").forEach(css);
   liste("data-js").forEach(js);
 
-  // Konfiguration zuerst, danach der Badge.
+  // Konfiguration zuerst, danach die Helfer und der Badge.
   js("site.js");
+  js("tables.js");
   js("github-pages-link.js");
 })();

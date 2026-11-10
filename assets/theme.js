@@ -3,9 +3,10 @@
    die Wahl wird in localStorage ("infi-theme") gemerkt.
    Print bleibt über lesson.css immer hell. Kein CDN.
 
-   Der Theme wird sofort gesetzt (vor dem ersten Paint); der Toggle-Button
-   wird erst nach dem DOM-Aufbau verdrahtet, damit er auch dann funktioniert,
-   wenn dieses Skript im <head> lädt, bevor der Button existiert. */
+   Wird über assets/loader.js asynchron injiziert; der Knopf wird erst
+   verdrahtet, wenn er existiert (readyState-Guard), damit die Reihenfolge
+   von Skript- und DOM-Aufbau keine Rolle spielt. */
+
 (function () {
   "use strict";
 
@@ -30,6 +31,7 @@
     }
   }
 
+  // Theme sofort setzen (documentElement existiert immer), gegen Aufblitzen.
   var gespeichert = null;
   try { gespeichert = window.localStorage.getItem(SPEICHER); } catch (e) {}
   if (gespeichert === "dark" || gespeichert === "light") {
@@ -40,16 +42,13 @@
 
   function verdrahten() {
     var knopf = document.getElementById("theme-toggle");
-    if (!knopf || knopf.getAttribute("data-verdrahtet") === "1") { return; }
-    knopf.setAttribute("data-verdrahtet", "1");
+    if (!knopf) { return; }
     knopf.addEventListener("click", function () {
       var neu = wurzel.getAttribute("data-theme") === "dark"
         ? "light" : "dark";
       anwenden(neu);
       try { window.localStorage.setItem(SPEICHER, neu); } catch (e) {}
     });
-    // Button-Beschriftung an den aktuellen Zustand angleichen.
-    anwenden(wurzel.getAttribute("data-theme") || systemTheme());
   }
 
   if (document.readyState === "loading") {

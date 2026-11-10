@@ -1,7 +1,11 @@
 /* GRG-INFI — zentrales Lektion-Stylesheet
    (Tufte-nah, druckfreundlich, hell/dunkel, keine externen Abhängigkeiten).
    Palette und Grundcharakter aus 3ahwii/assets/style.css; Dark-Theme,
-   Toggle-Button und Print-Regeln ergänzt. */
+   Toggle-Button und Print-Regeln ergänzt. Struktur (header.meta, .callout,
+   .baustein, details.lehrplan, footer.navi, Quiz Format 2.1,
+   .tabelle-scroll) aus GRG-PMM übernommen, auf die INFI-Palette gesetzt;
+   die Altklassen (nav.breadcrumb, footer.lesson-foot, .quiz mit Radios)
+   bleiben gültig, damit die älteren Lessons unverändert laufen. */
 
 :root {
   --ink: #1a1a1a;
@@ -12,6 +16,8 @@
   --code-bg: #f6f6f4;
   --ok: #15803d;
   --err: #b91c1c;
+  --ok-bg: #eef7ee;
+  --err-bg: #fdeeec;
   --maxw: 42rem;
 }
 
@@ -24,6 +30,8 @@
   --code-bg: #26261f;
   --ok: #7fc98a;
   --err: #f08a7a;
+  --ok-bg: #1e2e1e;
+  --err-bg: #33201e;
 }
 
 * { box-sizing: border-box; }
@@ -35,6 +43,9 @@ body {
   background: var(--paper);
   color: var(--ink);
   font: 17px/1.65 Georgia, "Times New Roman", serif;
+  /* Lange Pfade/URLs in <code> dürfen die Seite nicht über die
+     Viewport-Breite hinausziehen (siehe Tabellen-Regel). */
+  overflow-wrap: break-word;
 }
 
 h1, h2, h3 {
@@ -93,6 +104,9 @@ nav.breadcrumb a { color: var(--accent); }
 
 hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }
 
+section { margin-bottom: 2.2rem; }
+
+/* Code */
 pre {
   background: var(--code-bg);
   border: 1px solid var(--line);
@@ -109,13 +123,68 @@ p code, li code, td code { background: var(--code-bg); padding: 0.1em 0.3em; }
 .out { color: var(--muted); }
 .cmt { color: var(--muted); font-style: italic; }
 
-table { border-collapse: collapse; width: 100%; font-size: 0.95rem; margin: 1rem 0; }
-th, td { border: 1px solid var(--line); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+/* Tabellen: der Querscroll bleibt IN der Tabelle.
+   Eine breite Tabelle darf das Dokument nie über die Viewport-Breite
+   hinausziehen — sonst scrollt auf dem Handy die ganze Seite und der
+   Browser verkleinert zusätzlich die Schrift (siehe PITFALLS).
+   `assets/tables.js` hüllt jede Tabelle in .tabelle-scroll; die Tabelle
+   behält darin ihre natürlichen Spaltenbreiten. Ohne das Skript greift
+   der Fallback direkt an der table-Regel (block + overflow). */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.95rem;
+  margin: 1rem 0;
+  display: block;          /* Fallback ohne JS */
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+.tabelle-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  margin: 1.2rem 0;
+  padding-bottom: 0.15rem;
+}
+/* Mit Hülle: echte Tabelle mit natürlichen Spaltenbreiten. Der Deckel bei
+   150 % verhindert, dass textlastige Tabellen drei Bildschirme breit
+   werden — sie brechen dann um, statt den Leser durchs Querscrollen zu
+   schicken. */
+.tabelle-scroll > table {
+  display: table;
+  width: max-content;
+  min-width: 100%;
+  max-width: 150%;
+  margin: 0;
+  overflow: visible;
+}
+/* Sichtbarer Hinweis, dass waagrecht mehr Tabelle wartet. */
+.tabelle-scroll.ist-breit { box-shadow: inset -1rem 0 0.9rem -0.8rem rgba(0, 0, 0, 0.5); }
+:root[data-theme="dark"] .tabelle-scroll.ist-breit {
+  box-shadow: inset -1rem 0 0.9rem -0.8rem rgba(255, 255, 255, 0.22);
+}
+.tabelle-scroll:focus-visible { outline: 2px solid var(--muted); outline-offset: 3px; }
+th, td {
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+  /* Kein break-word in Zellen: ein langer Pfad soll die Tabelle verbreitern
+     (sie scrollt selbst), nicht die Spalte zusammendrücken. */
+  overflow-wrap: normal;
+}
 th {
   background: var(--code-bg);
   font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
+@media (max-width: 480px) {
+  table { font-size: 0.9rem; }
+  th, td { padding: 0.35rem 0.45rem; }
+}
+
+/* Callouts */
 .callout {
   border: 1px solid var(--line);
   border-left: 3px solid var(--accent);
@@ -133,7 +202,10 @@ th {
   color: var(--muted);
   margin-bottom: 0.25rem;
 }
+.callout.tipp { border-left-color: var(--ok); }
+.callout.achtung { border-left-color: var(--err); }
 
+/* Quiz (nutzt assets/quiz.js) — Altmodus mit Radios */
 .quiz { border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.1rem; margin: 1.4rem 0; }
 .quiz .frage { margin: 0 0 0.7rem; }
 .quiz label {
@@ -151,6 +223,195 @@ th {
 .quiz .feedback.richtig { color: var(--ok); }
 .quiz .feedback.falsch { color: var(--err); }
 
+/* Quiz Format 2.1 — Lernquiz (Checkboxen, Mehrfach-richtig, Überprüfen) */
+.quiz--lern { padding: 1.1rem 1.2rem 1rem; }
+.quiz--lern .quiz-kopf { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.9rem; }
+.quiz--lern .quiz-badge {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  margin: 0;
+  white-space: nowrap;
+}
+.quiz--lern .frage {
+  margin: 0 0 0.8rem;
+  padding: 0.8rem 0.9rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+/* Frage als fieldset/legend: native Gruppe für Screenreader, ohne
+   Legenden-Kerbe im Rahmen (legend floatet, Optionen räumen darunter auf) */
+.quiz--lern fieldset.frage { min-width: 0; }
+.quiz--lern .frage-text { margin: 0 0 0.5rem; font-weight: bold; }
+.quiz--lern legend.frage-text {
+  float: left;
+  width: 100%;
+  padding: 0;
+}
+.quiz--lern legend.frage-text + .optionen { clear: both; }
+
+/* Infokugel je Antwortoption (im Label), Sprechblase darunter */
+.quiz--lern .infokugel {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: 0.45rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--code-bg);
+  color: var(--ink);
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 0.8rem;
+  line-height: 1.2rem;
+  cursor: help;
+  /* Touch: kein Doppeltap-Zoom, kein Auswahl-/Kontextmenü beim Halten */
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.quiz--lern .infokugel:hover,
+.quiz--lern .infokugel:focus,
+.quiz--lern .infokugel[aria-expanded="true"] { border-color: var(--muted); }
+.quiz--lern .infokugel[aria-expanded="true"] { background: var(--line); }
+/* hidden-Attribut gegen die display-Regel oben absichern */
+.quiz--lern .infokugel[hidden],
+.quiz--lern .infoblase[hidden] { display: none !important; }
+.quiz--lern .infoblase {
+  margin: 0.25rem 0 0.4rem 0.7rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--code-bg);
+  border-left: 3px solid var(--muted);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.quiz--lern .infoblase .ist-richtig { color: var(--ok); }
+.quiz--lern .infoblase .ist-falsch { color: var(--err); }
+.quiz--lern .infoblase-grund { color: var(--muted); }
+
+/* Touch-Geräte: größere Kugel, größerer Blasentext und eine unsichtbare
+   Trefferfläche (≈40×36px) um den Kreis. Nur unter (hover: none), damit
+   der Desktop-Hoverbereich unverändert bleibt. */
+@media (hover: none) {
+  .quiz--lern .infokugel {
+    width: 1.75rem;
+    height: 1.75rem;
+    line-height: 1.65rem;
+    font-size: 0.95rem;
+  }
+  .quiz--lern .infokugel::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2.5rem;
+    height: 2.25rem;
+    transform: translate(-50%, -50%);
+  }
+  .quiz--lern .infoblase { font-size: 0.95rem; }
+}
+
+/* Färbung je Option nach dem Prüfen — allein eine Bewertung des
+   Häkchens: grün = Entscheidung korrekt, rot = Entscheidung falsch */
+.quiz--lern .optionen label.opt-richtig {
+  border-color: #39d97a;
+  background: var(--ok-bg);
+  box-shadow: 0 0 8px rgba(57, 217, 122, 0.25);
+}
+.quiz--lern .optionen label.opt-falsch {
+  border-color: #ff6b6b;
+  background: var(--err-bg);
+  box-shadow: 0 0 8px rgba(255, 107, 107, 0.25);
+}
+:root[data-theme="dark"] .quiz--lern .optionen label.opt-richtig {
+  box-shadow: 0 0 12px rgba(57, 217, 122, 0.35);
+}
+:root[data-theme="dark"] .quiz--lern .optionen label.opt-falsch {
+  box-shadow: 0 0 12px rgba(255, 107, 107, 0.35);
+}
+
+/* Überprüfen-Button je Frage, zentriert */
+.quiz--lern .quiz-pruefen {
+  display: block;
+  margin: 0.7rem auto 0.2rem;
+  padding: 0.45rem 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--code-bg);
+  color: var(--ink);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.quiz--lern .quiz-pruefen:hover { border-color: var(--muted); }
+
+/* Statuszeile für Screenreader — Farbe allein ist kein Feedback */
+.quiz--lern .quiz-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Fußnoten unter Tabellen und Abbildungen */
+p.fussnote {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: -0.4rem;
+}
+
+/* Baustein-Kennzeichnung */
+.baustein {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+
+/* Lehrplan-Details am Lesson-Ende */
+details.lehrplan {
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.8rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+details.lehrplan summary {
+  cursor: pointer;
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+details.lehrplan ul { margin: 0.6rem 0 0; padding-left: 1.2rem; }
+details.lehrplan li { margin: 0.25rem 0; }
+
+footer.navi {
+  border-top: 2px solid var(--line);
+  margin-top: 3rem;
+  padding-top: 0.9rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* Altklassen der Lessons vor Format 2.1 */
 footer.lesson-foot { margin-top: 2.5rem; font-size: 0.9rem; color: var(--muted); }
 footer.lesson-foot a { color: var(--accent); }
 
@@ -164,9 +425,29 @@ footer.lesson-foot a { color: var(--accent); }
     --code-bg: #f6f6f4;
     --ok: #15803d;
     --err: #b91c1c;
+    --ok-bg: #eef7ee;
+    --err-bg: #fdeeec;
   }
-  body { max-width: none; padding: 0; }
+  body { max-width: none; padding: 0 1rem; font-size: 10.5pt; }
   pre { white-space: pre-wrap; }
   .quiz label { break-inside: avoid; border: 1px solid #999; }
+  .quiz--lern .frage,
+  pre { break-inside: avoid; }
   .theme-toggle, #gh-pages-badge, nav.breadcrumb { display: none !important; }
+  /* Querscroll ist ein Bildschirm-Komfort: auf Papier würde er abschneiden */
+  .tabelle-scroll { overflow: visible; margin: 1.2rem 0; }
+  table,
+  .tabelle-scroll > table {
+    display: table;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    overflow: visible;
+    font-size: 9.5pt;
+  }
+  th, td { padding: 0.25rem 0.35rem; border-color: #8a8a8a; }
+  tr { break-inside: avoid; }
+  .quiz--lern .quiz-pruefen,
+  .quiz--lern .infokugel,
+  .quiz--lern .infoblase { display: none !important; }
 }
