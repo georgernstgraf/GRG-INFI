@@ -13,6 +13,7 @@ Unterrichtsmaterial (HTML/Markdown + `assets/`) und **keinen lauffähigen Code**
 | [`km5-05-drizzle-orm/`](km5-05-drizzle-orm/) | KM5-05 | Drizzle-Schema (Artist/Album/Track), CRUD, Join, `toSQL()`-Einblick, FK- und Parametrisierungs-Tests | Deno + `node:sqlite` + `drizzle-orm` (kein Node) |
 | [`km6-01-prisma-werkzeuge/`](km6-01-prisma-werkzeuge/) | KM6-01 | CLI, Migrationen, Studio, `db pull`/`db push` | Node + Prisma 7 (TS-Client) + tsx |
 | [`km6-02-prisma-query-api/`](km6-02-prisma-query-api/) | KM6-02 | CRUD/Query API, Aggregate, `$transaction`, `$queryRaw` | Node + Prisma 7 (TS-Client) + tsx |
+| [`sa-01-blockchain-als-datenbank/`](sa-01-blockchain-als-datenbank/) | SA-01 | Hash-Kette in zwei Tabellen, Merkle-Wurzel, Proof of Work, Tamper-Erkennung, Reorg-Regel | Deno + `node:sqlite` + `node:crypto` (kein Node) |
 
 Jedes Projekt ist eigenständig lauffähig — die Einrichtung (`npm install`,
 Migrationen, Testbefehl) steht jeweils in der `README.md` im Projektordner.
