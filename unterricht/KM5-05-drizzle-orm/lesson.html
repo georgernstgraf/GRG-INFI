@@ -76,7 +76,7 @@ typisierte Objekte an statt als lose Spaltenwerte.</p>
 <div class="quiz" data-loesung="2">
 <p class="frage">1. Was ist der Kernvorteil eines ORMs wie Drizzle?</p>
 <label><input type="radio" name="q1" value="0" data-grund="Falsch, weil SQL nicht verschwindet — Drizzle erzeugt weiterhin SQL, und wer es nicht lesen kann, versteht seine Queries nicht."> Man muss nie wieder SQL schreiben oder lesen</label>
-<label><input type="radio" name="q1" value="1" data-grund="Falsch, weil Drizzle die Datenbank nicht schneller macht — Geschwindigkeit bleibt eine Frage von Schema, Index und Abfrage."> Die Datenbank wird automatisch schneller</label>
+<label><input type="radio" name="q1" value="1" data-grund="Falsch, weil die Lesson als Gewinn Typprüfung, Parametrisierung und typisierte Objekte nennt — nicht Tempo."> Die Datenbank wird automatisch schneller</label>
 <label><input type="radio" name="q1" value="2" data-grund="Richtig, weil das Schema in TypeScript liegt: falsche Namen und Typen schreien bei der Typ-Prüfung, nicht erst zur Laufzeit der Datenbank."> Typfehler werden zur Typ-Prüfung statt zur Laufzeit gefunden</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
@@ -139,7 +139,7 @@ const db = drizzle({ client });</code></pre>
 
 <div class="quiz" data-loesung="1">
 <p class="frage">3. Welcher Treiber verbindet Drizzle mit SQLite in unserem Setup?</p>
-<label><input type="radio" name="q3" value="0" data-grund="Falsch, weil besser-sqlite3 ein natives npm-Paket mit Build-Aufwand ist — wir nutzen stattdessen den eingebauten node:sqlite-Treiber."> better-sqlite3 aus npm</label>
+<label><input type="radio" name="q3" value="0" data-grund="Falsch, weil wir den eingebauten node:sqlite-Treiber nehmen — derselbe Treiber wie bisher, kein zusätzliches npm-Paket."> better-sqlite3 aus npm</label>
 <label><input type="radio" name="q3" value="1" data-grund="Richtig, weil node:sqlite in Deno eingebaut ist (DatabaseSync) und Drizzle dafür den Adapter drizzle-orm/node-sqlite mitbringt."> node:sqlite (DatabaseSync) über drizzle-orm/node-sqlite</label>
 <label><input type="radio" name="q3" value="2" data-grund="Falsch, weil Drizzle selbst nur die Query-Schicht ist — ohne Treiber redet es mit gar keiner Datenbank."> gar keiner — Drizzle spricht SQLite direkt</label>
 <p class="feedback" aria-live="polite"></p>
@@ -209,7 +209,7 @@ failed</code> — die DB schützt die Konsistenz, nicht das ORM.</p>
 <p class="frage">6. Im Schema heißt die Spalte <code>artistId</code>, in der Datenbank <code>artist_id</code>. Warum?</p>
 <label><input type="radio" name="q6" value="0" data-grund="Falsch, weil Drizzle keine Spalten automatisch umbenennt — die DB-Spalte heißt exakt so, wie du sie im Schema benannt hast."> Drizzle benennt alle Spalten automatisch um</label>
 <label><input type="radio" name="q6" value="1" data-grund="Richtig, weil die beiden Namen im Schema getrennt angegeben werden: camelCase für TypeScript-Code, snake_case für die DB-Spalte."> Der TypeScript-Name und der DB-Spaltenname werden getrennt angegeben</label>
-<label><input type="radio" name="q6" value="2" data-grund="Falsch, weil nur der erste Name (hier artistId) im Code zählt — für die DB-Spalte zählt der zweite Name in der Klammer."> Nur der Name in der DB zählt, artistId ist nur ein Kommentar</label>
+<label><input type="radio" name="q6" value="2" data-grund="Falsch, weil jede Spalte zwei Namen hat: artistId spricht der Code an, artist_id steht in der DB — keiner ist Kommentar."> Nur der Name in der DB zählt, artistId ist nur ein Kommentar</label>
 <p class="feedback" aria-live="polite"></p>
 </div>
 
@@ -311,7 +311,7 @@ kennt — Drizzle macht sie zur Norm, statt sie zur Disziplin zu erklären.</p>
 <div class="quiz" data-loesung="2">
 <p class="frage">12. In welchem Fall ist Raw SQL über node:sqlite die bessere Wahl?</p>
 <label><input type="radio" name="q12" value="0" data-grund="Falsch, weil CRUD-Inserts genau der Brot-und-Butter-Fall für den Query-Builder sind — typsicher und parametrisiert."> Beim Einfügen einzelner Zeilen</label>
-<label><input type="radio" name="q12" value="1" data-grund="Falsch, weil Drizzle ORM nichts gegen die Sicherheit ändert — es parametrisiert by default und ist damit kein Sicherheitsrisiko."> Weil Raw SQL sicherer gegen Injection ist</label>
+<label><input type="radio" name="q12" value="1" data-grund="Falsch, weil der Query-Builder by default parametrisiert — bei Raw-SQL ist das Parametrisieren deine Aufgabe."> Weil Raw SQL sicherer gegen Injection ist</label>
 <label><input type="radio" name="q12" value="2" data-grund="Richtig, weil EXPLAIN QUERY PLAN, CLI-Import und Backup-Skripte SQL-Toolbox-Themen sind — dort gibt es nichts für ein ORM zu mappen."> Bei Messung, CLI-Import und Backup-Skripten</label>
 <p class="feedback" aria-live="polite"></p>
 </div>

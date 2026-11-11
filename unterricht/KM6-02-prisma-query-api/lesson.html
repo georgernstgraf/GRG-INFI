@@ -244,7 +244,7 @@ const rows = await prisma.$queryRaw`
 
 <div class="quiz" data-loesung="1">
 <p class="frage">10. Wofür ist <code>$queryRaw</code> da?</p>
-<label><input type="radio" name="q10" value="0" data-grund="Falsch, weil $queryRaw rohes SQL ist und nicht typsicher wie die API."> Als typsicherer Ersatz für findMany</label>
+<label><input type="radio" name="q10" value="0" data-grund="Falsch, weil $queryRaw der Fluchtweg für rohes SQL ohne API-Entsprechung ist — nicht der Ersatz für findMany."> Als typsicherer Ersatz für findMany</label>
 <label><input type="radio" name="q10" value="1" data-grund="Richtig, weil $queryRaw rohes SQL für Fälle ohne API-Entsprechung ausführt (Result als BigInt bei COUNT)."> Als Fluchtweg für rohes SQL</label>
 <label><input type="radio" name="q10" value="2" data-grund="Falsch, weil Migrationen migrate erledigt, nicht $queryRaw."> Zum Erzeugen neuer Migrationen</label>
 <label><input type="radio" name="q10" value="3" data-grund="Falsch, weil $queryRaw nichts mit der Konfiguration zu tun hat."> Zum Konfigurieren der Datenbank-URL</label>

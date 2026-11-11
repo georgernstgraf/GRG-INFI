@@ -248,7 +248,7 @@ DATABASE_URL="file:./altbestand/legacy.db" npx prisma db pull --print
 <div class="quiz" data-loesung="0">
 <p class="frage">5. Was bewirkt <code>prisma db pull</code>?</p>
 <label><input type="radio" name="q5" value="0" data-grund="Richtig, weil db pull eine bestehende Datenbank introspiziert und daraus Prisma-Modelle erzeugt."> Es liest eine bestehende Datenbank ins Schema ein</label>
-<label><input type="radio" name="q5" value="1" data-grund="Falsch, weil db pull das Schema überschreibt; das Einspielen ins Schema ist gerade sein Zweck."> Es schreibt das Schema in die bestehende Datenbank</label>
+<label><input type="radio" name="q5" value="1" data-grund="Falsch, weil db pull die Gegenrichtung ist: Die DB-Struktur wird ins Schema geschrieben, nicht das Schema in die DB."> Es schreibt das Schema in die bestehende Datenbank</label>
 <label><input type="radio" name="q5" value="2" data-grund="Falsch, weil db pull keine Daten exportiert, sondern die Struktur erfasst."> Es exportiert alle Datensätze als CSV-Datei</label>
 <label><input type="radio" name="q5" value="3" data-grund="Falsch, weil das Anwenden von Migrationen migrate dev bzw. deploy macht."> Es wendet offene Migrationen auf die Datenbank an</label>
 <p class="feedback" aria-live="polite"></p>
@@ -275,7 +275,7 @@ DATABASE_URL="file:./altbestand/legacy.db" npx prisma db pull --print
 <div class="quiz" data-loesung="3">
 <p class="frage">8. Wozu braucht der PrismaClient in Version 7 einen Driver Adapter?</p>
 <label><input type="radio" name="q8" value="0" data-grund="Falsch, weil Prisma 7 die frühere Rust-Engine gerade entfernt hat."> Weil Prisma 7 wieder eine Rust-Engine mitbringt</label>
-<label><input type="radio" name="q8" value="1" data-grund="Falsch, weil der Adapter kein Schema erzeugt; den Client erzeugt prisma generate."> Weil der Adapter das Schema in SQL übersetzt</label>
+<label><input type="radio" name="q8" value="1" data-grund="Falsch, weil der Adapter der native Treiber für die Verbindung ist — das SQL erzeugen die Migrationen."> Weil der Adapter das Schema in SQL übersetzt</label>
 <label><input type="radio" name="q8" value="2" data-grund="Falsch, weil der Client die Verbindung über den Adapter erhält, nicht aus der Config."> Weil der Client die URL aus der Config liest</label>
 <label><input type="radio" name="q8" value="3" data-grund="Richtig, weil Prisma 7 die Engine entfernt hat und der Client über einen nativen Treiber mit der DB spricht."> Weil der Client über einen nativen Treiber spricht</label>
 <p class="feedback" aria-live="polite"></p>
