@@ -9,7 +9,7 @@ Current status as of 2026-11-16.
 kohortenagnostisch, **ohne** Beispielprojekt) + `aufgabe.md` (Beispiel 1–3:
 Umrechnen/Shards, WÜ-Selbsttest, Transfer Schulsystem). Navigator-Block
 „Schulautonom (SA)“ und Glossar-Abschnitt „Verteilte Datenbanken in der Praxis“
-(15 Begriffe) nachgezogen. Issue **#22**.
+(15 Begriffe) nachgezogen. Issue **#22** (geschlossen).
 **Recherche-Kern:** Zahlen aus TAO (ATC'13), Scaling Memcache (NSDI'13),
 MyRocks (VLDB 13), RAMP-TAO (VLDB 14), Shard Manager (SOSP'21), TAOBench
 (VLDB 15), Skybridge (OSDI'25), ZippyDB/ZGateway — jede Zahl mit Jahr.

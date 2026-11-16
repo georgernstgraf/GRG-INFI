@@ -1,7 +1,7 @@
 # HANDOFF
 
 **2026-11-16:** Prepared Lesson `unterricht/SA-02-facebook-datenbank/` (90 min,
-reine Konzept-Lesson, **kein** Beispielprojekt) — Issue **#22**. Inhalt: das
+reine Konzept-Lesson, **kein** Beispielprojekt) — Issue **#22** (geschlossen). Inhalt: das
 Zahlenbild des Meta-Datenbank-Stacks (TAO > 10 Mrd. Reads/s und Zehner
 Millionen Writes/s, 3,6 Mrd. MAU, ZippyDB ~2,5 Mrd. Ops/s, Shard Manager
 > 1 Mio. Maschinen), Sharding/Lokalität, InnoDB→MyRocks, TAO als Cache-Schicht,
