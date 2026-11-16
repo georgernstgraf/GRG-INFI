@@ -225,11 +225,11 @@ Anwendung.</p>
     </div>
   </fieldset>
   <fieldset class="frage">
-    <legend class="frage-text">Welche Aussagen zur Shard-Regel und zu den Sperren treffen zu?</legend>
+    <legend class="frage-text">Warum verringert die Shard-Regel den Aufwand für Sperren?</legend>
     <div class="optionen">
       <label><input type="checkbox" name="sa-02-q5" value="0" data-richtig data-grund="Richtig — wenn alle beteiligten Zeilen auf einem Shard liegen, genügt eine lokale Transaktion; die Sperre bleibt in einer Datenbank und muss nicht über Maschinen ausgehandelt werden."> Weil eine Transaktion meist nur einen Shard berührt</label>
       <label><input type="checkbox" name="sa-02-q5" value="1" data-grund="Falsch — Shards werden sehr wohl repliziert; die Replikation ist aber nicht der Grund, warum Sperren billiger werden."> Weil Shards untereinander nicht repliziert werden</label>
-      <label><input type="checkbox" name="sa-02-q5" value="2" data-grund="Falsch — geschrieben wird weiterhin gesperrt; nur beim Lesen entfällt die Sperre (Abschnitt 8)."> Weil überhaupt nicht mehr gesperrt werden muss</label>
+      <label><input type="checkbox" name="sa-02-q5" value="2" data-grund="Falsch — geschrieben wird weiterhin gesperrt; nur beim Lesen entfällt die Sperre (Abschnitt 8)."> Weil nicht mehr gesperrt werden muss</label>
       <label><input type="checkbox" name="sa-02-q5" value="3" data-grund="Falsch — die Shard-Zahl ist gerade die Schwierigkeit; sie wird nicht kleiner, sondern die Abhängigkeiten zwischen den Shards werden kleiner."> Weil die Zahl der Shards dadurch kleiner wird</label>
     </div>
   </fieldset>
@@ -281,7 +281,7 @@ Einschränkung bewusst akzeptiert — der Platzgewinn war wichtiger.</p>
   <fieldset class="frage">
     <legend class="frage-text">Was ist der Hauptgrund für den Wechsel von InnoDB zu MyRocks?</legend>
     <div class="optionen">
-      <label><input type="checkbox" name="sa-02-q7" value="0" data-richtig data-grund="Richtig — das Ziel war halbierter Platzbedarf bei gleicher oder besserer Schreibeffizienz; so passen doppelt so viele Datenbanken auf eine Maschine."> Platz sparen und weniger Bytes schreiben</label>
+      <label><input type="checkbox" name="sa-02-q7" value="0" data-richtig data-grund="Richtig — das Ziel war bis zur Halbierung des Platzbedarfs bei gleicher Schreibeffizienz, also bis zu doppelt so viele Datenbanken pro Maschine."> Platz sparen und weniger Bytes schreiben</label>
       <label><input type="checkbox" name="sa-02-q7" value="1" data-grund="Falsch — lesend ist MyRocks langsamer; der Wechsel nahm Verschlechterung beim Lesen bewusst in Kauf."> Schnellere Lesezugriffe auf einzelne Zeilen</label>
       <label><input type="checkbox" name="sa-02-q7" value="2" data-grund="Falsch — beide sind Transaktions-Engines mit denselben ACID-Zusagen; an der Transaktionsgrenze änderte sich nichts."> Verzicht auf Transaktionen zugunsten von Geschwindigkeit</label>
       <label><input type="checkbox" name="sa-02-q7" value="3" data-grund="Falsch — verteilte Abfragen über Shards löst keine Speicher-Engine; das macht die Anwendungsschicht."> Verteilte Abfragen über mehrere Shards hinweg</label>
@@ -343,7 +343,7 @@ passiert im Speicher und in der Nähe der Nutzer, nicht auf der Festplatte.</p>
     <legend class="frage-text">Wie erfährt der Cache von einer Änderung?</legend>
     <div class="optionen">
       <label><input type="checkbox" name="sa-02-q11" value="0" data-richtig data-grund="Richtig — die Invalidierung wird in den Replikationsstrom eingebettet; Cache und Replikate hören denselben Kanal."> Über den Replikationsstrom der Datenbank</label>
-      <label><input type="checkbox" name="sa-02-q11" value="1" data-grund="Falsch — Ablaufzeiten allein würden bis zu ihrem Erreichen veraltete Daten liefern; die Invalidierung kommt aktiv über den Replikationsstrom."> Über Ablaufzeiten, die im Cache gesetzt sind</label>
+      <label><input type="checkbox" name="sa-02-q11" value="1" data-grund="Falsch — ein Treffer beantwortet die Anfrage ohne Datenbank; die Ungültigmachung kommt aktiv über den Replikationsstrom, nicht durch Nachfragen."> Der Cache fragt bei jedem Treffer die Datenbank nach Änderungen</label>
       <label><input type="checkbox" name="sa-02-q11" value="2" data-grund="Falsch — der Client schreibt nicht in den Cache; er schreibt in die Datenbank, und der Rückweg läuft über die Replikation."> Der Client schreibt die Änderung direkt in den Cache</label>
       <label><input type="checkbox" name="sa-02-q11" value="3" data-grund="Falsch — ein vollständiges Neuladen des Caches wäre bei Petabytes unmöglich und würde die Datenbank überlasten."> Der Cache wird regelmäßig vollständig neu geladen</label>
     </div>
@@ -522,9 +522,9 @@ gleichzeitig schreiben.</p>
   <fieldset class="frage">
     <legend class="frage-text">Welche Gründe sprechen dafür, dass eine Freundschaft eine verteilte Transaktion braucht?</legend>
     <div class="optionen">
-      <label><input type="checkbox" name="sa-02-q17" value="0" data-richtig data-grund="Richtig — Quelle und Ziel haben verschiedene ids und liegen damit auf verschiedenen Shards; genau das erzeugt den Fall."> Weil die Gegenkante auf einem anderen Shard liegt</label>
+      <label><input type="checkbox" name="sa-02-q17" value="0" data-richtig data-grund="Richtig — Quelle und Ziel haben verschiedene ids und fallen im Beispiel auf verschiedene Shards (Anna 17, Bea 41); genau daraus entsteht der Fall."> Weil die Gegenkante auf einem anderen Shard liegt</label>
       <label><input type="checkbox" name="sa-02-q17" value="1" data-grund="Falsch — Freundschaften sind pro Nutzer selten, global aber sehr häufig; die Häufigkeit ist nicht der Grund."> Weil Freundschaften besonders selten geschrieben werden</label>
-      <label><input type="checkbox" name="sa-02-q17" value="2" data-grund="Falsch — die Zuordnung ist berechenbar aus der id, nicht zufällig; gerade deshalb liegen die beiden Kanten getrennt."> Weil die Zuordnung von Objekten zu Shards zufällig ist</label>
+      <label><input type="checkbox" name="sa-02-q17" value="2" data-grund="Falsch — der Shard wird aus der id berechnet, nicht zufällig; die Zuordnung ist berechenbar und gerade deshalb planbar."> Weil die Zuordnung von Objekten zu Shards zufällig ist</label>
       <label><input type="checkbox" name="sa-02-q17" value="3" data-richtig data-grund="Richtig — die Anwendung darf keine halbe Freundschaft sehen: entweder sind beide Kanten sichtbar oder keine."> Weil die Anwendung nie eine halbe Freundschaft sehen darf</label>
     </div>
   </fieldset>

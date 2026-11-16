@@ -9,12 +9,13 @@ Read this file carefully before making changes in affected areas.
   eine scheinbar heile Seite. Kopfzeile beim Bauen immer gegen eine funktionierende Lesson
   diffen; `python3`-Byte-Vergleich der Zeile findet Homoglyphen/fehlende Klammern sofort.
 - **`pre`-Blöcke laufen waagrecht über.** Die Inhaltsbreite trägt rund 68 Monospace-Zeichen;
-  längere Zeilen erzeugen eine Scrollleiste und schneiden Text ab (`rechte Kante: „…ich kann`
-  ohne Anführungszeichen). Vor dem Commit per CDP prüfen:
+  längere Zeilen erzeugen eine Scrollleiste und schneiden Text ab (rechte Kante: `…ich kann`
+  ohne schließendes Anführungszeichen). Vor dem Commit per CDP prüfen:
   `[...document.querySelectorAll('pre')].map(p => p.scrollWidth - p.clientWidth)` — muss
-  überall 0 sein. Lange Zeilen umbrechen statt kürzen; die Skripte liegen unter
-  `/tmp/georg-sa02/` (Muster: `wide.mjs`, `shot.mjs` — Cache im Headless-Chromium unbedingt
-  per `Network.setCacheDisabled` abschalten, sonst prüft man alte CSS-Stände).
+  überall 0 sein. Lange Zeilen umbrechen statt kürzen. Beim Headless-Check unbedingt
+  `Network.setCacheDisabled` **vor** `Page.navigate` setzen (Target auf `about:blank`
+  anlegen, dann navigieren) — sonst prüft man alte CSS-Stände und hält eine Reparatur
+  für gescheitert.
 - **`chromium --dump-dom` wartet keine dynamisch injizierten Skripte ab.** Screenshots/Dumps
   zeigen dann den Zustand vor `loader.js`. Für echte Prüfung (Quiz klicken, Theme, Legacy-Modus)
   das DevTools-Protokoll nutzen: `--remote-debugging-port`, `PUT /json/new?<url>`, dann per
