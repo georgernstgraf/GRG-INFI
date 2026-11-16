@@ -194,7 +194,8 @@ th {
   font-size: 0.95rem;
 }
 .callout .label {
-  display: inline-block;
+  display: block;
+  margin: 0 0 0.3rem;
   font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
   font-size: 0.72rem;
   text-transform: uppercase;

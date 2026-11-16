@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion SA-02 · Die Datenbank hinter Facebook</title>
+<script>(function(){var s=location.pathname.split("/");s.pop();(function t(){if(!s.length)return;var r=s.join("/")+"/",e=document.createElement("script");e.src=r+"assets/loader.js";e.setAttribute("data-css","lesson.css");e.setAttribute("data-js","theme.js,quiz.js");e.onerror=function(){s.pop();t()};e.onload=function(){if(!window.__SITE_ROOT__){s.pop();t()}};document.head.appendChild(e)})()})();</script>
+</head>
+<body>
+
+<header class="meta">
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">Dunkel</button>
+  <span class="kicker">Lektion SA-02 · Datenbanken · schulautonome Vertiefung</span>
+  <h1>Die Datenbank hinter Facebook</h1>
+  <p class="subtitle">Zehn Milliarden Lesevorgänge pro Sekunde — und die Frage,
+  ob dort überhaupt noch gesperrt wird.</p>
+</header>
+
+<div class="callout">
+  <span class="label">Lektüre</span>
+  <ul>
+    <li>Bronson u. a.: <a href="https://www.usenix.org/system/files/conference/atc13/atc13-bronson.pdf">TAO:
+    Facebook’s Distributed Data Store for the Social Graph</a> (USENIX ATC 2013)
+    — Abschnitte 1–3 reichen für heute.</li>
+    <li>Cheng u. a.: <a href="https://www.vldb.org/pvldb/vol14/p3014-cheng.pdf">RAMP-TAO:
+    Layering Atomic Transactions on Facebook’s Online TAO Data Store</a>
+    (VLDB 2021) — Abschnitt 2 erklärt das Locking.</li>
+    <li>Cheng u. a.: <a href="https://www.vldb.org/pvldb/vol15/p1965-cheng.pdf">TAOBench:
+    An End-to-End Benchmark for Social Network Workloads</a> (VLDB 2022) — woher
+    die aktuellen Zahlen kommen.</li>
+    <li>Referenzbegriffe:
+    <a href="https://github.com/georgernstgraf/GRG-INFI/blob/main/GLOSSAR.md">GLOSSAR.md</a>
+    (Abschnitt „Verteilte Datenbanken“).</li>
+  </ul>
+</div>
+
+<h2>1. Die Einstiegsfrage</h2>
+<p>Du öffnest die App, scrollst eine Minute, tippst ein Herzchen. Aus deiner
+Sicht waren das drei Gesten.</p>
+<p>Aus Sicht der Datenbank waren es <strong>hunderte Lesevorgänge</strong>:
+Beiträge, Autoren, Freundschaften, Zähler, Einstellungen, Sichtbarkeiten. Jeder
+Beitrag im Feed ist eine Abfrage, und ein Beitrag reicht selten.</p>
+<div class="callout tipp">
+  <span class="label">Die Frage dieser Lektion</span>
+  Wie viele Datenbankzugriffe erzeugt <strong>ein einziger Nutzer pro Tag</strong>
+  — und wie hält ein System das aus, ohne dass die Daten unbrauchbar werden?
+</div>
+<p>Die Antwort hat zwei Teile: eine Zahl (Abschnitt 2) und einen Bauplan
+(Abschnitte 3–7). Der spannende Teil ist aber der dritte: Was passiert mit dem
+<strong>Sperren</strong>, das du aus KM5 kennst? Wird ein Datensatz, den
+Millionen gleichzeitig lesen, überhaupt noch gesperrt?</p>
+<p>Die Antwort vorweg, weil sie überrascht: <strong>Es wurde nicht
+abgeschafft. Es wurde nachgerüstet, verkleinert und an den Rändern durch etwas
+anderes ersetzt.</strong> Warum das so ist, ist der Kern dieser Doppelstunde.</p>
+
+<h2>2. Das Zahlenbild — und eine Falle beim Lesen</h2>
+<p>Alle Zahlen unten stehen in wissenschaftlichen Papern, die Meta selbst
+veröffentlicht hat. Sie sind nicht geschätzt, sondern gemessen. Wichtig ist
+dabei weniger der Wert als das <strong>Jahr</strong>: Das System wächst, und
+eine Zahl ohne Jahr ist keine Angabe.</p>
+
+<table>
+  <tr><th>Größe</th><th>Wert</th><th>Jahr · Quelle</th></tr>
+  <tr><td>Lesevorgänge in TAO</td><td>über 10 Milliarden pro Sekunde</td><td>2022 · TAOBench</td></tr>
+  <tr><td>dieselbe Größe, neun Jahre früher</td><td>1 Milliarde pro Sekunde</td><td>2013 · TAO</td></tr>
+  <tr><td>Schreibvorgänge in TAO</td><td>Zehner Millionen pro Sekunde</td><td>2022 · TAOBench</td></tr>
+  <tr><td>Trefferquote des Cache</td><td>96,4 Prozent</td><td>2013 · TAO</td></tr>
+  <tr><td>Datenmenge</td><td>viele Petabytes, ständig wachsend</td><td>2013 / 2022</td></tr>
+  <tr><td>Nutzerbasis</td><td>Metas Apps zusammen: über 3,6 Milliarden monatlich aktive Nutzer</td><td>2022 · TAOBench</td></tr>
+  <tr><td>Cache-Tier (memcache)</td><td>über 1 Milliarde Leseanfragen pro Sekunde als Zielgröße</td><td>2013 · Scaling Memcache</td></tr>
+  <tr><td>Hauptdatenbank (UDB, MySQL)</td><td>zig Petabytes</td><td>2020 · MyRocks</td></tr>
+  <tr><td>Schlüssel-Wert-Store ZippyDB</td><td>über 1 Milliarde Operationen pro Sekunde allein über einen Proxy</td><td>2026 · ZGateway</td></tr>
+  <tr><td>Shard-Verwaltung</td><td>über 1 Million Maschinen, bis Zehner Millionen Shards pro Anwendung</td><td>2021 · Shard Manager</td></tr>
+</table>
+
+<p>Aus der Sekundenzahl lässt sich die Tagesbilanz ausrechnen. Eine Stunde hat
+3 600 Sekunden, ein Tag 86 400:</p>
+<pre><code>10 Milliarden/s × 86 400 s
+  = 864 000 Milliarden
+  = 864 Billionen Lesevorgänge pro Tag
+
+20 Millionen/s × 86 400 s     <span class="cmt">-- Mittelwert</span>
+  = 1 728 000 Millionen
+  = rund 1,7 Billionen Schreibvorgänge pro Tag</code></pre>
+<p>Verhältnis: genau <strong>500 Lesevorgänge auf einen Schreibvorgang</strong>
+(864 Billionen geteilt durch 1,728 Billionen). Das ist der wichtigste Satz des
+ganzen Zahlenbilds — das System ist ein Lesesystem, in das gelegentlich
+geschrieben wird.</p>
+<p>Und pro Kopf: 864 Billionen geteilt durch 3,6 Milliarden Nutzer ergibt rund
+<strong>240 000 Lesevorgänge pro Nutzer und Tag</strong>, also knapp drei pro
+Sekunde, rund um die Uhr. Das ist die Antwort auf die Einstiegsfrage: Ein
+Scroll ist nicht eine Abfrage, sondern ein Vielfaches davon.</p>
+
+<div class="callout achtung">
+  <span class="label">Achtung: die billion-Falle</span>
+  <p>Englische Paper schreiben <strong>billion</strong> für 10⁹ — das ist
+  deutsch <strong>Milliarde</strong>. Deutsch <strong>Billion</strong> heißt
+  englisch <strong>trillion</strong> und ist 10¹².</p>
+  <table>
+    <tr><th>Englisch</th><th>Wert</th><th>Deutsch</th></tr>
+    <tr><td>million</td><td>10⁶</td><td>Million</td></tr>
+    <tr><td><strong>billion</strong></td><td>10⁹</td><td><strong>Milliarde</strong></td></tr>
+    <tr><td><strong>trillion</strong></td><td>10¹²</td><td><strong>Billion</strong></td></tr>
+    <tr><td><strong>quadrillion</strong></td><td>10¹⁵</td><td><strong>Billiarde</strong></td></tr>
+  </table>
+  <p>Ab „billion“ liegt der deutsche Name eine Sprosse tiefer. Wer „ten
+  billion“ mit „zehn Billionen“ übersetzt, liegt <strong>um den Faktor
+  1000</strong> daneben — und die ganze Stunde wäre falsch.</p>
+  <p>Der Fehler fällt dabei nicht auf: Beide Zahlen klingen groß und plausibel,
+  nur eine ist um den Faktor 1000 falsch. Man sieht es dem Satz nicht an.</p>
+</div>
+
+<p>Genau diese Falle steckt auch in einer Zahl, die im Netz herumgeht: „TAO
+beantwortet eine Billiarde Anfragen pro Tag“. Im TAOBench-Paper steht das
+<strong>nicht</strong>. Dort steht „over ten billion reads per second“. Die
+Billiarde ist eine <em>Rechnung</em> (10 Milliarden × 86 400 ≈ 0,86 Billiarden),
+kein Zitat. Beides darf man verwenden — aber man muss wissen, welches von
+beidem man gerade sagt.</p>
+
+<div class="quiz" data-titel="Quiz: zahlen-und-einheiten">
+  <fieldset class="frage">
+    <legend class="frage-text">Ein Paper schreibt „over ten billion reads per second“. Wie viele sind das auf Deutsch?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q1" value="0" data-richtig data-grund="Richtig — englisch billion ist 10⁹, also Milliarde. Zehn davon sind zehn Milliarden pro Sekunde."> Über zehn Milliarden pro Sekunde</label>
+      <label><input type="checkbox" name="sa-02-q1" value="1" data-grund="Falsch — das ist die klassische Verwechslung: deutsch Billion ist 10¹² und damit tausendmal zu groß."> Über zehn Billionen pro Sekunde</label>
+      <label><input type="checkbox" name="sa-02-q1" value="2" data-grund="Falsch — eine Billiarde ist 10¹⁵, also nochmals tausendmal mehr als eine Billion."> Über zehn Billiarden pro Sekunde</label>
+      <label><input type="checkbox" name="sa-02-q1" value="3" data-grund="Falsch — zehn Millionen (10⁷) sind tausendmal kleiner als zehn Milliarden (10¹⁰); die Zehnerpotenz passt nicht."> Über zehn Millionen pro Sekunde</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Welche Tagesmenge folgt aus 10 Milliarden Lesevorgängen pro Sekunde?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q2" value="0" data-richtig data-grund="Richtig — 10 Milliarden mal 86 400 Sekunden ergibt 864 Billionen, also 8,64 · 10¹⁴."> Etwa 864 Billionen Lesevorgänge</label>
+      <label><input type="checkbox" name="sa-02-q2" value="1" data-grund="Falsch — hier fehlt der Faktor 1000: 864 Milliarden wären es nur bei 10 Millionen pro Sekunde, nicht bei 10 Milliarden."> Etwa 864 Milliarden Lesevorgänge</label>
+      <label><input type="checkbox" name="sa-02-q2" value="2" data-grund="Falsch — das ist zehnmal zu klein; 86 400 Sekunden sind rund 10⁵, nicht 10⁴."> Etwa 86 Billionen Lesevorgänge</label>
+      <label><input type="checkbox" name="sa-02-q2" value="3" data-grund="Falsch — das ist hundertmal zu klein; die Rechnung ist 10¹⁰ · 8,64 · 10⁴ = 8,64 · 10¹⁴."> Etwa 8,6 Billionen Lesevorgänge</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Warum ist die billion-Falle so gefährlich?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q3" value="0" data-richtig data-grund="Richtig — der Fehler ist unsichtbar: Die Zahl bleibt plausibel, ist aber um den Faktor 1000 falsch, und niemand merkt es am Satz."> Der Fehler fällt nicht auf, weil die Zahl plausibel klingt</label>
+      <label><input type="checkbox" name="sa-02-q3" value="1" data-grund="Falsch — beide Sprachen meinen mit „billion“ verschiedene Werte; gerade deshalb ist es keine Schreibweise, sondern eine Bedeutung."> Es ist nur eine Frage der Schreibweise, der Wert bleibt gleich</label>
+      <label><input type="checkbox" name="sa-02-q3" value="2" data-grund="Falsch — die Abweichung gilt im gesamten englischsprachigen Raum, nicht nur in den USA."> Der Unterschied gilt nur im amerikanischen Englisch</label>
+      <label><input type="checkbox" name="sa-02-q3" value="3" data-grund="Falsch — der Unterschied beginnt bereits bei 10⁹, also bei Milliarden; kleinere Zahlen sind unproblematisch, größere nicht."> Der Unterschied betrifft nur Zahlen über einer Billion</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>3. Der soziale Graph als zwei Tabellen</h2>
+<p>Bevor wir über Verteilung reden, müssen wir wissen, <em>was</em> da verteilt
+wird. Facebook speichert kein „Timeline-Objekt“. Es speichert einen
+<strong>Graphen</strong>: Knoten (Personen, Seiten, Fotos) und Kanten
+(Freundschaft, Like, Kommentar).</p>
+<p>Im Datenmodell von TAO sind das zwei Tabellen — für den ganzen Graphen, mit
+Milliarden Zeilen:</p>
+<pre><code>CREATE TABLE objekt (                <span class="cmt">-- Knoten</span>
+  id     BIGINT PRIMARY KEY,         <span class="cmt">-- 4, 1000042, …</span>
+  typ    INT    NOT NULL,            <span class="cmt">-- Nutzer, Seite, Foto …</span>
+  daten  BLOB   NOT NULL             <span class="cmt">-- Felder serialisiert</span>
+);
+
+CREATE TABLE assoziation (           <span class="cmt">-- Kanten</span>
+  id1    BIGINT NOT NULL,            <span class="cmt">-- Quellknoten</span>
+  typ    INT    NOT NULL,            <span class="cmt">-- FRIEND, LIKE …</span>
+  id2    BIGINT NOT NULL,            <span class="cmt">-- Zielknoten</span>
+  zeit   INT    NOT NULL,            <span class="cmt">-- 32-Bit-Zeitstempel</span>
+  PRIMARY KEY (id1, typ, id2)
+);</code></pre>
+<p>Zwei Feinheiten lohnen einen Blick. Erstens liegen die Felder eines Knotens
+<strong>nicht</strong> in eigenen Spalten, sondern serialisiert in einer
+einzigen — es gibt kein `WHERE stadt = 'Graz'`, weil niemand danach sucht.
+Zweitens ist `zeit` Teil der Sortierung: Kanten liegen absteigend nach Zeit, die
+neuesten zuerst.</p>
+<p>Damit wird „die letzten zwanzig Freunde von Anna“ zu einem Range-Scan über
+einen Präfix — nicht zu einem Join:</p>
+<pre><code>SELECT id2
+FROM   assoziation
+WHERE  id1 = 4 AND typ = 1          <span class="cmt">-- Annas Freundeskanten</span>
+ORDER  BY zeit DESC
+LIMIT  20;</code></pre>
+
+<div class="callout">
+  <span class="label">Merke</span>
+  Es gibt in diesem System <strong>keine Joins über Shards</strong>. Die API
+  kennt nur Punktabfrage, Bereich und Zähler. Was in SQL ein `JOIN` wäre, löst
+  die Anwendung durch mehrere gezielte Abfragen — oder es passiert gar nicht.
+</div>
+
+<h2>4. Sharding: warum Zusammenliegendes zusammenbleibt</h2>
+<p>Zehn Milliarden Lesevorgänge pro Sekunde passen auf keinen einzelnen Server.
+Die Daten werden deshalb <strong>geshardet</strong>: aufgeteilt in Stücke, die
+auf verschiedenen Maschinen liegen.</p>
+<p>Die entscheidende Regel lautet: <strong>Ein Objekt gehört für immer zu genau
+einem Shard</strong>, und der Shard wird aus der `id` berechnet. Eine Kante
+liegt immer beim <em>Quellknoten</em>.</p>
+<pre><code>Shard = shard_von(id)
+
+Beispiel:  objekt 4  (Anna)  → Shard 17
+           objekt 9  (Bea)   → Shard 41
+
+           Kante (4, FRIEND, 9)     liegt auf Shard 17   <span class="cmt">-- bei Anna</span>
+           Kante (9, FRIEND, 4)     liegt auf Shard 41   <span class="cmt">-- bei Bea</span></code></pre>
+<p>Das ist der Trick, der später das Locking klein hält: Fast alles, was eine
+Anfrage braucht, liegt auf <strong>einem</strong> Shard. Annas Freundesliste
+liegt bei Anna. Wer Annas Feed baut, muss nicht zwanzig Maschinen befragen,
+sondern eine.</p>
+<p>Der Preis steht direkt daneben: Die <strong>Gegenkante</strong> liegt
+woanders. Eine Freundschaft sind zwei Zeilen auf zwei Shards, die zusammen
+stimmen müssen. Merke dir diesen Satz — er wird in Abschnitt 8 der Grund, warum
+es doch verteiltes Locking gibt.</p>
+<p>Wer die Shards verwaltet, ist selbst ein System: der <strong>Shard
+Manager</strong>. Er kennt über eine Million Maschinen, verschiebt Shards bei
+Überlast und Failover und verwaltet bis zu Zehner Millionen Shards pro
+Anwendung.</p>
+
+<div class="quiz" data-titel="Quiz: graph-und-shards">
+  <fieldset class="frage">
+    <legend class="frage-text">Wo liegt die Kante „Anna mag Beas Foto“?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q4" value="0" data-richtig data-grund="Richtig — Kanten werden beim Quellknoten gespeichert; Quelle ist Anna, also liegt die Zeile auf Annas Shard."> Auf dem Shard von Anna, weil sie der Quellknoten ist</label>
+      <label><input type="checkbox" name="sa-02-q4" value="1" data-grund="Falsch — das Ziel entscheidet nicht; sonst läge jede Like-Zeile beim Fotobesitzer und würde dessen Shard überlasten."> Auf dem Shard von Beas Foto, weil es das Ziel ist</label>
+      <label><input type="checkbox" name="sa-02-q4" value="2" data-grund="Falsch — doppelte Ablage würde zwei Kopien synchron halten müssen; genau diese Synchronisation will man vermeiden."> Auf beiden Shards, damit beide Seiten schnell lesen</label>
+      <label><input type="checkbox" name="sa-02-q4" value="3" data-grund="Falsch — einen eigenen Shard nur für Kanten gibt es nicht; die Kante hängt am Objekt, nicht an einem globalen Verzeichnis."> Auf einem eigenen Shard für alle Kanten</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Welche Aussagen zur Shard-Regel und zu den Sperren treffen zu?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q5" value="0" data-richtig data-grund="Richtig — wenn alle beteiligten Zeilen auf einem Shard liegen, genügt eine lokale Transaktion; die Sperre bleibt in einer Datenbank und muss nicht über Maschinen ausgehandelt werden."> Weil eine Transaktion meist nur einen Shard berührt</label>
+      <label><input type="checkbox" name="sa-02-q5" value="1" data-grund="Falsch — Shards werden sehr wohl repliziert; die Replikation ist aber nicht der Grund, warum Sperren billiger werden."> Weil Shards untereinander nicht repliziert werden</label>
+      <label><input type="checkbox" name="sa-02-q5" value="2" data-grund="Falsch — geschrieben wird weiterhin gesperrt; nur beim Lesen entfällt die Sperre (Abschnitt 8)."> Weil überhaupt nicht mehr gesperrt werden muss</label>
+      <label><input type="checkbox" name="sa-02-q5" value="3" data-grund="Falsch — die Shard-Zahl ist gerade die Schwierigkeit; sie wird nicht kleiner, sondern die Abhängigkeiten zwischen den Shards werden kleiner."> Weil die Zahl der Shards dadurch kleiner wird</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Welche Kosten der Shard-Regel treffen zu?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q6" value="0" data-richtig data-grund="Richtig — die Gegenkante einer Freundschaft liegt auf einem anderen Shard; beide Zeilen müssen zusammen stimmen."> Zusammengehörige Zeilen können auf zwei Shards liegen</label>
+      <label><input type="checkbox" name="sa-02-q6" value="1" data-richtig data-grund="Richtig — die Gegenkante liegt auf einem anderen Shard; beide Zeilen müssen zusammen sichtbar werden, dafür braucht es 2PC (Abschnitt 8)."> Transaktionen über die Gegenkante brauchen ein Protokoll über Shards hinweg</label>
+      <label><input type="checkbox" name="sa-02-q6" value="2" data-grund="Falsch — Ausfälle sind unabhängig davon; Shards werden bei Ausfall verschoben, unabhängig von der Zuordnungsregel."> Ein Shard-Ausfall macht alle Daten unlesbar</label>
+      <label><input type="checkbox" name="sa-02-q6" value="3" data-grund="Falsch — die Zuordnung folgt der id und ist berechenbar; ein zentrales Verzeichnis für jede Abfrage wäre der Flaschenhals."> Jede Abfrage braucht ein zentrales Verzeichnis</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>5. MySQL bleibt im Kern — nur die Engine wechselt</h2>
+<p>Man erwartet hinter Facebook eine exotische Datenbank. Tatsächlich steht
+dort <strong>MySQL</strong>, und zwar in der Hauptdatenbank „UDB“ mit zig
+Petabytes. Was sich geändert hat, ist die Speicher-Engine darunter.</p>
+<p>Über ein Jahrzehnt lang war das <strong>InnoDB</strong>: ein B-Baum. Jede Zeile
+liegt an einem berechneten Platz, Änderungen schreiben ganze Seiten neu. Bei
+Schreiblast auf Flash-Speicher wird das teuer — nicht weil Schreiben langsam
+wäre, sondern weil zu viel geschrieben wird. Dieses Verhältnis heißt
+<strong>Write-Amplification</strong>: wie viele Bytes das Laufwerk sieht, pro
+Byte Nutzdaten.</p>
+<p>MyRocks ersetzt den B-Baum durch einen <strong>LSM-Baum</strong>
+(Log-Structured Merge Tree). Geschrieben wird zuerst in eine sortierte Datei im
+Speicher, die periodisch mit den bestehenden Dateien verschmolzen wird. Statt
+zufällig in Seiten zu schreiben, schreibt das Laufwerk große Blöcke
+hintereinander. Dieses Verschmelzen im Hintergrund kostet zusätzliche
+Schreibarbeit — der Preis für den Platzgewinn.</p>
+<table>
+  <tr><th>Größe</th><th>InnoDB (B-Baum)</th><th>MyRocks (LSM-Baum)</th></tr>
+  <tr><td>Platzbedarf</td><td>Referenz</td><td>40 bis 50 Prozent kleiner</td></tr>
+  <tr><td>Schreiblast</td><td>hoch</td><td>etwa ein Zehntel</td></tr>
+  <tr><td>Lesen einer Zeile</td><td>schnell</td><td>langsamer (mehr Ebenen)</td></tr>
+  <tr><td>Sperren</td><td>Zeilen <em>und</em> Lücken</td><td>nur Zeilen</td></tr>
+</table>
+<p>Die letzte Zeile ist die wichtigste für heute. InnoDB sperrt nicht nur die
+Zeile, die geändert wird, sondern auch die <strong>Lücke davor</strong>
+(Gap-Lock). Damit verhindert es, dass während einer Transaktion jemand etwas
+„dazwischen“ einfügt — nötig für Eindeutigkeit über Präfixe und für
+statement-basierte Replikation.</p>
+<p>MyRocks sperrt Zeilen, aber keine Lücken. Das ist <strong>weniger
+Wartezeit, aber auch weniger Garantie</strong>: Wer Eindeutigkeit über einen
+Präfix braucht, muss den vollen Primärschlüssel verwenden. Meta hat diese
+Einschränkung bewusst akzeptiert — der Platzgewinn war wichtiger.</p>
+
+<div class="quiz" data-titel="Quiz: mysql-und-myrocks">
+  <fieldset class="frage">
+    <legend class="frage-text">Was ist der Hauptgrund für den Wechsel von InnoDB zu MyRocks?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q7" value="0" data-richtig data-grund="Richtig — das Ziel war halbierter Platzbedarf bei gleicher oder besserer Schreibeffizienz; so passen doppelt so viele Datenbanken auf eine Maschine."> Platz sparen und weniger Bytes schreiben</label>
+      <label><input type="checkbox" name="sa-02-q7" value="1" data-grund="Falsch — lesend ist MyRocks langsamer; der Wechsel nahm Verschlechterung beim Lesen bewusst in Kauf."> Schnellere Lesezugriffe auf einzelne Zeilen</label>
+      <label><input type="checkbox" name="sa-02-q7" value="2" data-grund="Falsch — beide sind Transaktions-Engines mit denselben ACID-Zusagen; an der Transaktionsgrenze änderte sich nichts."> Verzicht auf Transaktionen zugunsten von Geschwindigkeit</label>
+      <label><input type="checkbox" name="sa-02-q7" value="3" data-grund="Falsch — verteilte Abfragen über Shards löst keine Speicher-Engine; das macht die Anwendungsschicht."> Verteilte Abfragen über mehrere Shards hinweg</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Was bewirkt ein Gap-Lock?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q8" value="0" data-richtig data-grund="Richtig — das Gap-Lock sperrt den Bereich zwischen zwei Zeilen und verhindert so, dass jemand während der Transaktion dort einfügt."> Es verhindert Einfügungen zwischen zwei Zeilen</label>
+      <label><input type="checkbox" name="sa-02-q8" value="1" data-grund="Falsch — es kommt zusätzlich zur Zeilensperre; es ersetzt sie nicht."> Es ersetzt die Sperre auf der geänderten Zeile</label>
+      <label><input type="checkbox" name="sa-02-q8" value="2" data-grund="Falsch — ein Gap-Lock ist eine Sperre, keine Sicherung; es schützt keine Kopien, sondern unterbindet konkurrierende Einfügungen."> Es erzeugt eine Sicherungskopie des Bereichs</label>
+      <label><input type="checkbox" name="sa-02-q8" value="3" data-grund="Falsch — mit Dauer hat es nichts zu tun; ein Gap-Lock endet mit der Transaktion wie jede andere Sperre."> Es verlängert die Transaktion um eine Wartezeit</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Welche Nachteile nimmt MyRocks bewusst in Kauf?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q9" value="0" data-richtig data-grund="Richtig — durch die Ebenen des LSM-Baums muss beim Lesen mehr gesucht werden; die Paper nennen das ausdrücklich als Preis."> Langsamere Lesezugriffe auf einzelne Zeilen</label>
+      <label><input type="checkbox" name="sa-02-q9" value="1" data-richtig data-grund="Richtig — ohne Gap-Locks ist Eindeutigkeit über einen Präfix nicht mehr automatisch garantiert; man braucht den vollen Schlüssel."> Schwächere Absicherung gegen Einfügungen in Lücken</label>
+      <label><input type="checkbox" name="sa-02-q9" value="2" data-richtig data-grund="Richtig — der Platzgewinn des LSM-Baums entsteht durch das Verschmelzen im Hintergrund, und das kostet zusätzliche Arbeit."> Zusätzliche Arbeit beim Zusammenführen der Dateien</label>
+      <label><input type="checkbox" name="sa-02-q9" value="3" data-grund="Falsch — MyRocks ist eine InnoDB-Alternative innerhalb von MySQL und nutzt dasselbe Protokoll und dieselbe Anbindung."> Ein neues, inkompatibles Netzwerkprotokoll</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>6. TAO davor: die Schicht, die 96 Prozent abfängt</h2>
+<p>Wenn 500 Lesevorgänge auf einen Schreibvorgang kommen, ist die wichtigste
+Frage nicht „wie speichere ich schnell“, sondern „wie komme ich gar nicht bis
+zur Datenbank“.</p>
+<p><strong>TAO</strong> ist diese Schicht: ein Graph-Cache, der vor den
+MySQL-Datenbanken sitzt und in jeder Region läuft. Lesezugriffe gehen zuerst an
+TAO. Trifft TAO, war die Datenbank nie beteiligt — 2013 in <strong>96,4 Prozent
+der Fälle</strong>.</p>
+<p>TAO ist kein reiner Cache, sondern <strong>write-through</strong>: Ein
+Schreibvorgang geht an die Datenbank, und die Änderung wandert von dort zurück
+in die Caches. Der Rückweg ist der interessante Teil: TAO hängt seine
+Invalidierungs-Befehle <strong>in den Replikationsstrom von MySQL</strong>. Die
+Cache-Kopie erfährt von einer Änderung also auf demselben Weg, auf dem die
+Datenbank-Replikate sie erfahren.</p>
+<pre><code>Lesen:    App ──▶ TAO-Cache ──treffer──▶ App
+                        └─kein Treffer─▶ MySQL ──▶ TAO füllt nach
+
+Schreiben: App ──▶ MySQL ──Replikationsstrom──▶ TAO-Cache
+                          <span class="cmt">(Invalidierung läuft mit)</span></code></pre>
+<p>Damit ist klar, warum das System lesend so schnell ist: Die teure Arbeit
+passiert im Speicher und in der Nähe der Nutzer, nicht auf der Festplatte.</p>
+
+<div class="quiz" data-titel="Quiz: tao">
+  <fieldset class="frage">
+    <legend class="frage-text">Was bedeutet die Trefferquote von 96,4 Prozent für die Datenbank?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q10" value="0" data-richtig data-grund="Richtig — nur rund 3,6 Prozent der Leseanfragen erreichen MySQL; der Rest wird im Cache beantwortet."> Nur etwa jede 28. Leseanfrage erreicht MySQL</label>
+      <label><input type="checkbox" name="sa-02-q10" value="1" data-grund="Falsch — die Quote beschreibt Leseanfragen an den Cache, nicht die Ausfallzeit des Systems."> Das System fällt zu 3,6 Prozent der Zeit aus</label>
+      <label><input type="checkbox" name="sa-02-q10" value="2" data-grund="Falsch — 96,4 Prozent sind Treffer, nicht Fehler; die Fehlquote ist der kleine Rest."> 96,4 Prozent aller Abfragen schlagen fehl</label>
+      <label><input type="checkbox" name="sa-02-q10" value="3" data-grund="Falsch — die Quote sagt nichts über Schreibvorgänge; sie bezieht sich auf Lesezugriffe."> 96,4 Prozent der Schreibvorgänge werden verworfen</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Wie erfährt der Cache von einer Änderung?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q11" value="0" data-richtig data-grund="Richtig — die Invalidierung wird in den Replikationsstrom eingebettet; Cache und Replikate hören denselben Kanal."> Über den Replikationsstrom der Datenbank</label>
+      <label><input type="checkbox" name="sa-02-q11" value="1" data-grund="Falsch — Ablaufzeiten allein würden bis zu ihrem Erreichen veraltete Daten liefern; die Invalidierung kommt aktiv über den Replikationsstrom."> Über Ablaufzeiten, die im Cache gesetzt sind</label>
+      <label><input type="checkbox" name="sa-02-q11" value="2" data-grund="Falsch — der Client schreibt nicht in den Cache; er schreibt in die Datenbank, und der Rückweg läuft über die Replikation."> Der Client schreibt die Änderung direkt in den Cache</label>
+      <label><input type="checkbox" name="sa-02-q11" value="3" data-grund="Falsch — ein vollständiges Neuladen des Caches wäre bei Petabytes unmöglich und würde die Datenbank überlasten."> Der Cache wird regelmäßig vollständig neu geladen</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Warum ist ein Lese-zu-Schreib-Verhältnis von 500:1 so wichtig für den Bauplan?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q12" value="0" data-richtig data-grund="Richtig — Optimierung lohnt dort, wo die Last entsteht: bei den Lesern. Ein Schreibvorgang betrifft nur jeden fünfhundertsten Zugriff."> Optimierung muss beim Lesen ansetzen, weil dort die Last liegt</label>
+      <label><input type="checkbox" name="sa-02-q12" value="1" data-grund="Falsch — Schreibvorgänge werden trotzdem gesperrt; die Seltenheit macht sie nicht gratis, nur seltener."> Schreibvorgänge brauchen deshalb keine Sperren mehr</label>
+      <label><input type="checkbox" name="sa-02-q12" value="2" data-grund="Falsch — die Datenmenge wächst mit den Schreibvorgängen; wenige Schreibvorgänge können trotzdem riesige Datenmengen erzeugen."> Die Datenbank bleibt dadurch dauerhaft klein</label>
+      <label><input type="checkbox" name="sa-02-q12" value="3" data-grund="Falsch — die Konsistenzgarantien gelten unabhängig vom Verhältnis; sie werden nicht durch die Quote bestimmt."> Es ersetzt die Notwendigkeit von Konsistenzgarantien</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>7. ZippyDB: der zweite Speicher, mit Absicht anders</h2>
+<p>Neben TAO und der MySQL-Welt gibt es einen zweiten großen Speicher:
+<strong>ZippyDB</strong>, Metas größter stark konsistenter Schlüssel-Wert-Store.
+Er speichert Metadaten, Zähler, Konfiguration — Dinge, die <em>sofort</em>
+stimmen müssen.</p>
+<p>Drei Bausteine reichen, um ihn zu verstehen:</p>
+
+<h3>Baustein 1 — Paxos statt „einer schreibt, alle hoffen“</h3>
+<p>Ein Shard hat eine Gruppe von Replikaten, die sich per <strong>Multi-Paxos</strong>
+auf eine Reihenfolge der Schreibvorgänge einigen. Zusätzlich gibt es
+asynchrone Mitläufer, die langsamer sein dürfen und billige Lesezugriffe in der
+eigenen Region erlauben.</p>
+
+<h3>Baustein 2 — Epoche und Leader-Lease</h3>
+<p>Schreibvorgänge müssen eine eindeutige Reihenfolge haben, sonst entsteht
+Unsinn. Dafür gibt es pro Shard eine <strong>Epoche</strong> mit genau einem
+Leader. Der Leader hält eine <strong>Lease</strong>: ein Zeitfenster, in dem
+nur er schreiben darf. Bleibt der Herzschlag aus, erhöht der Shard Manager die
+Epoche, und ein anderer übernimmt.</p>
+<p>Das ist der erste wichtige Begriff für heute: Eine <strong>Lease ist keine
+Sperre</strong>. Sie fragt niemanden um Erlaubnis, sie <em>gilt</em> für eine
+Frist. Danach muss man neu bitten.</p>
+
+<h3>Baustein 3 — optimistische statt pessimistische Nebenläufigkeit</h3>
+<p>ZippyDB sperrt beim Lesen nichts. Der Client liest aus einem Schnappschuss,
+schickt Lese- und Schreibmenge an den Primary, und der prüft beim Commit, ob
+inzwischen jemand dieselben Schlüssel geändert hat. Kollision → Abbruch und
+neuer Versuch. Dieses Verfahren heißt <strong>optimistisches Concurrency
+Control (OCC)</strong> und ist pro Shard <strong>serialisierbar</strong>.</p>
+<p>Ein einzelner physischer Shard fasst übrigens 50 bis 100 GB und enthält
+darin zehntausende sogenannte <strong>μShards</strong> (Mikro-Shards) — die
+kleine Einheit, die man verschieben kann, ohne die Anwendung zu ändern.</p>
+
+<div class="quiz" data-titel="Quiz: zippydb">
+  <fieldset class="frage">
+    <legend class="frage-text">Was ist eine Lease im Sinne von ZippyDB?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q13" value="0" data-richtig data-grund="Richtig — die Lease ist ein Zeitfenster, in dem der Leader schreiben darf; sie wird durch Herzschläge verlängert, nicht durch Warten auf Antwort."> Ein Zeitfenster, in dem genau ein Leader schreiben darf</label>
+      <label><input type="checkbox" name="sa-02-q13" value="1" data-grund="Falsch — genau diese Verwechslung ist der typische Fehler: Eine Sperre muss freigegeben werden, eine Lease läuft ab."> Eine Sperre, die der Leader explizit freigeben muss</label>
+      <label><input type="checkbox" name="sa-02-q13" value="2" data-grund="Falsch — eine Lease ist ein Recht auf Schreiben, keine Kopie; Kopien entstehen durch Replikation, nicht durch Leases."> Eine Kopie der Daten in einer anderen Region</label>
+      <label><input type="checkbox" name="sa-02-q13" value="3" data-grund="Falsch — sie regelt, wer schreiben darf, nicht wie lange Daten aufbewahrt werden."> Eine Frist, nach der Daten gelöscht werden</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Wie löst OCC einen Konflikt zwischen zwei Transaktionen?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q14" value="0" data-richtig data-grund="Richtig — gelesen wird ohne Sperre, geprüft wird beim Commit; bei Überschneidung wird eine Transaktion abgebrochen und wiederholt."> Beim Commit wird geprüft und eine Transaktion abgebrochen</label>
+      <label><input type="checkbox" name="sa-02-q14" value="1" data-grund="Falsch — das wäre pessimistisch: Sperren beim Lesen. Gerade das vermeidet OCC, weil Leser sonst Schreiber blockieren."> Die zweite Transaktion wartet, bis die erste Sperren freigibt</label>
+      <label><input type="checkbox" name="sa-02-q14" value="2" data-grund="Falsch — ohne Prüfung könnte eine Änderung verloren gehen; die Prüfung ist der Kern des Verfahrens."> Beide Änderungen werden nacheinander geschrieben, ohne Prüfung</label>
+      <label><input type="checkbox" name="sa-02-q14" value="3" data-grund="Falsch — der Server entscheidet am Commit anhand der Schreibmengen, nicht der Client vorab."> Der Client reserviert die Schlüssel vor dem Lesen</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Wozu dient die Zwischenschicht der μShards?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q15" value="0" data-richtig data-grund="Richtig — die Anwendung kennt nur ihre μShards; der Dienst verschiebt sie zwischen physischen Shards, ohne dass Client-Code sich ändert."> Daten verschieben, ohne die Anwendung zu ändern</label>
+      <label><input type="checkbox" name="sa-02-q15" value="1" data-grund="Falsch — μShards sind keine Kopien, sondern Aufteilungseinheiten innerhalb eines Shards."> Zusätzliche Kopien für die Ausfallsicherheit bereitstellen</label>
+      <label><input type="checkbox" name="sa-02-q15" value="2" data-grund="Falsch — die Konsistenzgarantien gelten pro Shard; μShards ändern daran nichts."> Stärkere Konsistenz als auf Shard-Ebene erreichen</label>
+      <label><input type="checkbox" name="sa-02-q15" value="3" data-grund="Falsch — sie verkleinern nicht die Datenmenge, sondern machen sie beweglich; die Gesamtmenge bleibt gleich."> Die gespeicherte Datenmenge verkleinern</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>8. Wo Locking passiert — und ob es aufgegeben wurde</h2>
+<p>Jetzt zum Kern. Die ehrliche Antwort hat vier Etagen, und nur eine davon
+lautet „kein Locking“.</p>
+
+<h3>Etage 1 — im Shard: klassisches Locking, unverändert</h3>
+<p>Innerhalb einer MySQL-Instanz passiert genau das, was du aus KM5 kennst:
+Zeilen sperren, Transaktion, freigeben. Zwei Transaktionen, die dieselben
+Zeilen in verschiedener Reihenfolge sperren, laufen in einen
+<strong>Deadlock</strong>; die Datenbank bricht eine der beiden ab.</p>
+<pre><code><span class="cmt">-- MySQL/PostgreSQL: Zeilen sperren, in fester Reihenfolge</span>
+BEGIN;
+SELECT stand FROM konto WHERE id = 7  FOR UPDATE;   <span class="cmt">-- Sperre 7</span>
+SELECT stand FROM konto WHERE id = 12 FOR UPDATE;   <span class="cmt">-- dann 12</span>
+UPDATE konto SET stand = stand - 10 WHERE id = 7;
+UPDATE konto SET stand = stand + 10 WHERE id = 12;
+COMMIT;   <span class="cmt">-- erst jetzt fallen beide Sperren</span></code></pre>
+<div class="callout achtung">
+  <span class="label">Achtung: SQLite ist keine gute Demo dafür</span>
+  <p>SQLite kennt kein <code>SELECT … FOR UPDATE</code>. Es sperrt die
+  <strong>ganze Datei</strong>: Eine zweite Schreibtransaktion bekommt
+  <code>database is locked</code>, auch wenn sie eine völlig andere Zeile
+  ändern will. Genau deshalb braucht es für dieses Kapitel MySQL oder
+  PostgreSQL — und genau deshalb ist SQLite für ein Einzelplatz-Programm
+  richtig und für einen Server falsch.</p>
+</div>
+
+<h3>Etage 2 — über Shards hinweg: hier wurde Locking <em>eingeführt</em></h3>
+<p>Und jetzt die Überraschung. Es wäre naheliegend, verteiltes Locking einfach
+wegzulassen. Meta hat das Gegenteil getan.</p>
+<p>Zur Erinnerung aus Abschnitt 4: Eine Freundschaft sind zwei Kanten, und die
+Gegenkante liegt auf einem anderen Shard. Ältere Anwendungen behalfen sich mit
+eigenen Behelfslösungen — und die gingen schief, weil die Anwendung nicht
+wusste, ob ein Schreibvorgang fehlgeschlagen oder nur noch nicht repliziert
+war.</p>
+<p>Deshalb hat TAO <strong>fehleratomare Transaktionen über Shards hinweg</strong>
+nachgerüstet. Sie funktionieren mit <strong>2PC</strong> (Zwei-Phasen-Commit)
+und — entscheidend für deine Frage — mit <strong>2PL</strong>
+(Zwei-Phasen-<em>Sperren</em>). Jede beteiligte Zeile wird gesperrt, bis alle
+Shards zugestimmt haben.</p>
+<pre><code>Transaktion: Anna und Bea werden Freunde
+
+Phase 1 (prepare)
+  Shard 17: Zeile (4, FRIEND, 9) sperren  → "ich kann"
+  Shard 41: Zeile (9, FRIEND, 4) sperren  → "ich kann"
+
+Phase 2 (commit)
+  Koordinator: "commit"
+  beide Shards schreiben endgültig, Sperren fallen
+
+Stirbt ein Shard in Phase 1:
+  alle brechen ab — nichts Halbes wird sichtbar</code></pre>
+<p>Diese Transaktionen sind <strong>opt-in</strong>: Man bezahlt sie nur, wenn
+man sie braucht. Aber man braucht sie oft — bidirektionale Beziehungen machen
+<strong>52 Prozent aller Assoziationstypen</strong> aus. Verteiltes Locking ist
+hier also der Normalfall, nicht die Ausnahme.</p>
+
+<h3>Etage 3 — auf der Leseseite: wirklich kein Locking</h3>
+<p>Beim Lesen gibt es kein Sperren, und zwar mit Absicht. Zehn Milliarden
+Lesevorgänge pro Sekunde vertragen keine Wartezimmer.</p>
+<p>Die Schwierigkeit ist nicht das Lesen selbst, sondern die
+<strong>Sichtbarkeit</strong>: Wenn eine Transaktion zwei Zeilen auf zwei
+Shards ändert, darf ein Leser nicht die eine neue und die andere alte Zeile
+sehen. Genau das garantiert <strong>RAMP</strong> (Read-Atomic Multi-Partition)
+auf Basis von <strong>Versionen</strong>: Der Leser bekommt eine atomare
+Momentaufnahme, ohne dass irgendjemand auf ihn wartet. Über 99,93 Prozent der
+Lesevorgänge brauchen dafür einen einzigen Netzwerk-Roundtrip; der Preis ist
+0,42 Prozent mehr Speicher.</p>
+<p>Wichtig ist, was das <em>nicht</em> ist: RAMP liefert <strong>atomare
+Sichtbarkeit, nicht Serialisierbarkeit</strong>. Man sieht entweder alles oder
+nichts — aber nicht notwendigerweise den „letzten“ Zustand.</p>
+
+<h3>Etage 4 — Führung und Cache: Leases statt Sperren</h3>
+<p>Wer darf schreiben? Diese Frage beantwortet kein Lock-Server, sondern eine
+Lease: In ZippyDB pro Epoche (Abschnitt 7), in TAO über einen eigenen
+Lease-Dienst (<strong>Skylease</strong>, beschrieben im Skybridge-Paper 2025).
+Leases sind der Grund, warum ein Failover funktioniert, ohne dass zwei Leader
+gleichzeitig schreiben.</p>
+
+<div class="callout">
+  <span class="label">Antwort auf die Einstiegsfrage</span>
+  Locking wurde <strong>nicht</strong> aufgegeben. Es wurde
+  <strong>verkleinert</strong> (meist ein Shard), <strong>nachgerüstet</strong>
+  (2PC + 2PL für die Gegenkante) und an den Rändern <strong>ersetzt</strong>:
+  beim Lesen durch Versionen, bei der Führung durch Leases, bei Konflikten
+  durch OCC.
+</div>
+
+<div class="quiz" data-titel="Quiz: wo-locking-passiert">
+  <fieldset class="frage">
+    <legend class="frage-text">Welche Aussagen über Locking bei Meta treffen zu?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q16" value="0" data-richtig data-grund="Richtig — für Transaktionen über mehrere Shards nutzt TAO 2PC mit 2PL; die Sperren wurden also nachgerüstet, nicht abgeschafft."> Über Shards hinweg wird mit 2PL gesperrt</label>
+      <label><input type="checkbox" name="sa-02-q16" value="1" data-richtig data-grund="Richtig — beim Lesen wird nicht gesperrt; atomare Sichtbarkeit entsteht über Versionen (RAMP), nicht über Wartezimmer."> Beim Lesen wird nicht gesperrt</label>
+      <label><input type="checkbox" name="sa-02-q16" value="2" data-grund="Falsch — genau umgekehrt: InnoDB sperrt Lücken, MyRocks nicht; die Sperren wurden also nicht erweitert."> MyRocks sperrt zusätzlich die Lücken zwischen Zeilen</label>
+      <label><input type="checkbox" name="sa-02-q16" value="3" data-grund="Falsch — die Leader-Lease ersetzt die Sperre nicht durch eine andere Sperre, sondern durch ein Zeitfenster mit Ablauf."> Leases sind nur ein anderer Name für eine Zeilensperre</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Welche Gründe sprechen dafür, dass eine Freundschaft eine verteilte Transaktion braucht?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q17" value="0" data-richtig data-grund="Richtig — Quelle und Ziel haben verschiedene ids und liegen damit auf verschiedenen Shards; genau das erzeugt den Fall."> Weil die Gegenkante auf einem anderen Shard liegt</label>
+      <label><input type="checkbox" name="sa-02-q17" value="1" data-grund="Falsch — Freundschaften sind pro Nutzer selten, global aber sehr häufig; die Häufigkeit ist nicht der Grund."> Weil Freundschaften besonders selten geschrieben werden</label>
+      <label><input type="checkbox" name="sa-02-q17" value="2" data-grund="Falsch — die Zuordnung ist berechenbar aus der id, nicht zufällig; gerade deshalb liegen die beiden Kanten getrennt."> Weil die Zuordnung von Objekten zu Shards zufällig ist</label>
+      <label><input type="checkbox" name="sa-02-q17" value="3" data-richtig data-grund="Richtig — die Anwendung darf keine halbe Freundschaft sehen: entweder sind beide Kanten sichtbar oder keine."> Weil die Anwendung nie eine halbe Freundschaft sehen darf</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Was garantiert RAMP — und was nicht?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q18" value="0" data-richtig data-grund="Richtig — der Leser sieht entweder alle oder keine Änderung einer Transaktion; das ist atomare Sichtbarkeit."> Es garantiert, dass man alle oder keine Änderung sieht</label>
+      <label><input type="checkbox" name="sa-02-q18" value="1" data-grund="Falsch — Serialisierbarkeit wäre stärker und ist nicht das Ziel; RAMP erlaubt, einen älteren, aber konsistenten Stand zu lesen."> Es garantiert die Reihenfolge aller Transaktionen weltweit</label>
+      <label><input type="checkbox" name="sa-02-q18" value="2" data-grund="Falsch — RAMP ist gerade so gebaut, dass niemand wartet; Warten würde die Leserate unmöglich machen."> Es garantiert, dass Leser auf Schreiber warten</label>
+      <label><input type="checkbox" name="sa-02-q18" value="3" data-grund="Falsch — jeder Lesevorgang prüft Versionen; das ist der Preis für die Atomarität, nicht ihr Fehlen."> Es garantiert, dass ohne Versionsprüfung gelesen wird</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Worin unterscheidet sich eine Lease von einer Sperre?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q19" value="0" data-richtig data-grund="Richtig — die Lease gilt für eine Frist und muss verlängert werden; eine Sperre wird gehalten, bis sie freigegeben wird."> Die Lease läuft ab, die Sperre wird freigegeben</label>
+      <label><input type="checkbox" name="sa-02-q19" value="1" data-grund="Falsch — beides kann exklusiv sein; der Unterschied liegt nicht in der Ausschließlichkeit, sondern im Ablauf."> Leases und Sperren unterscheiden sich nur im Namen</label>
+      <label><input type="checkbox" name="sa-02-q19" value="2" data-grund="Falsch — eine Lease wird im Regelfall verlängert (Herzschlag), sie ist nicht auf eine einzige Transaktion beschränkt."> Die Lease gilt nur für eine einzige Transaktion</label>
+      <label><input type="checkbox" name="sa-02-q19" value="3" data-grund="Falsch — Leases sichern genau die Eindeutigkeit des Leaders; ohne sie könnten zwei schreiben."> Die Lease ersetzt die Notwendigkeit eines Leaders</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>9. Was man dafür aufgibt</h2>
+<p>Die Rechnung hat einen Preis, und der wird selten so offen ausgesprochen:
+Man gibt die <strong>globale Serialisierbarkeit</strong> auf. Es gibt keinen
+Zeitpunkt, zu dem „die ganze Welt“ denselben Stand sieht.</p>
+<p>Stattdessen gilt <strong>Eventual Consistency</strong>: Replikate laufen
+hinterher. Im RAMP-TAO-Paper von 2021 steht die Zahl dafür — 99,99 Prozent der
+Replikate sind weniger als 60 Sekunden veraltet. Das klingt harmlos, bis man
+dazurechnet, dass in 60 Sekunden <strong>Milliarden</strong> Lesevorgänge
+passieren.</p>
+<p>Seit 2025 gibt es dafür einen saubereren Begriff: <strong>bounded
+staleness</strong> — die Verzögerung ist nach oben begrenzt, und das System kann
+pro Lesevorgang <em>nachweisen</em>, ob der Stand aktuell genug ist (Skybridge).
+Man gibt also nicht „Korrektheit“ auf, sondern tauscht sie gegen eine
+<em>zugesicherte</em> Obergrenze.</p>
+<p>Warum das praktisch funktioniert, zeigt eine Beobachtung aus TAOBench: Über
+99 Prozent der <strong>heiß geschriebenen</strong> Schlüssel werden im Schnitt
+<strong>weniger als einmal pro Tag</strong> gelesen. Die Menge der heißen
+Schreiber und die Menge der heißen Leser überschneiden sich kaum. Man kann
+beide Seiten deshalb getrennt optimieren, ohne dass sie sich in die Quere
+kommen.</p>
+
+<div class="quiz" data-titel="Quiz: was-man-aufgibt">
+  <fieldset class="frage">
+    <legend class="frage-text">Welche Aussagen folgen aus „99,99 Prozent der Replikate sind weniger als 60 Sekunden veraltet“?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q20" value="0" data-richtig data-grund="Richtig — fast alle Kopien hinken nur kurz nach; das ist eventual consistency mit einer Schranke für die allermeisten Fälle."> Fast alle Kopien hinken kurz nach</label>
+      <label><input type="checkbox" name="sa-02-q20" value="1" data-grund="Falsch — veraltet heißt nicht kaputt; die Kopie ist lesbar, nur nicht auf dem neuesten Stand."> Fast alle Kopien sind unbrauchbar geworden</label>
+      <label><input type="checkbox" name="sa-02-q20" value="2" data-grund="Falsch — die Zahl beschreibt die Verzögerung, nicht die Verfügbarkeit; ein Replikat kann verfügbar und trotzdem kurz veraltet sein."> Fast alle Kopien sind dauerhaft nicht erreichbar</label>
+      <label><input type="checkbox" name="sa-02-q20" value="3" data-richtig data-grund="Richtig — 0,01 Prozent der Kopien liegen weiter zurück als 60 Sekunden; „fast alle“ ist nicht „alle“."> Einzelne Kopien können weiter zurückliegen</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Warum ist es günstig, dass heiße Schreiber und heiße Leser kaum dieselben Schlüssel betreffen?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q21" value="0" data-richtig data-grund="Richtig — wenn sich die Mengen kaum überschneiden, stört die Verzögerung beim Schreiben die häufigen Leser nicht."> Die Verzögerung trifft kaum jemanden, der oft liest</label>
+      <label><input type="checkbox" name="sa-02-q21" value="1" data-grund="Falsch — die Trennung macht Optimierung möglich, ersetzt aber keine Replikation; kopiert werden muss weiterhin alles."> Man kann auf Replikation ganz verzichten</label>
+      <label><input type="checkbox" name="sa-02-q21" value="2" data-grund="Falsch — die Garantien bleiben nötig; gerade weil Konflikte selten sind, kann man sie billiger absichern."> Es braucht keine Konsistenzgarantien mehr</label>
+      <label><input type="checkbox" name="sa-02-q21" value="3" data-richtig data-grund="Richtig — wenn sich die Mengen kaum überschneiden, lassen sich Lese- und Schreibpfad getrennt auslegen, ohne dass eine Seite die andere ausbremst."> Man kann Lese- und Schreibpfad getrennt auslegen</label>
+    </div>
+  </fieldset>
+  <fieldset class="frage">
+    <legend class="frage-text">Was ist der Unterschied zwischen eventual consistency und bounded staleness?</legend>
+    <div class="optionen">
+      <label><input type="checkbox" name="sa-02-q22" value="0" data-richtig data-grund="Richtig — eventual consistency sagt „irgendwann“; bounded staleness nennt eine Obergrenze und macht sie prüfbar."> Bounded staleness nennt eine Obergrenze für die Verzögerung</label>
+      <label><input type="checkbox" name="sa-02-q22" value="1" data-grund="Falsch — bounded staleness ist die stärkere Zusage; eventual consistency ist die schwächere, unverbindlichere Form."> Bounded staleness ist die schwächere Zusage</label>
+      <label><input type="checkbox" name="sa-02-q22" value="2" data-grund="Falsch — beide erlauben veraltete Stände; der Unterschied ist die Schranke, nicht die Richtung der Abweichung."> Beide bedeuten, dass Daten sofort aktuell sind</label>
+      <label><input type="checkbox" name="sa-02-q22" value="3" data-grund="Falsch — bounded staleness bezieht sich auf die Verzögerung der Kopie, nicht auf die Größe der Datenbank."> Bounded staleness begrenzt die Datenmenge pro Shard</label>
+    </div>
+  </fieldset>
+</div>
+
+<h2>10. Messen statt glauben: TAOBench</h2>
+<p>Eine Frage bleibt: Woher weiß man, dass die Annahmen stimmen? Meta hat die
+eigene Last als Benchmark veröffentlicht — <strong>TAOBench</strong> (2022,
+Open Source). Er erzeugt Anfragen, die statistisch zur Produktion passen,
+inklusive der Schiefe: wenige Schlüssel werden sehr oft geschrieben, viele
+selten.</p>
+<p>Interessant ist, wofür Meta den Benchmark selbst verwendet. Einer der vier
+genannten Anwendungsfälle lautet wörtlich: <strong>„assessing contention under
+longer lock hold times“</strong> — den Streit um Sperren bewerten, wenn sie
+länger gehalten werden. Das Paper zeigt dazu eine Kurve: die Fehlerrate von
+Schreibtransaktionen über der zusätzlichen Zeit, die eine Sperre gehalten
+wird.</p>
+<p>Damit ist die Ausgangsfrage beantwortet, und zwar mit einem unerwarteten
+Ergebnis: Locking ist bei Meta keine Altlast, die man loswerden will. Es ist
+eine <strong>Messgröße im Betrieb</strong>. Wer eine Sperre eine Millisekunde
+zu lange hält, sieht das in einer Kurve.</p>
+<p>Der Benchmark vergleicht außerdem fünf verbreitete verteilte Datenbanken
+(Cloud Spanner, CockroachDB, PlanetScale, TiDB, YugabyteDB) — mit derselben
+Meta-Last. Das ist der praktische Nutzen: Man muss die eigene Datenbank nicht
+raten, man kann sie gegen eine echte Last stellen.</p>
+
+<h2>11. Jetzt du!</h2>
+<ol>
+  <li><strong>Vorhersage (zuerst notieren!):</strong> Eine Freundschaft
+  entsteht. Wie viele Zeilen ändern sich, auf wie vielen Shards, und wie viele
+  Sperren sind dafür gleichzeitig aktiv?</li>
+  <li><strong>Rechnen:</strong> Ein Dienst schafft 250 000 Schreibvorgänge pro
+  Sekunde. Wie viele sind das pro Tag? Schreibe das Ergebnis in deutscher
+  Schreibweise <em>und</em> in Zehnerpotenz.</li>
+  <li><strong>Übertragen:</strong> Nimm dein eigenes Schul-Verwaltungsprojekt.
+  Welche Tabelle würdest du sharden, an welcher Spalte, und welche Transaktion
+  bräuchte danach 2PC?</li>
+</ol>
+
+<hr>
+
+<h2>12. Typische Fehler</h2>
+<ul>
+  <li><strong>„billion heißt Billion.“</strong> Es heißt Milliarde.
+  <em>Anti-Beispiel:</em> „10 Billionen Lesevorgänge pro Sekunde“ — das wäre
+  das Tausendfache und würde kein Rechenzentrum der Welt schaffen.</li>
+  <li><strong>„NoSQL heißt ohne Sperren.“</strong> ZippyDB ist streng
+  konsistent und nutzt OCC; TAO sperrt über Shards mit 2PL.
+  <em>Anti-Beispiel:</em> „Wir nehmen einen KV-Store, dann brauchen wir kein
+  Transaktionsdesign.“</li>
+  <li><strong>„Eine Lease ist eine Sperre.“</strong> Eine Sperre gibt man frei,
+  eine Lease läuft ab. <em>Anti-Beispiel:</em> „Der Leader hält die Sperre,
+  bis er fertig ist“ — dann gibt es nach einem Absturz keinen neuen Leader.</li>
+  <li><strong>„Sharding löst das Skalierungsproblem.“</strong> Es verschiebt es:
+  Die Gegenkante liegt woanders. <em>Anti-Beispiel:</em> „Wir sharden nach
+  Nutzer-id, dann ist alles lokal“ — bis jemand beide Seiten einer Beziehung
+  braucht.</li>
+  <li><strong>„Eventual consistency heißt Datenverlust.“</strong> Es heißt
+  Verzögerung mit Schranke. <em>Anti-Beispiel:</em> „Der Beitrag ist weg“ — er
+  ist nur noch nicht überall angekommen.</li>
+  <li><strong>„Eine Zahl ohne Jahr ist eine Tatsache.“</strong> Das System
+  wächst; die Leserate hat sich zwischen 2013 und 2022 verzehnfacht.
+  <em>Anti-Beispiel:</em> „TAO schafft eine Milliarde pro Sekunde“ — stimmte
+  2013, ist heute die Untergrenze.</li>
+</ul>
+
+<h2>13. Zusammenfassung</h2>
+<table>
+  <tr><th>Frage</th><th>Eine SQLite-Datei</th><th>Der Meta-Stack</th></tr>
+  <tr><td>Wo liegen die Daten?</td><td>eine Datei, ein Rechner</td><td>Shards auf über einer Million Maschinen</td></tr>
+  <tr><td>Wie wird gelesen?</td><td>direkt von der Platte</td><td>zu 96 % aus dem Cache, sonst aus MySQL</td></tr>
+  <tr><td>Wie wird gesperrt?</td><td>ganze Datei</td><td>Zeilen im Shard, 2PL über Shards</td></tr>
+  <tr><td>Wer entscheidet, wer schreibt?</td><td>die Dateisperre</td><td>eine Lease pro Epoche</td></tr>
+  <tr><td>Was sieht ein Leser?</td><td>immer den letzten Stand</td><td>einen atomaren, evtl. leicht älteren Stand</td></tr>
+  <tr><td>Was kostet das?</td><td>nichts</td><td>keine globale Serialisierbarkeit</td></tr>
+</table>
+<p><strong>Eselsbrücke:</strong> „Sperren sind nicht verschwunden — sie sind
+geschrumpft. Im Shard sperrt man Zeilen, über Shards sperrt man mit 2PL, beim
+Lesen sperrt man gar nicht, und an der Spitze regiert eine Uhr statt eines
+Schlüssels.“</p>
+<p><strong>Ausblick:</strong> Die Transaktionsseite — Isolationsstufen,
+Deadlocks, 2PC — ist KM5. Wie eine Anwendung solche Daten liest, zeigt KM6
+(Prisma/Query API). Und die Frage, wann eine Datenbank gar keinen Administrator
+mehr braucht, war die Blockchain in SA-01.</p>
+
+<hr>
+
+<h2>Aufgabe</h2>
+<p>Die drei Beispiele stehen in
+<a href="aufgabe.md">aufgabe.md</a> im selben Ordner: eine Umrechnung mit
+Tagesbilanz und Shard-Zuordnung, ein Selbsttest im WÜ-Format und der Transfer
+auf ein Schul-Verwaltungssystem.</p>
+<ol>
+  <li><strong>Beispiel 1:</strong> Eine englische Zahl ins Deutsche übersetzen,
+  die Tagesbilanz nachrechnen und zwei Transaktionen einem oder zwei Shards
+  zuordnen.</li>
+  <li><strong>Beispiel 2:</strong> Vier Aussagen bewerten — alle zutreffenden
+  ankreuzen, mit Musterlösung.</li>
+  <li><strong>Beispiel 3:</strong> Ein Schulsystem mit 1 200 Nutzer:innen
+  sharden, 2PC-Bedarf begründen und die Frage „Locking aufgegeben?“
+  beantworten.</li>
+</ol>
+<p>Abgabe nach Vorgabe deiner Lehrperson (Markdown, Rechenweg zu Beispiel 1).</p>
+
+<details class="lehrplan">
+  <summary>Lehrplan &amp; Einordnung</summary>
+  <ul>
+    <li><strong>Lehrplan:</strong> INFI (HWII), Anlage 1.24 — schulautonome
+    Vertiefung zum Bereich Datenbanken. Kein eigener KM-Punkt; Anschluss an
+    KM5 (Transaktionen und ACID, Indizes und Optimierung, Sharding als
+    Grenzfall) und KM9 (Informationssysteme).</li>
+    <li><strong>Quellen:</strong> TAO (USENIX ATC 2013); Scaling Memcache at
+    Facebook (NSDI 2013); MyRocks (VLDB 13, 2020); RAMP-TAO (VLDB 14, 2021);
+    Shard Manager (SOSP 2021); TAOBench (VLDB 15, 2022); Skybridge (OSDI 2025);
+    ZippyDB und ZGateway (Meta Engineering, 2021 und 2026). Alle Links im
+    Lektüre-Kasten und im Text geprüft am 16.11.2026.</li>
+    <li><strong>Zahlenkritik:</strong> Die verbreitete Angabe „eine Billiarde
+    Anfragen pro Tag“ steht nicht im TAOBench-Paper; sie ist aus „over ten
+    billion reads per second“ gerechnet. Die Lesson trennt Zitat und Rechnung
+    bewusst.</li>
+    <li><strong>Runtime:</strong> keine — reine Konzept-Lesson, bewusst ohne
+    Beispielprojekt. Die Sperr-Beispiele sind MySQL/PostgreSQL-Syntax, weil
+    SQLite die ganze Datei sperrt.</li>
+  </ul>
+</details>
+
+<footer class="navi">
+  <p>Referenz: <a href="https://github.com/georgernstgraf/GRG-INFI/blob/main/GLOSSAR.md">Glossar</a> ·
+  Aufgabe: <a href="aufgabe.md">aufgabe.md</a> ·
+  <a href="../../index.html">alle Lektionen</a></p>
+</footer>
+</body>
+</html>

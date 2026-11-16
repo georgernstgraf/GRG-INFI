@@ -8,6 +8,13 @@ Read this file carefully before making changes in affected areas.
   *definiert* und nie aufgerufen: keine Assets, kein Theme, kein Quiz, und `--dump-dom` zeigt
   eine scheinbar heile Seite. Kopfzeile beim Bauen immer gegen eine funktionierende Lesson
   diffen; `python3`-Byte-Vergleich der Zeile findet Homoglyphen/fehlende Klammern sofort.
+- **`pre`-Blöcke laufen waagrecht über.** Die Inhaltsbreite trägt rund 68 Monospace-Zeichen;
+  längere Zeilen erzeugen eine Scrollleiste und schneiden Text ab (`rechte Kante: „…ich kann`
+  ohne Anführungszeichen). Vor dem Commit per CDP prüfen:
+  `[...document.querySelectorAll('pre')].map(p => p.scrollWidth - p.clientWidth)` — muss
+  überall 0 sein. Lange Zeilen umbrechen statt kürzen; die Skripte liegen unter
+  `/tmp/georg-sa02/` (Muster: `wide.mjs`, `shot.mjs` — Cache im Headless-Chromium unbedingt
+  per `Network.setCacheDisabled` abschalten, sonst prüft man alte CSS-Stände).
 - **`chromium --dump-dom` wartet keine dynamisch injizierten Skripte ab.** Screenshots/Dumps
   zeigen dann den Zustand vor `loader.js`. Für echte Prüfung (Quiz klicken, Theme, Legacy-Modus)
   das DevTools-Protokoll nutzen: `--remote-debugging-port`, `PUT /json/new?<url>`, dann per

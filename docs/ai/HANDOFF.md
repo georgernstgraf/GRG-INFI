@@ -1,5 +1,26 @@
 # HANDOFF
 
+**2026-11-16:** Prepared Lesson `unterricht/SA-02-facebook-datenbank/` (90 min,
+reine Konzept-Lesson, **kein** Beispielprojekt) — Issue **#22**. Inhalt: das
+Zahlenbild des Meta-Datenbank-Stacks (TAO > 10 Mrd. Reads/s und Zehner
+Millionen Writes/s, 3,6 Mrd. MAU, ZippyDB ~2,5 Mrd. Ops/s, Shard Manager
+> 1 Mio. Maschinen), Sharding/Lokalität, InnoDB→MyRocks, TAO als Cache-Schicht,
+ZippyDB (Paxos, Epochen-Lease, OCC) und als Herzstück **„wo Locking passiert“**
+in vier Etagen: 2PL im Shard, **2PC + 2PL über Shards (nachgerüstet, opt-in)**,
+lesend lock-frei über RAMP-Versionen, Führung per Lease (Skylease).
+7 Lernquizze / 22 Fragen im Format 2.1.
+**Didaktischer Kernbefund:** Die englisch/deutsche Zahlenfalle (billion =
+Milliarde) ist der häufigste Übersetzungsfehler; jede Zahl steht dreifach lesbar
+(Zahlwort, Zehnerpotenz, englisches Zitat), und die kursierende „Billiarde
+Anfragen pro Tag“ wird als **Rechnung** entlarvt, nicht als Zitat.
+Nebenbefund: Die verbreitete These „Meta hat Locking abgeschafft“ ist falsch —
+TAO hat 2PL für Cross-Shard-Writes **ergänzt** (RAMP-TAO, VLDB 2021).
+Offen: Beamer-Probe in echter Projektion (wie bei SA-01).
+**Zentral mitbehoben:** `.callout .label` war `inline-block` — das Label lief in
+den Callout-Text (alle Lessons). `assets/lesson.css` korrigiert
+(`display: block`), `PITFALLS.md` um den `pre`-Überlauf und die
+Headless-Cache-Falle ergänzt.
+
 **2026-11-10:** Prepared Lesson `unterricht/SA-01-blockchain-als-datenbank/`
 (90 min, 7 Lernquizze / 21 Fragen im **Quiz-Format 2.1**, `aufgabe.md` mit
 Beispiel 1–3) + Beispielprojekt `Beispielprojekte/sa-01-blockchain-als-datenbank/`

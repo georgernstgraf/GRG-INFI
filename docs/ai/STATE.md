@@ -1,8 +1,29 @@
 # Project State
 
-Current status as of 2026-11-10.
+Current status as of 2026-11-16.
 
 ## Current Focus
+
+**SA-02 „Die Datenbank hinter Facebook“ (2026-11-16):** Prepared Lesson
+`unterricht/SA-02-facebook-datenbank/` (90 min, 7 Lernquizze / 22 Fragen,
+kohortenagnostisch, **ohne** Beispielprojekt) + `aufgabe.md` (Beispiel 1–3:
+Umrechnen/Shards, WÜ-Selbsttest, Transfer Schulsystem). Navigator-Block
+„Schulautonom (SA)“ und Glossar-Abschnitt „Verteilte Datenbanken in der Praxis“
+(15 Begriffe) nachgezogen. Issue **#22**.
+**Recherche-Kern:** Zahlen aus TAO (ATC'13), Scaling Memcache (NSDI'13),
+MyRocks (VLDB 13), RAMP-TAO (VLDB 14), Shard Manager (SOSP'21), TAOBench
+(VLDB 15), Skybridge (OSDI'25), ZippyDB/ZGateway — jede Zahl mit Jahr.
+**Fachlicher Befund:** Locking wurde bei Meta nicht aufgegeben, sondern
+verkleinert (ein Shard), nachgerüstet (2PC **mit 2PL** über Shards, opt-in) und
+an den Rändern ersetzt (Versionen beim Lesen, Leases bei der Führung, OCC in
+ZippyDB). Die Einheiten-Falle „billion = Milliarde“ ist als Callout, Quizitem
+und Prüfaufgabe eingebaut.
+**Nebenbefund (zentral behoben):** `.callout .label` stand auf `inline-block`,
+dadurch lief die Label-Zeile in den Callout-Text — betraf alle Lessons.
+`assets/lesson.css` setzt jetzt `display: block` + Abstand; SA-01 und KM5-02
+stichprobenartig nachgeprüft (keine Regression).
+
+Vorheriger Stand (2026-11-10).
 
 **SA-01 Blockchain als Datenbank (2026-11-10):** Prepared Lesson
 `unterricht/SA-01-blockchain-als-datenbank/` (90 min, 7 Lernquizze mit 21 Fragen,

@@ -188,3 +188,80 @@ Guthaben: „Not your keys, not your coins“; Börsen sind Verwahrer und damit
 ein zentraler Ausfallpunkt.
 *Meiden*: „Die Coins liegen auf der Börse“ — dort liegt ein Anspruch, kein
 Schlüssel.
+
+## Verteilte Datenbanken in der Praxis (SA-02, Anschluss KM5/KM9)
+
+**Sharding** — Aufteilung der Daten auf mehrere unabhängige Datenbanken
+(*Shards*), meist über einen Schlüssel berechnet (`Shard = shard_von(id)`);
+Ziel ist Lastverteilung, Preis sind shard-übergreifende Transaktionen.
+*Meiden*: „Partitionierung löst Skalierung“ — sie verschiebt das Problem auf
+die Transaktionsgrenze.
+
+**Shard** — Eine unabhängige Datenbank-Instanz mit eigenem Log, eigenen Sperren
+und eigener Replikation; ein Objekt gehört dauerhaft genau einem Shard, eine
+Kante liegt beim Quellknoten. *Meiden*: „Tabelle“ — ein Shard enthält viele
+Tabellen.
+
+**μShard (Mikro-Shard)** — Kleinste verschiebbare Einheit innerhalb eines
+physischen Shards (bei ZippyDB zehntausende pro Shard); macht Resharding ohne
+Änderung der Anwendung möglich. *Meiden*: „Kopie“ — ein μShard ist eine
+Aufteilung, keine Redundanz.
+
+**Gap-Lock** — Sperre auf den Bereich *zwischen* zwei Zeilen, die Einfügungen
+dort verhindert (InnoDB); sichert Eindeutigkeit über Präfixe und
+statement-basierte Replikation. MyRocks sperrt nur Zeilen.
+*Meiden*: „Sperre auf die nächste Zeile“ — gesperrt wird die Lücke.
+
+**Zwei-Phasen-Commit (2PC)** — Abstimmungsprotokoll für Transaktionen über
+mehrere Shards: erst *prepare* (alle sperren und stimmen zu), dann *commit*
+(alle schreiben). Scheitert einer in Phase 1, bricht alles ab.
+*Meiden*: „verteilte Transaktion ist automatisch atomar“ — ohne persistierten
+Fortschritt bleibt nach einem Absturz ein halber Zustand.
+
+**Zwei-Phasen-Sperren (2PL)** — Sperren werden genommen und erst nach dem
+Commit wieder freigegeben; in der Wachstumsphase dürfen keine neuen Sperren
+dazukommen. *Meiden*: „2PC und 2PL sind dasselbe“ — 2PC ist das Protokoll,
+2PL das Sperrverfahren.
+
+**Lease** — Zeitlich begrenztes Recht (z. B. „nur dieser Leader darf
+schreiben“), das durch Herzschläge verlängert wird und bei Ausbleiben
+**abläuft**. Ersetzt an der Spitze die Sperre, weil ein abgestürzter Halter
+niemanden blockiert. *Meiden*: „Lease = Sperre“ — eine Sperre gibt man frei,
+eine Lease läuft ab.
+
+**Epoche (Leader-Lease)** — Zähler pro Shard, der bei jedem Leader-Wechsel
+steigt; Schreibvorgänge einer älteren Epoche werden verworfen. So kann es nie
+zwei Leader geben. *Meiden*: „Zeitstempel“ — die Epoche ordnet Führung, nicht
+Daten.
+
+**Optimistisches Concurrency Control (OCC)** — Lesen ohne Sperre, Prüfung erst
+beim Commit: Überschneiden sich Lese-/Schreibmengen, wird eine Transaktion
+abgebrochen und wiederholt. *Meiden*: „ohne Sperren, also ohne Konsistenz“ —
+OCC ist serialisierbar, nur ohne Warten.
+
+**Atomare Sichtbarkeit (RAMP)** — Ein Leser sieht entweder alle oder keine
+Änderung einer Transaktion, erreicht über Versionen statt Sperren
+(Read-Atomic Multi-Partition). *Meiden*: „Serialisierbarkeit“ — RAMP garantiert
+Atomarität, nicht die globale Reihenfolge.
+
+**Eventual Consistency** — Replikate laufen hinterher; ohne Zusatzangabe ist
+offen, wie weit. *Meiden*: „Datenverlust“ — der Stand ist alt, nicht falsch.
+
+**Bounded Staleness** — Verzögerung mit zugesicherter Obergrenze, pro
+Lesevorgang nachweisbar (Skybridge). Die stärkere, ehrlichere Form von
+Eventual Consistency. *Meiden*: „sofort konsistent“ — die Schranke ist endlich,
+nicht null.
+
+**LSM-Baum (Log-Structured Merge Tree)** — Speicherstruktur, die Schreibvorgänge
+in sortierte Dateien schreibt und sie im Hintergrund verschmilzt: wenig
+Write-Amplification und Platz, dafür langsamere Einzelzugriffe (MyRocks).
+*Meiden*: „Index“ — der LSM-Baum ist die Speicherstruktur selbst.
+
+**Write-Amplification** — Verhältnis von tatsächlich geschriebenen Bytes zu
+Nutzdaten; hoch bei B-Bäumen (ganze Seiten), niedrig bei LSM-Bäumen.
+*Meiden*: „Schreiblast“ — gemeint ist die Vervielfachung, nicht die Menge.
+
+**billion-Falle** — Englisch *billion* = 10⁹ = deutsch **Milliarde**; deutsch
+*Billion* = 10¹² = englisch *trillion*; *quadrillion* = 10¹⁵ = deutsch
+**Billiarde**. Ab „billion“ liegt der deutsche Name eine Sprosse tiefer.
+*Meiden*: „billion = Billion“ — Faktor 1000.
