@@ -44,6 +44,12 @@ Read this file carefully before making changes in affected areas.
   auf `document.head.appendChild(e)})()})();</script>`. Fehlt das äußere `})()`, wirft das
   `<script>` einen `SyntaxError: Unexpected end of input`, `loader.js` lädt nie und die ganze Seite
   bleibt ohne Assets (3 KM5-Lessons betroffen, behoben in #16).
+  **Fieser Zwilling:** fehlt nur der Aufruf der *inneren* Funktion (`…appendChild(e)})</script>`
+  statt `…appendChild(e)})()</script>`), gibt es **keinen** Konsolenfehler — `t()` läuft nie,
+  `loader.js` wird nie angefordert, und die Seite bleibt still ungestylt. Genau das war im
+  Root-`index.html` der Fall (2026-11-17, #23). Prüfmuster: pro Seite
+  `grep -c 'appendChild(e)})()' lesson.html` = 1 und headless im DOM nach `lesson.css`
+  **und** `data-theme=` suchen.
 - Vom `assets/loader.js` injizierte Skripte (`quiz.js`, `theme.js`) laufen **async** —
   `DOMContentLoaded` ist dann oft vorbei; Init-Code muss bei
   `document.readyState !== "loading"` sofort starten (Muster wie in `theme.js`), sonst bleiben
