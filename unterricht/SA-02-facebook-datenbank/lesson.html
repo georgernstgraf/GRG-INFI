@@ -19,6 +19,11 @@
 <div class="callout">
   <span class="label">Lektüre</span>
   <ul>
+    <li><strong>Begriffe nachschlagen:</strong> Jeder Fachbegriff dieser Lektion
+    steht mit einer Kurzdefinition im
+    <a href="https://github.com/georgernstgraf/GRG-INFI/blob/main/GLOSSAR.md">GLOSSAR.md</a>,
+    Abschnitt „Verteilte Datenbanken in der Praxis“. Was hier im Text erklärt
+    wird, findest du dort in einem Satz wieder — und umgekehrt.</li>
     <li>Bronson u. a.: <a href="https://www.usenix.org/system/files/conference/atc13/atc13-bronson.pdf">TAO:
     Facebook’s Distributed Data Store for the Social Graph</a> (USENIX ATC 2013)
     — Abschnitte 1–3 reichen für heute.</li>
@@ -28,9 +33,6 @@
     <li>Cheng u. a.: <a href="https://www.vldb.org/pvldb/vol15/p1965-cheng.pdf">TAOBench:
     An End-to-End Benchmark for Social Network Workloads</a> (VLDB 2022) — woher
     die aktuellen Zahlen kommen.</li>
-    <li>Referenzbegriffe:
-    <a href="https://github.com/georgernstgraf/GRG-INFI/blob/main/GLOSSAR.md">GLOSSAR.md</a>
-    (Abschnitt „Verteilte Datenbanken“).</li>
   </ul>
 </div>
 
@@ -58,6 +60,18 @@ anderes ersetzt.</strong> Warum das so ist, ist der Kern dieser Doppelstunde.</p
 veröffentlicht hat. Sie sind nicht geschätzt, sondern gemessen. Wichtig ist
 dabei weniger der Wert als das <strong>Jahr</strong>: Das System wächst, und
 eine Zahl ohne Jahr ist keine Angabe.</p>
+<p>In der Tabelle tauchen zwei Namen auf, die du einordnen können musst, bevor
+die Zahlen etwas sagen. <strong>TAO</strong> (kurz für <em>The Associations and
+Objects</em>, ausgesprochen „Tau-oh“) ist Metas eigene Zwischenschicht zwischen
+den Anwendungen und den MySQL-Datenbanken: ein <strong>Graph-Cache</strong>,
+also ein schneller Zwischenspeicher im Arbeitsspeicher, der die Objekte (Nutzer,
+Seiten, Fotos) und ihre Beziehungen (Freundschaft, Like) vorrätig hält. Ein
+<strong>Cache</strong> beantwortet Anfragen aus dem Speicher, damit die langsame
+Datenbank gar nicht erst gefragt werden muss. <strong>TAOBench</strong> ist der
+<strong>Benchmark</strong> dazu — ein Lasttest, mit dem Meta die eigene
+Produktionslast nachgebaut und gemessen hat (Abschnitt 10). Ausführlich kommen
+beide in den Abschnitten 6 und 10; hier genügt, dass du die Namen zuordnen
+kannst.</p>
 
 <table>
   <tr><th>Größe</th><th>Wert</th><th>Jahr · Quelle</th></tr>
@@ -65,12 +79,12 @@ eine Zahl ohne Jahr ist keine Angabe.</p>
   <tr><td>dieselbe Größe, neun Jahre früher</td><td>1 Milliarde pro Sekunde</td><td>2013 · TAO</td></tr>
   <tr><td>Schreibvorgänge in TAO</td><td>Zehner Millionen pro Sekunde</td><td>2022 · TAOBench</td></tr>
   <tr><td>Trefferquote des Cache</td><td>96,4 Prozent</td><td>2013 · TAO</td></tr>
-  <tr><td>Datenmenge</td><td>viele Petabytes, ständig wachsend</td><td>2013 / 2022</td></tr>
+  <tr><td>Datenmenge</td><td>viele Petabytes (1 PB = 10¹⁵ Byte), ständig wachsend</td><td>2013 / 2022</td></tr>
   <tr><td>Nutzerbasis</td><td>Metas Apps zusammen: über 3,6 Milliarden monatlich aktive Nutzer</td><td>2022 · TAOBench</td></tr>
-  <tr><td>Cache-Tier (memcache)</td><td>über 1 Milliarde Leseanfragen pro Sekunde als Zielgröße</td><td>2013 · Scaling Memcache</td></tr>
-  <tr><td>Hauptdatenbank (UDB, MySQL)</td><td>zig Petabytes</td><td>2020 · MyRocks</td></tr>
-  <tr><td>Schlüssel-Wert-Store ZippyDB</td><td>über 1 Milliarde Operationen pro Sekunde allein über einen Proxy</td><td>2026 · ZGateway</td></tr>
-  <tr><td>Shard-Verwaltung</td><td>über 1 Million Maschinen, bis Zehner Millionen Shards pro Anwendung</td><td>2021 · Shard Manager</td></tr>
+  <tr><td>Zwischenspeicher-Schicht (memcache)</td><td>über 1 Milliarde Leseanfragen pro Sekunde als Zielgröße</td><td>2013 · Scaling Memcache</td></tr>
+  <tr><td>Hauptdatenbank UDB (<em>User Database</em>, ein MySQL-Verbund)</td><td>zig Petabytes</td><td>2020 · MyRocks</td></tr>
+  <tr><td>Schlüssel-Wert-Speicher ZippyDB</td><td>über 1 Milliarde Operationen pro Sekunde allein über einen Proxy (eine Vermittlungsstelle)</td><td>2026 · ZGateway</td></tr>
+  <tr><td>Shard-Verwaltung (Abschnitt 4)</td><td>über 1 Million Maschinen, bis Zehner Millionen Shards pro Anwendung</td><td>2021 · Shard Manager</td></tr>
 </table>
 
 <p>Aus der Sekundenzahl lässt sich die Tagesbilanz ausrechnen. Eine Stunde hat
@@ -157,7 +171,7 @@ Milliarden Zeilen:</p>
 <pre><code>CREATE TABLE objekt (                <span class="cmt">-- Knoten</span>
   id     BIGINT PRIMARY KEY,         <span class="cmt">-- 4, 1000042, …</span>
   typ    INT    NOT NULL,            <span class="cmt">-- Nutzer, Seite, Foto …</span>
-  daten  BLOB   NOT NULL             <span class="cmt">-- Felder serialisiert</span>
+  daten  BLOB   NOT NULL             <span class="cmt">-- Felder serialisiert (BLOB = Binärblock)</span>
 );
 
 CREATE TABLE assoziation (           <span class="cmt">-- Kanten</span>
@@ -172,8 +186,9 @@ CREATE TABLE assoziation (           <span class="cmt">-- Kanten</span>
 einzigen — es gibt kein `WHERE stadt = 'Graz'`, weil niemand danach sucht.
 Zweitens ist `zeit` Teil der Sortierung: Kanten liegen absteigend nach Zeit, die
 neuesten zuerst.</p>
-<p>Damit wird „die letzten zwanzig Freunde von Anna“ zu einem Range-Scan über
-einen Präfix — nicht zu einem Join:</p>
+<p>Damit wird „die letzten zwanzig Freunde von Anna“ zu einer Bereichsabfrage
+(<em>Range-Scan</em>) über die ersten Felder des Primärschlüssels (den
+<em>Präfix</em>) — nicht zu einem Join:</p>
 <pre><code>SELECT id2
 FROM   assoziation
 WHERE  id1 = 4 AND typ = 1          <span class="cmt">-- Annas Freundeskanten</span>
@@ -191,6 +206,13 @@ LIMIT  20;</code></pre>
 <p>Zehn Milliarden Lesevorgänge pro Sekunde passen auf keinen einzelnen Server.
 Die Daten werden deshalb <strong>geshardet</strong>: aufgeteilt in Stücke, die
 auf verschiedenen Maschinen liegen.</p>
+<p>Ein <strong>Shard</strong> ist dabei mehr als „ein Stück Tabelle“: eine
+eigene Datenbank-Instanz mit eigenem Log, eigenen Sperren und eigener
+Replikation, also mit eigenen Kopien auf weiteren Maschinen. Für die Anwendung
+sieht er aus wie eine normale Datenbank. Die Kunst besteht darin, dass jedes
+Objekt dauerhaft in <em>genau einem</em> Shard liegt — erst dadurch bleibt eine
+Abfrage lokal, und eine Sperre bleibt in einer Maschine, statt über das Netz
+ausgehandelt zu werden.</p>
 <p>Die entscheidende Regel lautet: <strong>Ein Objekt gehört für immer zu genau
 einem Shard</strong>, und der Shard wird aus der `id` berechnet. Eine Kante
 liegt immer beim <em>Quellknoten</em>.</p>
@@ -211,8 +233,8 @@ stimmen müssen. Merke dir diesen Satz — er wird in Abschnitt 8 der Grund, war
 es doch verteiltes Locking gibt.</p>
 <p>Wer die Shards verwaltet, ist selbst ein System: der <strong>Shard
 Manager</strong>. Er kennt über eine Million Maschinen, verschiebt Shards bei
-Überlast und Failover und verwaltet bis zu Zehner Millionen Shards pro
-Anwendung.</p>
+Überlast und bei einem <strong>Failover</strong> (dem Ausfall einer Maschine)
+und verwaltet bis zu Zehner Millionen Shards pro Anwendung.</p>
 
 <div class="quiz" data-titel="Quiz: graph-und-shards">
   <fieldset class="frage">
@@ -246,11 +268,18 @@ Anwendung.</p>
 
 <h2>5. MySQL bleibt im Kern — nur die Engine wechselt</h2>
 <p>Man erwartet hinter Facebook eine exotische Datenbank. Tatsächlich steht
-dort <strong>MySQL</strong>, und zwar in der Hauptdatenbank „UDB“ mit zig
-Petabytes. Was sich geändert hat, ist die Speicher-Engine darunter.</p>
-<p>Über ein Jahrzehnt lang war das <strong>InnoDB</strong>: ein B-Baum. Jede Zeile
-liegt an einem berechneten Platz, Änderungen schreiben ganze Seiten neu. Bei
-Schreiblast auf Flash-Speicher wird das teuer — nicht weil Schreiben langsam
+dort <strong>MySQL</strong>, und zwar in der Hauptdatenbank <strong>UDB</strong>
+(<em>User Database</em>), einem Verbund vieler MySQL-Instanzen mit zig
+Petabytes. Was sich geändert hat, ist die <strong>Speicher-Engine</strong>
+darunter: der Teil von MySQL, der entscheidet, wie Zeilen auf der Platte liegen
+und wie Änderungen geschrieben werden. Alles darüber — SQL, Transaktionen,
+Sperren — bleibt gleich.</p>
+<p>Über ein Jahrzehnt lang war das <strong>InnoDB</strong>, und InnoDB ist ein
+<strong>B-Baum</strong>: ein sortierter Baum, in dem jede Zeile an einem aus dem
+Schlüssel berechneten Platz steht. Eine Zeile zu lesen braucht deshalb nur
+wenige Sprünge und ist sehr schnell. Beim Schreiben wird aber immer eine ganze
+Seite neu geschrieben — mehrere Kilobyte, auch wenn sich nur ein Wert ändert.
+Bei Schreiblast auf Flash-Speicher wird das teuer — nicht weil Schreiben langsam
 wäre, sondern weil zu viel geschrieben wird. Dieses Verhältnis heißt
 <strong>Write-Amplification</strong>: wie viele Bytes das Laufwerk sieht, pro
 Byte Nutzdaten.</p>
@@ -283,7 +312,7 @@ Einschränkung bewusst akzeptiert — der Platzgewinn war wichtiger.</p>
     <div class="optionen">
       <label><input type="checkbox" name="sa-02-q7" value="0" data-richtig data-grund="Richtig — das Ziel war bis zur Halbierung des Platzbedarfs bei gleicher Schreibeffizienz, also bis zu doppelt so viele Datenbanken pro Maschine."> Platz sparen und weniger Bytes schreiben</label>
       <label><input type="checkbox" name="sa-02-q7" value="1" data-grund="Falsch — lesend ist MyRocks langsamer; der Wechsel nahm Verschlechterung beim Lesen bewusst in Kauf."> Schnellere Lesezugriffe auf einzelne Zeilen</label>
-      <label><input type="checkbox" name="sa-02-q7" value="2" data-grund="Falsch — beide sind Transaktions-Engines mit denselben ACID-Zusagen; an der Transaktionsgrenze änderte sich nichts."> Verzicht auf Transaktionen zugunsten von Geschwindigkeit</label>
+      <label><input type="checkbox" name="sa-02-q7" value="2" data-grund="Falsch — beide sind Transaktions-Engines mit denselben ACID-Zusagen (Atomarität, Konsistenz, Isolation, Dauerhaftigkeit); an der Transaktionsgrenze änderte sich nichts."> Verzicht auf Transaktionen zugunsten von Geschwindigkeit</label>
       <label><input type="checkbox" name="sa-02-q7" value="3" data-grund="Falsch — verteilte Abfragen über Shards löst keine Speicher-Engine; das macht die Anwendungsschicht."> Verteilte Abfragen über mehrere Shards hinweg</label>
     </div>
   </fieldset>
@@ -314,13 +343,22 @@ zur Datenbank“.</p>
 <p><strong>TAO</strong> ist diese Schicht: ein Graph-Cache, der vor den
 MySQL-Datenbanken sitzt und in jeder Region läuft. Lesezugriffe gehen zuerst an
 TAO. Trifft TAO, war die Datenbank nie beteiligt — 2013 in <strong>96,4 Prozent
-der Fälle</strong>.</p>
-<p>TAO ist kein reiner Cache, sondern <strong>write-through</strong>: Ein
-Schreibvorgang geht an die Datenbank, und die Änderung wandert von dort zurück
-in die Caches. Der Rückweg ist der interessante Teil: TAO hängt seine
-Invalidierungs-Befehle <strong>in den Replikationsstrom von MySQL</strong>. Die
-Cache-Kopie erfährt von einer Änderung also auf demselben Weg, auf dem die
-Datenbank-Replikate sie erfahren.</p>
+der Fälle</strong>. Darunter liegt noch ein zweiter, einfacherer Cache:
+<strong>memcache</strong>, ein verteilter Schlüssel-Wert-Speicher im
+Arbeitsspeicher, den Meta für alles benutzt, was keine Graph-Struktur braucht.
+Zwei Cache-Etagen also: eine für den Graphen, eine für einfache
+Schlüssel-Wert-Anfragen.</p>
+<p>TAO ist kein reiner Cache, sondern <strong>write-through</strong>: „durch
+und durch“. Ein Schreibvorgang wird nicht im Cache abgelegt und später
+weitergereicht — dann wäre der Cache die Wahrheit —, sondern geht zuerst an die
+Datenbank, und der Cache wird von dort nachgezogen. Der Rückweg ist der
+interessante Teil: TAO hängt seine <strong>Invalidierungs</strong>-Befehle
+<strong>in den Replikationsstrom von MySQL</strong>. MySQL führt nämlich ein
+Protokoll aller Änderungen, das es an seine Kopien (Replikate) schickt; TAO
+liest denselben Strom mit. Eine Cache-Kopie wird also nicht überschrieben,
+sondern für ungültig erklärt (fachsprachlich: <em>invalidiert</em>) und beim
+nächsten Lesen neu gefüllt. Die Cache-Kopie erfährt von einer Änderung damit auf
+demselben Weg, auf dem die Datenbank-Replikate sie erfahren.</p>
 <pre><code>Lesen:    App ──▶ TAO-Cache ──treffer──▶ App
                         └─kein Treffer─▶ MySQL ──▶ TAO füllt nach
 
@@ -361,33 +399,52 @@ passiert im Speicher und in der Nähe der Nutzer, nicht auf der Festplatte.</p>
 
 <h2>7. ZippyDB: der zweite Speicher, mit Absicht anders</h2>
 <p>Neben TAO und der MySQL-Welt gibt es einen zweiten großen Speicher:
-<strong>ZippyDB</strong>, Metas größter stark konsistenter Schlüssel-Wert-Store.
-Er speichert Metadaten, Zähler, Konfiguration — Dinge, die <em>sofort</em>
-stimmen müssen.</p>
+<strong>ZippyDB</strong>, Metas größter <strong>stark konsistenter</strong>
+Schlüssel-Wert-Speicher — „stark konsistent“ heißt: Eine bestätigte Änderung ist
+sofort überall sichtbar, kein Leser bekommt einen alten Stand. Er speichert
+Metadaten, Zähler, Konfiguration — Dinge, die <em>sofort</em> stimmen müssen.</p>
 <p>Drei Bausteine reichen, um ihn zu verstehen:</p>
 
 <h3>Baustein 1 — Paxos statt „einer schreibt, alle hoffen“</h3>
-<p>Ein Shard hat eine Gruppe von Replikaten, die sich per <strong>Multi-Paxos</strong>
-auf eine Reihenfolge der Schreibvorgänge einigen. Zusätzlich gibt es
+<p>Ein Shard besteht nicht aus einer Maschine, sondern aus einer Gruppe von
+<strong>Replikaten</strong>: Kopien derselben Daten auf mehreren Rechnern, damit
+der Ausfall einer Maschine nichts ausmacht. Damit diese Kopien nie
+auseinanderlaufen, müssen sie sich auf <em>eine</em> Reihenfolge der
+Schreibvorgänge einigen. Genau das leistet <strong>Paxos</strong>, ein
+Einigungsprotokoll (Konsensprotokoll): Eine Mehrheit der Replikate sagt zu, den
+Schreibvorgang an derselben Stelle einzuordnen; fällt ein Teil der Gruppe aus,
+bleibt die Mehrheit handlungsfähig, und zwei widersprüchliche Reihenfolgen kann
+es nicht geben. <strong>Multi-Paxos</strong> ist die Variante für den
+Dauerbetrieb: Statt für jeden Schreibvorgang neu zu wählen, bleibt ein Replikat
+dauerhaft der Vorsitzende und schlägt die Reihenfolge vor. Zusätzlich gibt es
 asynchrone Mitläufer, die langsamer sein dürfen und billige Lesezugriffe in der
 eigenen Region erlauben.</p>
 
 <h3>Baustein 2 — Epoche und Leader-Lease</h3>
 <p>Schreibvorgänge müssen eine eindeutige Reihenfolge haben, sonst entsteht
-Unsinn. Dafür gibt es pro Shard eine <strong>Epoche</strong> mit genau einem
-Leader. Der Leader hält eine <strong>Lease</strong>: ein Zeitfenster, in dem
-nur er schreiben darf. Bleibt der Herzschlag aus, erhöht der Shard Manager die
-Epoche, und ein anderer übernimmt.</p>
+Unsinn. Deshalb gibt es pro Shard eine <strong>Epoche</strong> — einen Zähler,
+der bei jedem Führungswechsel steigt — und genau einen
+<strong>Leader</strong> (Vorsitzenden), der in dieser Epoche schreiben darf.
+Der Leader hält eine <strong>Lease</strong>: ein Zeitfenster, in dem nur er
+schreiben darf. Solange er lebt, schickt er einen <strong>Herzschlag</strong>,
+also ein regelmäßiges Lebenszeichen. Bleibt der aus, erhöht der Shard Manager
+die Epoche, ein anderer übernimmt, und Schreibvorgänge der alten Epoche werden
+verworfen.</p>
 <p>Das ist der erste wichtige Begriff für heute: Eine <strong>Lease ist keine
 Sperre</strong>. Sie fragt niemanden um Erlaubnis, sie <em>gilt</em> für eine
 Frist. Danach muss man neu bitten.</p>
 
 <h3>Baustein 3 — optimistische statt pessimistische Nebenläufigkeit</h3>
-<p>ZippyDB sperrt beim Lesen nichts. Der Client liest aus einem Schnappschuss,
-schickt Lese- und Schreibmenge an den Primary, und der prüft beim Commit, ob
+<p>ZippyDB sperrt beim Lesen nichts. Der Client liest aus einem
+<strong>Schnappschuss</strong> — einem eingefrorenen Stand, der sich während des
+Lesens nicht ändert —, schickt die Menge der gelesenen und der zu schreibenden
+Schlüssel an den <strong>Primary</strong> (das ist der Leader des Shards), und
+der prüft beim <strong>Commit</strong>, dem endgültigen Festschreiben, ob
 inzwischen jemand dieselben Schlüssel geändert hat. Kollision → Abbruch und
 neuer Versuch. Dieses Verfahren heißt <strong>optimistisches Concurrency
-Control (OCC)</strong> und ist pro Shard <strong>serialisierbar</strong>.</p>
+Control (OCC)</strong>: erst handeln, dann prüfen. Es ist pro Shard
+<strong>serialisierbar</strong> — das heißt, das Ergebnis ist so, als wären die
+Transaktionen alle nacheinander abgelaufen, obwohl sie gleichzeitig liefen.</p>
 <p>Ein einzelner physischer Shard fasst übrigens 50 bis 100 GB und enthält
 darin zehntausende sogenannte <strong>μShards</strong> (Mikro-Shards) — die
 kleine Einheit, die man verschieben kann, ohne die Anwendung zu ändern.</p>
@@ -430,7 +487,8 @@ lautet „kein Locking“.</p>
 <p>Innerhalb einer MySQL-Instanz passiert genau das, was du aus KM5 kennst:
 Zeilen sperren, Transaktion, freigeben. Zwei Transaktionen, die dieselben
 Zeilen in verschiedener Reihenfolge sperren, laufen in einen
-<strong>Deadlock</strong>; die Datenbank bricht eine der beiden ab.</p>
+<strong>Deadlock</strong> (beide warten auf eine Sperre, die die jeweils andere
+hält); die Datenbank bricht eine der beiden ab.</p>
 <pre><code><span class="cmt">-- MySQL/PostgreSQL: Zeilen sperren, in fester Reihenfolge</span>
 BEGIN;
 SELECT stand FROM konto WHERE id = 7  FOR UPDATE;   <span class="cmt">-- Sperre 7</span>
@@ -473,10 +531,10 @@ Phase 2 (commit)
 
 Stirbt ein Shard in Phase 1:
   alle brechen ab — nichts Halbes wird sichtbar</code></pre>
-<p>Diese Transaktionen sind <strong>opt-in</strong>: Man bezahlt sie nur, wenn
-man sie braucht. Aber man braucht sie oft — bidirektionale Beziehungen machen
-<strong>52 Prozent aller Assoziationstypen</strong> aus. Verteiltes Locking ist
-hier also der Normalfall, nicht die Ausnahme.</p>
+<p>Diese Transaktionen sind <strong>opt-in</strong> — nur auf Anforderung: Man
+bezahlt sie nur, wenn man sie braucht. Aber man braucht sie oft — bidirektionale
+Beziehungen machen <strong>52 Prozent aller Assoziationstypen</strong> aus.
+Verteiltes Locking ist hier also der Normalfall, nicht die Ausnahme.</p>
 
 <h3>Etage 3 — auf der Leseseite: wirklich kein Locking</h3>
 <p>Beim Lesen gibt es kein Sperren, und zwar mit Absicht. Zehn Milliarden
@@ -496,9 +554,10 @@ nichts — aber nicht notwendigerweise den „letzten“ Zustand.</p>
 <h3>Etage 4 — Führung und Cache: Leases statt Sperren</h3>
 <p>Wer darf schreiben? Diese Frage beantwortet kein Lock-Server, sondern eine
 Lease: In ZippyDB pro Epoche (Abschnitt 7), in TAO über einen eigenen
-Lease-Dienst (<strong>Skylease</strong>, beschrieben im Skybridge-Paper 2025).
-Leases sind der Grund, warum ein Failover funktioniert, ohne dass zwei Leader
-gleichzeitig schreiben.</p>
+Lease-Dienst (<strong>Skylease</strong>, beschrieben im Skybridge-Paper 2025;
+Skybridge ist Metas System, das Lesezugriffe mit einer garantierten Obergrenze
+für die Verzögerung erlaubt, siehe Abschnitt 9). Leases sind der Grund, warum
+ein Failover funktioniert, ohne dass zwei Leader gleichzeitig schreiben.</p>
 
 <div class="callout">
   <span class="label">Antwort auf die Einstiegsfrage</span>
@@ -552,11 +611,12 @@ gleichzeitig schreiben.</p>
 <p>Die Rechnung hat einen Preis, und der wird selten so offen ausgesprochen:
 Man gibt die <strong>globale Serialisierbarkeit</strong> auf. Es gibt keinen
 Zeitpunkt, zu dem „die ganze Welt“ denselben Stand sieht.</p>
-<p>Stattdessen gilt <strong>Eventual Consistency</strong>: Replikate laufen
-hinterher. Im RAMP-TAO-Paper von 2021 steht die Zahl dafür — 99,99 Prozent der
-Replikate sind weniger als 60 Sekunden veraltet. Das klingt harmlos, bis man
-dazurechnet, dass in 60 Sekunden <strong>Milliarden</strong> Lesevorgänge
-passieren.</p>
+<p>Stattdessen gilt <strong>Eventual Consistency</strong> („irgendwann stimmt
+es“): Replikate laufen hinterher, und liest man von einer Kopie, kann der Stand
+Sekunden alt sein. Im RAMP-TAO-Paper von 2021 steht die Zahl dafür — 99,99
+Prozent der Replikate sind weniger als 60 Sekunden veraltet. Das klingt
+harmlos, bis man dazurechnet, dass in 60 Sekunden
+<strong>Milliarden</strong> Lesevorgänge passieren.</p>
 <p>Seit 2025 gibt es dafür einen saubereren Begriff: <strong>bounded
 staleness</strong> — die Verzögerung ist nach oben begrenzt, und das System kann
 pro Lesevorgang <em>nachweisen</em>, ob der Stand aktuell genug ist (Skybridge).
@@ -603,8 +663,8 @@ kommen.</p>
 <p>Eine Frage bleibt: Woher weiß man, dass die Annahmen stimmen? Meta hat die
 eigene Last als Benchmark veröffentlicht — <strong>TAOBench</strong> (2022,
 Open Source). Er erzeugt Anfragen, die statistisch zur Produktion passen,
-inklusive der Schiefe: wenige Schlüssel werden sehr oft geschrieben, viele
-selten.</p>
+inklusive der Schiefverteilung (englisch <em>skew</em>): wenige Schlüssel werden
+sehr oft geschrieben, viele selten.</p>
 <p>Interessant ist, wofür Meta den Benchmark selbst verwendet. Einer der vier
 genannten Anwendungsfälle lautet wörtlich: <strong>„assessing contention under
 longer lock hold times“</strong> — den Streit um Sperren bewerten, wenn sie

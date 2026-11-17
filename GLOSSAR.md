@@ -38,6 +38,22 @@ mehrere Werte in einer Zelle; verletzt die 1NF.
 Performance-Gründen — erst nach Messung, nie aus Bequemlichkeit.
 *Meiden*: „Entnormalisierung".
 
+**Transaktion / ACID** — Eine Transaktion ist eine Folge von Anweisungen, die
+ganz oder gar nicht wirkt. ACID nennt die vier Zusagen: **A**tomarität (alles
+oder nichts), **C**onsistency (die Regeln der Datenbank gelten danach),
+**I**solation (gleichzeitige Transaktionen stören einander nicht) und
+**D**urability (was bestätigt ist, bleibt). *Meiden*: „Transaktion = viele
+Befehle auf einmal“ — ohne die vier Zusagen ist es nur ein Stapel.
+
+**Deadlock** — Zwei Transaktionen warten je auf eine Sperre, die die andere
+hält; die Datenbank erkennt den Kreis und bricht eine ab.
+*Meiden*: „Endlosschleife“ — der Deadlock endet durch Abbruch, nicht durch
+Warten.
+
+**Serialisierbarkeit** — Die stärkste Isolationszusage: Das Ergebnis
+gleichzeitiger Transaktionen ist so, als wären sie nacheinander gelaufen.
+*Meiden*: „serialisierbar = langsam“ — es ist eine Zusage, kein Verfahren.
+
 ## Abfragen (KM4/KM5)
 
 **Self-JOIN** — Ein JOIN einer Tabelle mit sich selbst über zwei Aliase.
@@ -189,6 +205,39 @@ ein zentraler Ausfallpunkt.
 *Meiden*: „Die Coins liegen auf der Börse“ — dort liegt ein Anspruch, kein
 Schlüssel.
 
+**Wallet** — Programm oder Gerät, das die privaten Schlüssel aufbewahrt; die
+Coins selbst liegen in der Kette. *Meiden*: „Die Coins liegen in der Wallet“ —
+dort liegen Schlüssel.
+
+**On-Chain / Off-Chain** — On-Chain heißt: in der Kette gespeichert und damit
+durch Hashes geschützt; off-chain heißt: außerhalb, etwa in einer normalen
+Datenbank. *Meiden*: „on-chain, also wahr“ — geschützt ist die
+Unverändertheit, nicht die Richtigkeit.
+
+**Hard Fork** — Änderung der Protokollregeln, die nicht rückwärtskompatibel
+ist: Wer nicht aktualisiert, folgt einer anderen Kette. *Meiden*:
+„technisches Update“ — ein Hard Fork ist eine Entscheidung von Menschen.
+
+**Governance** — Wer entscheidet, wie sich ein Protokoll ändert (Entwickler,
+Miner bzw. Validatoren, Stiftungen, Börsen). *Meiden*: „das Netz entscheidet
+selbst“.
+
+**Hashrate** — Rechenleistung pro Sekunde, die im Netz für den Proof of Work
+aufgewendet wird; die Größe, an der ein 51-%-Angriff teuer wird.
+*Meiden*: „Anzahl der Miner“ — gezählt wird Arbeit, nicht Köpfe.
+
+**Layer 1 (L1)** — Die Hauptkette selbst (z. B. Ethereum L1); Layer-2-Systeme
+rechnen ausgelagert und schreiben nur Ergebnisse zurück.
+*Meiden*: „L1 = schnell“ — L1 ist die langsame, aber maßgebliche Schicht.
+
+**Knoten (Node)** — Ein Rechner, der am Netz teilnimmt, eine Kopie der Kette
+hält und prüft. *Meiden*: „Knoten = Nutzer“ — und nicht verwechseln mit einem
+Knoten im Graphen (SA-02).
+
+**Pruning** — Alte Blöcke löschen und nur die aktuelle Spitze behalten, um
+Platz zu sparen; kostet einen Teil der Prüfbarkeit.
+*Meiden*: „Archivierung“ — Pruning entfernt Geschichte.
+
 ## Verteilte Datenbanken in der Praxis (SA-02, Anschluss KM5/KM9)
 
 **Sharding** — Aufteilung der Daten auf mehrere unabhängige Datenbanken
@@ -251,6 +300,70 @@ offen, wie weit. *Meiden*: „Datenverlust“ — der Stand ist alt, nicht falsc
 Lesevorgang nachweisbar (Skybridge). Die stärkere, ehrlichere Form von
 Eventual Consistency. *Meiden*: „sofort konsistent“ — die Schranke ist endlich,
 nicht null.
+
+**TAO (The Associations and Objects)** — Metas Graph-Cache vor den
+MySQL-Datenbanken: hält Objekte (Nutzer, Seiten, Fotos) und Assoziationen
+(Freundschaft, Like) im Speicher und beantwortet 2013 rund 96 % der
+Lesezugriffe, ohne die Datenbank zu fragen.
+*Meiden*: „TAO ist die Datenbank“ — TAO ist die Schicht davor.
+
+**Cache / memcache** — Zwischenspeicher im Arbeitsspeicher, der Antworten
+vorrätig hält; **memcache** ist Metas verteilter Schlüssel-Wert-Cache für
+alles, was keine Graph-Struktur braucht. Die **Trefferquote** ist der Anteil
+der Anfragen, die ohne Datenbank beantwortet werden.
+*Meiden*: „Cache = Kopie der Datenbank“ — ein Cache hält nur, was gerade
+gebraucht wurde.
+
+**UDB (User Database)** — Metas größter MySQL-Verbund, massiv geshardet, mit
+zig Petabytes; die Hauptdatenbank hinter TAO.
+*Meiden*: „UDB ist eine eigene Engine“ — darunter läuft MySQL, seit 2017 mit
+MyRocks.
+
+**ZippyDB** — Metas stark konsistenter Schlüssel-Wert-Speicher für Metadaten,
+Zähler und Konfiguration; shardweise per Multi-Paxos repliziert, Schreiben über
+Leader-Lease, Konflikte per OCC. *Meiden*: „ZippyDB ist TAO“ — TAO ist der
+Graph-Cache, ZippyDB der konsistente Schlüssel-Wert-Speicher.
+
+**Paxos / Multi-Paxos** — Einigungsprotokoll (Konsens): Eine Mehrheit der
+Replikate legt dieselbe Reihenfolge der Schreibvorgänge fest. Multi-Paxos hält
+dafür dauerhaft einen Vorsitzenden.
+*Meiden*: „Paxos = Abstimmung nach Knotenzahl“ — gewichtet wird die Rolle im
+Protokoll, nicht die Kopfzahl.
+
+**Leader / Primary / Replikat** — Replikate sind Kopien derselben Daten auf
+mehreren Rechnern; der Leader (bei MySQL: Primary) ist der eine, der in einer
+Epoche schreiben darf. *Meiden*: „alle Replikate sind gleich“ — beim Schreiben
+nicht.
+
+**Replikation / Replikationsstrom** — Das laufende Nachführen von Kopien;
+MySQL schreibt alle Änderungen in ein Protokoll (den Replikationsstrom), aus
+dem Replikate und TAO die Änderungen lesen.
+*Meiden*: „Replikation = Backup“ — ein Replikat dient dem Betrieb, ein Backup
+der Rettung.
+
+**Stark konsistent (strong consistency)** — Jede bestätigte Änderung ist sofort
+überall sichtbar; kein Leser bekommt einen alten Stand.
+*Meiden*: „stark konsistent = immer verfügbar“ — bei einem Netzwerkausfall
+kostet sie Verfügbarkeit oder Wartezeit.
+
+**B-Baum** — Sortierter Baum, in dem jede Zeile an einem aus dem Schlüssel
+berechneten Platz liegt: schnelle Einzelzugriffe, aber beim Schreiben wird eine
+ganze Seite neu geschrieben (InnoDB). *Meiden*: „B-Baum = Index“ — er ist die
+Speicherstruktur, der Index ist seine Sicht.
+
+**InnoDB** — MySQLs klassische Speicher-Engine (B-Baum), sperrt Zeilen **und**
+Lücken (Gap-Locks). *Meiden*: „InnoDB = MySQL“ — InnoDB ist eine Engine
+innerhalb von MySQL.
+
+**MyRocks** — MySQLs LSM-Engine (RocksDB): 40–50 % weniger Platz, rund ein
+Zehntel der Schreiblast, dafür langsamere Einzelzugriffe und keine Gap-Locks.
+*Meiden*: „MyRocks ist eine andere Datenbank“ — dieselbe SQL- und
+Transaktionsschicht, andere Engine.
+
+**Benchmark / Schiefverteilung (Skew)** — Ein Benchmark ist ein Lasttest mit
+nachgebauter Produktionslast; Schiefverteilung heißt, dass wenige Schlüssel
+sehr oft und viele selten benutzt werden.
+*Meiden*: „Benchmark = Garantie“ — er misst ein Szenario, nicht die Zukunft.
 
 **LSM-Baum (Log-Structured Merge Tree)** — Speicherstruktur, die Schreibvorgänge
 in sortierte Dateien schreibt und sie im Hintergrund verschmilzt: wenig

@@ -1,8 +1,23 @@
 # Project State
 
-Current status as of 2026-11-16.
+Current status as of 2026-11-17.
 
 ## Current Focus
+
+**Sprachliche Nachschärfung SA-01/SA-02 (2026-11-17, Issue #24):** Beide
+schulautonomen Lessons erklären ihre Fachbegriffe jetzt im Text, dort wo sie
+eingeführt werden — TAO bereits in §2 vor der Zahlentabelle (vorher erst §6 und
+das Akronym nie ausgeschrieben), Shard in §4, Paxos als eigener Absatz in §7;
+in SA-01 u. a. Sybil, Proof of Stake, Blockchain-Definition, Knoten, Hard Fork,
+On-Chain/Off-Chain. Beide verweisen einleitend aufs Glossar; `GLOSSAR.md` um
+~30 Einträge erweitert (u. a. TAO, UDB — *User Database* —, ZippyDB, Paxos,
+InnoDB/MyRocks, ACID, Deadlock, Serialisierbarkeit). Inhalt, Zahlen, Quellen
+und Quiz-Lösungen unverändert.
+**Nebenbefund #23:** Root-`index.html` lud kein CSS, weil im Inline-Bootstrap
+der Aufruf der inneren Funktion fehlte (`t()`); ein Zeichen behoben, headless
+verifiziert. `PITFALLS.md` dokumentiert den stillen Fehlerfall.
+
+Vorheriger Stand (2026-11-16).
 
 **SA-02 „Die Datenbank hinter Facebook“ (2026-11-16):** Prepared Lesson
 `unterricht/SA-02-facebook-datenbank/` (90 min, 7 Lernquizze / 22 Fragen,

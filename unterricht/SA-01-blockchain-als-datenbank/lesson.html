@@ -19,15 +19,18 @@
 <div class="callout">
   <span class="label">Lektüre</span>
   <ul>
+    <li><strong>Begriffe nachschlagen:</strong> Jeder Fachbegriff dieser Lektion
+    steht mit einer Kurzdefinition im
+    <a href="https://github.com/georgernstgraf/GRG-INFI/blob/main/GLOSSAR.md">GLOSSAR.md</a>,
+    Abschnitt „Blockchain und verteilte Datenbanken“. Was hier im Text erklärt
+    wird, findest du dort in einem Satz wieder — und umgekehrt.</li>
     <li>Satoshi Nakamoto: <a href="https://bitcoin.org/bitcoin.pdf">Bitcoin: A Peer-to-Peer
     Electronic Cash System</a> (2008) — Abschnitte 1–4 reichen für heute.</li>
     <li>Ethereum-Doku: <a href="https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/">Proof
     of Stake</a> — derselbe Konsensgedanke ohne Rechenwettlauf.</li>
     <li>Cambridge: <a href="https://ccaf.io/cbnsi/cbeci">Bitcoin Electricity
     Consumption Index</a> — die Stromzahl, live geschätzt.</li>
-    <li>Referenzbegriffe:
-    <a href="https://github.com/georgernstgraf/GRG-INFI/blob/main/GLOSSAR.md">GLOSSAR.md</a>
-    (Abschnitt „Blockchain“) · Beispielprojekt:
+    <li>Beispielprojekt:
     <a href="https://github.com/georgernstgraf/GRG-INFI/tree/main/Beispielprojekte/sa-01-blockchain-als-datenbank">sa-01-blockchain-als-datenbank</a>.</li>
   </ul>
 </div>
@@ -71,11 +74,31 @@ Drei Blöcke, jeder mit Proof of Work, dann ein Sabotage-Versuch:</p>
 hängt von der Uhrzeit ab. Die <strong>Struktur</strong> bleibt gleich: Ein
 geänderter Betrag bricht die Prüfung an zwei Stellen, und die zweite Stelle
 lässt sich nicht mitreparieren, ohne die ganze Kette neu zu rechnen.</p>
+<p>In dieser Ausgabe stehen vier Wörter, die erst in Abschnitt 4 als Bausteine
+wiederkehren. Damit du die Zeilen jetzt schon lesen kannst:</p>
+<ul>
+  <li><strong>Hash</strong> — eine Prüfsumme über den Inhalt eines Blocks:
+  gleicher Inhalt ergibt denselben Wert, ein geändertes Zeichen einen völlig
+  anderen.</li>
+  <li><strong>Nonce</strong> — eine frei wählbare Zahl im Block, die so lange
+  verändert wird, bis der Hash die geforderte Form hat (Abschnitt 4.3).</li>
+  <li><strong>Merkle-Wurzel</strong> — ein einzelner Hash, der alle
+  Transaktionen eines Blocks abdeckt (Abschnitt 4.2).</li>
+  <li><strong>Proof of Work</strong> — der Nachweis, dass für einen Block
+  Rechenarbeit aufgewendet wurde. „Schwierigkeit 3“ heißt: Der Hash muss mit
+  drei Nullen in der Hexadezimal-Schreibweise beginnen (Abschnitt 4.3).</li>
+</ul>
+<p>„Tx“ ist die Abkürzung für Transaktion, „prev_hash“ für den Hash des
+Vorgängerblocks.</p>
 
 <h2>3. Die Datenbank, die nur wächst</h2>
-<p>Datenbanktechnisch ist eine Blockchain zuerst eines:
-eine <strong>append-only</strong> Tabelle. Unser Beispielprojekt legt dafür
-zwei Tabellen an — mehr braucht die Kette nicht:</p>
+<p>Eine <strong>Blockchain</strong> ist eine Kette von Blöcken, in der jeder
+Block den Hash seines Vorgängers trägt. Dadurch lässt sich nachträglich nichts
+ändern, ohne alle folgenden Blöcke ungültig zu machen. Datenbanktechnisch ist
+sie zuerst eines: eine <strong>nur anhängende</strong> Tabelle
+(<em>append-only</em>) — neue Zeilen kommen hinten dazu, bestehende werden nie
+geändert. Unser Beispielprojekt legt dafür zwei Tabellen an — mehr braucht die
+Kette nicht:</p>
 <pre><code>CREATE TABLE block (
   idx         INTEGER PRIMARY KEY,
   zeit        INTEGER NOT NULL,
@@ -95,8 +118,9 @@ CREATE TABLE tx (
 );</code></pre>
 <p>Es gibt im Protokoll kein <code>UPDATE</code> und kein
 <code>DELETE</code>. Korrekturen laufen wie in der Buchhaltung: als
-<strong>Gegenbuchung</strong>. Ein falscher Betrag wird nicht überschrieben,
-sondern durch eine neue Transaktion ausgeglichen — beide bleiben sichtbar.</p>
+<strong>Gegenbuchung</strong> — eine zweite Buchung, die den Fehler ausgleicht,
+statt ihn zu löschen. Ein falscher Betrag wird nicht überschrieben, sondern
+durch eine neue Transaktion ausgeglichen; beide bleiben sichtbar.</p>
 <p>Daraus folgt der zweite Unterschied: Der <strong>Kontostand wird nicht
 gespeichert, sondern berechnet</strong>:</p>
 <pre><code><span class="cmt">-- Saldo statt Kontostandsspalte:</span>
@@ -111,8 +135,10 @@ WHERE  an = 'anna';</code></pre>
   Ergebnis.
 </div>
 <p>Der dritte Unterschied ist der wichtigste: Es gibt <strong>keinen
-maßgeblichen Knoten</strong>. Jeder Teilnehmer hält eine vollständige Kopie
-und prüft jede neue Zeile selbst. Das ist keine Sicherung
+maßgeblichen Knoten</strong>. Ein <strong>Knoten</strong> (<em>Node</em>) ist
+dabei ein Rechner, der am Netz teilnimmt und eine Kopie der Kette hält — nicht
+zu verwechseln mit den Knoten eines Graphen. Jeder Teilnehmer hält eine
+vollständige Kopie und prüft jede neue Zeile selbst. Das ist keine Sicherung
 (<em>Backup</em>), sondern eine <strong>Replikation mit Prüfpflicht</strong>:
 Ein Backup ersetzt Daten, wenn sie verloren gehen; ein Replikat wird
 verworfen, wenn es nicht zur Kette passt.</p>
@@ -179,8 +205,9 @@ tx3 ─┐              │
 tx3 ─┘  <span class="cmt">(ungerade → letztes doppelt)</span></code></pre>
 <p>Der Nutzen ist doppelt: Eine einzige geänderte Transaktion ändert die
 Wurzel — und ein Beweis, dass eine Transaktion in einem Block steckt,
-braucht nur <code>log₂(n)</code> Hashes. Bei 1024 Transaktionen sind das
-10 statt 1024.</p>
+braucht nur <code>log₂(n)</code> Hashes (der Logarithmus zur Basis 2, also die
+Zahl, mit der man 2 potenzieren muss, um auf n zu kommen). Bei 1024
+Transaktionen sind das 10 statt 1024.</p>
 
 <h3>Baustein 3 — Proof of Work</h3>
 <p>Der Block-Hash entsteht aus Index, Zeit, Vorgänger-Hash, Merkle-Wurzel und
@@ -204,12 +231,18 @@ sondern zu schwereren Aufgaben.</p>
 <h3>Baustein 4 — Signaturen</h3>
 <p>Eine Transaktion wird mit dem <strong>privaten Schlüssel</strong> signiert
 und von jedem Knoten mit dem <strong>öffentlichen Schlüssel</strong> geprüft.
+Dahinter steht ein Schlüsselpaar (Public-Key- oder asymmetrische Kryptografie):
+Jede Teilnehmerin hat einen privaten Schlüssel, den nur sie kennt, und einen
+öffentlichen, den alle kennen. Was mit dem privaten signiert wurde, kann jeder
+mit dem öffentlichen prüfen — fälschen kann es nur, wer den privaten besitzt.
 Der private Schlüssel verlässt das Gerät nie; die Adresse ist im Wesentlichen
 ein Hash des öffentlichen Schlüssels.</p>
 <p>Daraus folgt der bekannteste Merksatz der Branche: <em>Not your keys, not
 your coins.</em> Wer die Schlüssel verwahrt — eine Börse, eine Wallet-App,
-ein Backup — kann über die Coins verfügen. Die Kette prüft nur die Signatur,
-nicht die Absicht des Verwahrers.</p>
+ein Backup — kann über die Coins verfügen. Eine <strong>Wallet</strong> ist
+dabei nur ein Programm oder Gerät, das die Schlüssel aufbewahrt; die Coins
+selbst liegen in der Kette. Und die Kette prüft nur die Signatur, nicht die
+Absicht des Verwahrers.</p>
 
 <div class="quiz" data-titel="Quiz: hash-und-merkle">
   <fieldset class="frage">
@@ -270,14 +303,23 @@ wandern in den nächsten Block. Deshalb spricht man von
 Blöcke danach gebaut wurden.</p>
 <div class="callout">
   <span class="label">Merke</span>
-  Finalität ist bei Bitcoin <strong>wahrscheinlich, nicht absolut</strong>.
+  Finalität (Endgültigkeit) ist bei Bitcoin <strong>wahrscheinlich, nicht
+  absolut</strong>.
   Nach sechs Blöcken (im Schnitt eine Stunde) gilt eine Transaktion als
   praktisch unumkehrbar — nicht als mathematisch unumkehrbar.
 </div>
-<p>Für die Verteidigung gegen Sybil-Angriffe ist das entscheidend: Identitäten
-sind gratis, ein Angreifer kann beliebig viele Knoten starten. Deshalb zählt nicht die Zahl der Knoten. Es zählt die <strong>Arbeit</strong>
-in der Kette (Proof of Work) oder das <strong>gebundene Kapital</strong>
-(Proof of Stake).</p>
+<p>Für die Verteidigung gegen <strong>Sybil-Angriffe</strong> ist das
+entscheidend. Ein Sybil-Angriff ist eine Abstimmung mit erfundenen Identitäten:
+Wer einen Knoten starten kann, kann auch tausend starten — jeder kostet nur
+Strom und eine Festplatte. Würde das Netz „nach Köpfen“ entscheiden, hätte ein
+Angreifer sofort die Mehrheit, ohne etwas zu können. Deshalb zählt nicht die
+Zahl der Knoten.</p>
+<p>Es zählt die <strong>Arbeit</strong> in der Kette (Proof of Work: Rechenzeit,
+die man nicht fälschen, sondern nur aufwenden kann) oder das
+<strong>gebundene Kapital</strong> (Proof of Stake: Wer mitschreiben will, muss
+Coins als Pfand hinterlegen; verhält er sich regelwidrig, verliert er das Pfand
+— das nennt man <em>Slashing</em>). Beide Verfahren machen eine Stimme teuer,
+und genau das ist ihr Zweck.</p>
 
 <div class="quiz" data-titel="Quiz: konsens-und-forks">
   <fieldset class="frage">
@@ -328,8 +370,10 @@ später sehen.</p>
   <span class="label">Achtung</span>
   Die Kette schützt nur, was <strong>auf</strong> ihr liegt. Ein Medikament,
   dessen Temperaturkurve ein Sensor liefert, ist nur so ehrlich wie der
-  Sensor. Dieses <em>Oracle-Problem</em> ist der häufigste Denkfehler bei
-  Blockchain-Projekten.
+  Sensor. Ein <em>Oracle</em> ist dabei eine Datenquelle, die Werte von außen in
+  die Kette schreibt — ein Sensor, eine Börse, eine Behörde; nicht die
+  gleichnamige Datenbankmarke. Dieses <em>Oracle-Problem</em> ist der häufigste
+  Denkfehler bei Blockchain-Projekten.
 </div>
 
 <div class="quiz" data-titel="Quiz: vorteile">
@@ -359,12 +403,14 @@ muss diese sechs Punkte beantworten können.</p>
 
 <h3>Energie</h3>
 <p>Proof of Work tauscht Strom gegen Sicherheit. Bitcoin verbraucht je nach
-Modell und Stichtag <strong>138–190 TWh pro Jahr</strong>. Der
+Modell und Stichtag <strong>138–190 TWh pro Jahr</strong> (1 TWh ist eine
+Milliarde Kilowattstunden). Der
 Cambridge-Report von April 2025 nennt 138 TWh für das Jahr 2024, der
 Live-Schätzer liegt im November 2026 bei etwa 160 TWh.</p>
 <p>Das ist die Größenordnung eines halben Prozents des Weltstromverbrauchs.</p>
 <p>Proof of Stake braucht diese Rechnung nicht: Ethereum hat mit dem
-<em>Merge</em> am 15. September 2022 den Energieverbrauch um
+<em>Merge</em> (dem Zusammenschluss mit der bis dahin parallel laufenden
+Proof-of-Stake-Kette) am 15. September 2022 den Energieverbrauch um
 <strong>über 99,9 %</strong> gesenkt (Cambridge CCAF beziffert danach
 7,87 GWh pro Jahr).</p>
 
@@ -372,24 +418,29 @@ Live-Schätzer liegt im November 2026 bei etwa 160 TWh.</p>
 <table>
   <tr><th>System</th><th>Transaktionen pro Sekunde</th><th>Anmerkung</th></tr>
   <tr><td>Bitcoin</td><td>≈ 6,4</td><td>Messwert 10.11.2026 (Blockchair)</td></tr>
-  <tr><td>Ethereum (L1)</td><td>≈ 24</td><td>Messwert 10.11.2026 (Blockchair)</td></tr>
+  <tr><td>Ethereum (Hauptkette, L1)</td><td>≈ 24</td><td>Messwert 10.11.2026 (Blockchair)</td></tr>
   <tr><td>Visa</td><td>bis 65.000</td><td>Spitzenkapazität laut Visa, nicht Durchschnitt</td></tr>
 </table>
-<p>Der Vergleich mit einer relationalen Datenbank hinkt bewusst: SQLite hat
+<p>L1 steht für <em>Layer 1</em>, die Hauptkette selbst; sogenannte
+Layer-2-Systeme rechnen ausgelagert und schreiben nur Ergebnisse zurück.
+Der Vergleich mit einer relationalen Datenbank hinkt bewusst: SQLite hat
 keinen Konsens und kein Netzwerk. Genau diese beiden Posten sind der Preis —
 nicht die Speicherung.</p>
 
 <h3>Speicher und Governance</h3>
 <p>Jede Vollkopie trägt die gesamte Historie, und die wächst monoton. Wer
-Platz spart, schneidet alte Blöcke ab (<em>Pruning</em>) — und verliert damit
-einen Teil der Prüfbarkeit.</p>
-<p>Governance ist der unterschätzte Punkt: Ein Protokoll ändert sich nur
-durch einen <strong>Hard Fork</strong>, und der wird von Menschen beschlossen.
-The DAO 2016 ist das Lehrstück — dazu gleich mehr.</p>
+Platz spart, schneidet alte Blöcke ab (<em>Pruning</em>: alte Blöcke werden
+gelöscht, nur die aktuelle Spitze bleibt) — und verliert damit einen Teil der
+Prüfbarkeit.</p>
+<p>Governance (Steuerung) ist der unterschätzte Punkt: Ein Protokoll ändert sich
+nur durch einen <strong>Hard Fork</strong> — eine Änderung der Regeln, die nicht
+rückwärtskompatibel ist, sodass jeder Knoten aktualisieren muss —, und der wird
+von Menschen beschlossen. The DAO 2016 ist das Lehrstück — dazu gleich mehr.</p>
 
 <h3>Löschen und Schlüssel</h3>
-<p>Die DSGVO kennt ein Recht auf Löschung; eine Kette kennt kein
-<code>DELETE</code>. Personenbezogene Daten gehören deshalb nicht „zur
+<p>Die DSGVO (Datenschutz-Grundverordnung) kennt ein Recht auf Löschung; eine
+Kette kennt kein <code>DELETE</code>. Personenbezogene Daten gehören deshalb
+nicht „zur
 Sicherheit“ on-chain. Und wer seinen privaten Schlüssel verliert, hat keinen
 Support: Es gibt kein Passwort-Zurücksetzen, nur den Verlust.</p>
 
@@ -399,11 +450,14 @@ Lieferkette. Im November 2022 wurde die Einstellung angekündigt, Ende des
 ersten Quartals 2023 war die Plattform offline. Begründung: Die „vollständige
 globale Zusammenarbeit der Branche“ sei nicht erreicht worden. Die Technik
 lief — das Ökosystem nicht.</p>
-<p><strong>ASX CHESS</strong>: Die Australische Börse wollte ihr
-Abwicklungssystem ab 2015 auf Blockchain umstellen. Im November 2022 wurde
-das Projekt nach rund sieben Jahren gestoppt; rund
-<strong>A$245–255 Mio.</strong> waren abgeschrieben. 2026 verglich sich die
-Börse mit der Aufsicht ASIC auf eine Strafe von A$20,5 Mio.</p>
+<p><strong>ASX CHESS</strong>: Die Australische Börse (ASX) wollte ihr
+Abwicklungssystem CHESS — das <em>Clearing House Electronic Subregister
+System</em> — ab 2015 auf Blockchain umstellen. Im November 2022 wurde das
+Projekt nach rund sieben Jahren gestoppt; rund <strong>245–255 Mio. australische
+Dollar (A$)</strong> waren abgeschrieben. 2026 verglich sich die Börse mit der
+australischen Börsenaufsicht ASIC (<em>Australian Securities and Investments
+Commission</em> — nicht zu verwechseln mit den gleichnamigen Mining-Chips) auf
+eine Strafe von 20,5 Mio. A$.</p>
 <div class="callout achtung">
   <span class="label">Achtung</span>
   Beide Projekte scheiterten nicht an Hashes, sondern an
@@ -459,8 +513,8 @@ August 2020 innerhalb von zwei Wochen drei Angriffe: Der erste rollte
 <div class="callout">
   <span class="label">Merke</span>
   Der Angriff ist teuer, aber nicht unmöglich: Er lohnt sich, sobald die
-  Beute größer ist als die Rechenzeit. Kleine Ketten mit wenig Hashrate sind
-  deshalb besonders gefährdet.
+  Beute größer ist als die Rechenzeit. Kleine Ketten mit wenig Hashrate (der
+  gesamten Rechenleistung im Netz) sind deshalb besonders gefährdet.
 </div>
 
 <h3>Angriffe auf das Netz und auf Verträge</h3>
@@ -523,6 +577,10 @@ Verträge programmierten. Stand: November 2026.</p>
   <tr><td>Wormhole</td><td>2022</td><td>120.000 wETH, ca. 326 Mio. USD</td><td>Bridge-Vertrag ließ sich falsch auszahlen; der Betreiber ersetzte den Schaden</td></tr>
   <tr><td>Bybit</td><td>2025</td><td>401.347 ETH plus Staking-Token, ca. 1,46 Mrd. USD</td><td>Größter Krypto-Diebstahl bisher; Zugriff auf eine Wallet</td></tr>
 </table>
+<p>Abkürzungen in der Tabelle: BTC = Bitcoin, ETH = Ether, ETC = Ethereum
+Classic, BTG = Bitcoin Gold, NEM = eine eigene Kryptowährung, USDC = ein
+dollar-gedeckter <em>Stablecoin</em> (Digitalgeld mit festem Wechselkurs),
+wETH = „wrapped“ Ether (1:1 verbrieft).</p>
 <p>Ein Fall gehört ausdrücklich <strong>nicht</strong> in diese Liste:
 <strong>FTX</strong> (2022). Dort fehlten rund 8 Mrd. USD an Kundengeldern,
 weil sie veruntreut wurden — kein Hack, sondern Betrug. Das ist der
@@ -626,7 +684,7 @@ darauf angelegt“.</p>
 <h2>12. Zusammenfassung</h2>
 <table>
   <tr><th>Frage</th><th>Relationale Datenbank</th><th>Blockchain</th></tr>
-  <tr><td>Wer darf schreiben?</td><td>Wer Rechte hat (DBA, App)</td><td>Wer die Konsensregel erfüllt</td></tr>
+  <tr><td>Wer darf schreiben?</td><td>Wer Rechte hat (Administrator/DBA, Anwendung)</td><td>Wer die Konsensregel erfüllt</td></tr>
   <tr><td>Änderbar?</td><td>Ja, per <code>UPDATE</code>/<code>DELETE</code></td><td>Nein, nur Gegenbuchung</td></tr>
   <tr><td>Vertrauen nötig?</td><td>In den Betreiber</td><td>In die Regel und die Mehrheit</td></tr>
   <tr><td>Kosten pro Schreibvorgang</td><td>Millisekunden, Cent</td><td>Sekunden bis Minuten, Gebühr</td></tr>

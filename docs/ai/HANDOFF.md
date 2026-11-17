@@ -1,5 +1,28 @@
 # HANDOFF
 
+**2026-11-17:** Beide schulautonomen Lessons sprachlich nachgeschärft — Issue
+**#24**. Rund 40 vorausgesetzte Begriffe und Abkürzungen sind jetzt dort
+erklärt, wo sie hingehören, statt nur im Glossar zu stehen. **SA-02:** TAO
+(*The Associations and Objects*) schon in §2 **vor** der Zahlentabelle — der
+Hauptfund war, dass das Akronym nirgends ausgeschrieben war und die Erklärung
+erst in §6 kam; Shard in §4 als eigene Instanz mit Log, Sperren und Replikation;
+UDB (**User Database**, so nennt Meta sie in der MyRocks-Präsentation — nicht
+„Unified"), memcache/Cache, Speicher-Engine/InnoDB/B-Baum, write-through und
+Invalidierung, ein neuer **Paxos-Absatz** in §7, Primary/Schnappschuss/
+serialisierbar, Eventual Consistency, Skew. **SA-01:** Sybil- und
+Proof-of-Stake-Absatz in §5 (Sybil war vorher nur behauptet und im Quiz
+abgefragt), Blockchain-Definition in §3, Knoten (Rechner vs. Graphknoten),
+Public-Key/Signatur, Wallet, Hard Fork/Governance, On-Chain/Off-Chain,
+Hashrate, Finalität, L1, ASIC (australische Börsenaufsicht, nicht Mining-Chip),
+CHESS, DSGVO, DBA, Ticker-Liste. Beide Lessons verweisen **einleitend** aufs
+Glossar (Abschnittstitel korrigiert); `GLOSSAR.md` um ~30 Einträge erweitert.
+Zahlen, Quellen, Aussagen und Quiz-Lösungen unverändert (22 bzw. 21 Fragen).
+**Nebenbefund #23:** das Root-`index.html` lud kein CSS — im Inline-Bootstrap
+fehlte der Aufruf der inneren Funktion (`t()`), also wurde `loader.js` nie
+angefordert; kein Konsolenfehler, nur eine stille Unstyled-Seite. Ein Zeichen
+behoben, headless verifiziert (CSS-Link und `data-theme` im DOM); `PITFALLS.md`
+um diesen stillen Zwilling ergänzt.
+
 **2026-11-16:** Prepared Lesson `unterricht/SA-02-facebook-datenbank/` (90 min,
 reine Konzept-Lesson, **kein** Beispielprojekt) — Issue **#22** (geschlossen). Inhalt: das
 Zahlenbild des Meta-Datenbank-Stacks (TAO > 10 Mrd. Reads/s und Zehner
